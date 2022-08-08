@@ -2,8 +2,8 @@
 //  ios_starter_nabtoTests.swift
 //  HeatpumpDemoTests
 //
-//  Created by Tiago Lira on 30/01/2017.
-//  Copyright © 2017 Nabto. All rights reserved.
+//  Created by Nabto on 30/01/2022.
+//  Copyright © 2022 Nabto. All rights reserved.
 //
 
 import XCTest
@@ -22,8 +22,8 @@ class OtherTests: XCTestCase {
     }
     
     func testBookmarkSaving() {
-        let bookmark1 = Bookmark(id: "kzspcxu3.gygkd.appmyproduct.com", name: "AMP stub")
-        let bookmark2 = Bookmark(id: "kzspcxu4.gygkd.appmyproduct.com", name: "AMP stub2")
+        let bookmark1 = Bookmark(deviceId: "kzspcxu3.gygkd.appmyproduct.com", productId: "TBD", name: "AMP stub")
+        let bookmark2 = Bookmark(deviceId: "kzspcxu4.gygkd.appmyproduct.com", productId: "TBD", name: "AMP stub2")
         BookmarkManager.shared.add(bookmark: bookmark1)
         BookmarkManager.shared.add(bookmark: bookmark2)
         BookmarkManager.shared.saveBookmarks()

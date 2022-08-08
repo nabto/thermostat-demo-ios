@@ -2,18 +2,31 @@
 //  BookmarkManager.swift
 //  HeatpumpDemo
 //
-//  Created by Tiago Lira on 03/02/2017.
-//  Copyright © 2017 Nabto. All rights reserved.
+//  Created by Nabto on 03/02/2022.
+//  Copyright © 2022 Nabto. All rights reserved.
 //
 
 import UIKit
 
-struct Bookmark : Equatable {
-    let id   : String
+struct Bookmark : Equatable, Hashable {
+    let deviceId: String
+    var productId: String
+    var sct: String?
     var name : String?
-    
-    static func ==(b1: Bookmark, b2: Bookmark) -> Bool {
-        return b1.id == b2.id
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(deviceId)
+        hasher.combine(productId)
+    }
+
+    static func ==(lhs: Bookmark, rhs: Bookmark) -> Bool {
+        if lhs.deviceId != rhs.deviceId {
+            return false
+        }
+        if lhs.productId != rhs.productId {
+            return false
+        }
+        return true
     }
 }
 
@@ -35,7 +48,7 @@ class BookmarkManager {
     
     func saveBookmarks() {
         let url = bookmarksFileURL()
-        let dictionary = deviceBookmarks.map { return ["id" : $0.id, "name" : $0.name] }
+        let dictionary = deviceBookmarks.map { return ["deviceId" : $0.deviceId, "productId": $0.productId, "name" : $0.name] }
         do {
             let data = try PropertyListSerialization.data(fromPropertyList: dictionary,
                                                           format: .xml, options: 0)
@@ -51,7 +64,9 @@ class BookmarkManager {
             let data = try Data(contentsOf: url)
             let result = try PropertyListSerialization.propertyList(from: data, options: [], format: nil)
             if let dict = result as? [[String : String?]] {
-                deviceBookmarks = dict.map { return Bookmark(id: $0["id"]!!, name: $0["name"]!) }
+                deviceBookmarks = dict.map { return Bookmark(
+                        deviceId: $0["deviceId"]!!, productId: $0["productId"]!!, name: $0["name"]!)
+                }
             }
         } catch {
             print("error reading bookmarks file")

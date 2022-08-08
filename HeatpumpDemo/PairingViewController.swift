@@ -2,8 +2,8 @@
 //  PairingViewController.swift
 //  HeatpumpDemo
 //
-//  Created by Tiago Lira on 31/01/2017.
-//  Copyright © 2017 Nabto. All rights reserved.
+//  Created by Nabto on 31/01/2022.
+//  Copyright © 2022 Nabto. All rights reserved.
 //
 
 import UIKit

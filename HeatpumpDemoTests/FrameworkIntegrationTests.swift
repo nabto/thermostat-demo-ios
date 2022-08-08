@@ -2,8 +2,8 @@
 //  FrameworkIntegrationTests.swift
 //  HeatpumpDemo
 //
-//  Created by Tiago Lira on 07/02/2017.
-//  Copyright © 2017 Nabto. All rights reserved.
+//  Created by Nabto on 07/02/2022.
+//  Copyright © 2022 Nabto. All rights reserved.
 //
 
 //  Basic checks to verify that the framework is integrated correctly

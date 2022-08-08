@@ -2,8 +2,8 @@
 //  DiscoverViewController.swift
 //  HeatpumpDemo
 //
-//  Created by Tiago Lira on 31/01/2017.
-//  Copyright © 2017 Nabto. All rights reserved.
+//  Created by Nabto on 31/01/2022.
+//  Copyright © 2022 Nabto. All rights reserved.
 //
 
 import UIKit
@@ -12,7 +12,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 
     @IBOutlet weak var table: UITableView!
     
-    var devices: [NabtoDevice] = []
+    var devices: [EdgeDevice] = []
     var waiting  = true
     var starting = true
 
@@ -40,26 +40,27 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
         devices = []
         waiting = true
         self.table.reloadData()
-        
-        NabtoManager.shared.discover(progress: { (device) in
-            self.devices.append(device)
-            self.table.reloadData()
-        }, failure: { (error) in
-            self.waiting = false
-            self.table.reloadData()
-        })
+        // TODO invoke mdns discovery
+//        NabtoManager.shared.discover(progress: { (device) in
+//            self.devices.append(device)
+//            self.table.reloadData()
+//        }, failure: { (error) in
+//            self.waiting = false
+//            self.table.reloadData()
+//        })
     }
     
     //MARK: - Handle device selection
 
-    func handleSelection(device: NabtoDevice) {
-        if device.currentUserIsPaired {
-            handlePaired(device: device)
-        } else if device.openForPairing {
-            handleUnpaired(device: device)
-        } else {
-            handleClosed(device: device)
-        }
+    func handleSelection(device: EdgeDevice) {
+        // TODO
+//        if device.currentUserIsPaired {
+//            handlePaired(device: device)
+//        } else if device.openForPairing {
+//            handleUnpaired(device: device)
+//        } else {
+//            handleClosed(device: device)
+//        }
     }
     
     func handlePaired(device: NabtoDevice) {
@@ -77,7 +78,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
         present(alert, animated: true, completion: nil)
         
         //add bookmark (just in case it was deleted before)
-        BookmarkManager.shared.add(bookmark: Bookmark(id: device.id, name: device.name))
+        BookmarkManager.shared.add(bookmark: Bookmark(deviceId: device.id, productId: "TBD", name: device.name))
     }
     
     func handleUnpaired(device: NabtoDevice) {
@@ -127,7 +128,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
                 let device = devices[indexPath.row]
                 cell.configure(device: device)
                 cell.statusIcon.isHidden = true
-                cell.lockIcon.image = UIImage(named: device.openForPairing ? "open" : "locked")?.withRenderingMode(.alwaysTemplate)
+                cell.lockIcon.image = UIImage(named: true /* TODO */ ? "open" : "locked")?.withRenderingMode(.alwaysTemplate)
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "NoDevicesCell", for: indexPath) as! NoDevicesCell
@@ -143,7 +144,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section == 0 && devices.count > 0 else { return }
         
-        handleSelection(device: devices[indexPath.row])
+        handleSelection(device: self.devices[indexPath.row])
         tableView.deselectRow(at: indexPath, animated: true)
     }
     

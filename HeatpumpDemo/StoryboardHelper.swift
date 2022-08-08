@@ -2,8 +2,8 @@
 //  StoryboardHelper.swift
 //  HeatpumpDemo
 //
-//  Created by Tiago Lira on 03/02/2017.
-//  Copyright © 2017 Nabto. All rights reserved.
+//  Created by Nabto on 03/02/2022.
+//  Copyright © 2022 Nabto. All rights reserved.
 //
 
 import UIKit

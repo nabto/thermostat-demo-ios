@@ -2,8 +2,8 @@
 //  CustomTableViewCells.swift
 //  HeatpumpDemo
 //
-//  Created by Tiago Lira on 01/02/2017.
-//  Copyright © 2017 Nabto. All rights reserved.
+//  Created by Nabto on 01/02/2022.
+//  Copyright © 2022 Nabto. All rights reserved.
 //
 
 import UIKit
@@ -24,9 +24,9 @@ class DeviceCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
-    func configure(device: NabtoDevice) {
-        nameLabel.text = device.name
-        modelLabel.text = device.product
+    func configure(device: EdgeDevice) {
+// TBD        nameLabel.text = device.displayName
+        modelLabel.text = "ACME TBD 9000"
     }
 }
 

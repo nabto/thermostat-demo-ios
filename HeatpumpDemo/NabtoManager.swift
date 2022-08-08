@@ -2,8 +2,8 @@
 //  NabtoManager.swift
 //  HeatpumpDemo
 //
-//  Created by Tiago Lira on 31/01/2017.
-//  Copyright © 2017 Nabto. All rights reserved.
+//  Created by Nabto on 31/01/2022.
+//  Copyright © 2022 Nabto. All rights reserved.
 //
 
 import UIKit
@@ -254,7 +254,7 @@ class NabtoManager: Any {
     }
     
     func getDevicesInfo(bookmarks: [Bookmark], progress: @escaping (_ device : NabtoDevice)->(), failure: @escaping (_ error : NabtoError)->()) {
-        let ids = bookmarks.map { $0.id }
+        let ids = bookmarks.map { $0.deviceId }
         DispatchQueue.global(qos: .userInitiated).async {
             let list = self.nabto.nabtoGetLocalDevices()
             if  let list = list as? [String] {
@@ -311,7 +311,7 @@ class NabtoManager: Any {
                 if let permissions = result["permissions"] as? UInt {
                     device.currentUserIsOwner = UserInfo.isOwner(permissions: permissions)
                 }
-                BookmarkManager.shared.add(bookmark: Bookmark(id: device.id, name: device.name))
+                BookmarkManager.shared.add(bookmark: Bookmark(deviceId: device.id, productId: "TBD", name: device.name))
                 completion(true, nil)
             } else {
                 completion(false, .undefined)

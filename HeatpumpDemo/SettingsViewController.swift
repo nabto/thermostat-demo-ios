@@ -2,8 +2,8 @@
 //  SettingsViewController.swift
 //  HeatpumpDemo
 //
-//  Created by Tiago Lira on 31/01/2017.
-//  Copyright © 2017 Nabto. All rights reserved.
+//  Created by Nabto on 31/01/2022.
+//  Copyright © 2022 Nabto. All rights reserved.
 //
 
 import UIKit
@@ -39,7 +39,7 @@ class SettingsViewController: UIViewController {
     }
     
     func getFormattedFingerprint() -> String? {
-        guard let string = ProfileTools.getSavedCertificate() else { return nil }
+        guard let string = ProfileTools.getSavedPrivateKey() else { return nil }
         return UserInfo.format(fingerprint: string)
     }
     

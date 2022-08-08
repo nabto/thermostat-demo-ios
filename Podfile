@@ -1,11 +1,5 @@
 platform :ios, '12.0'
 
-target 'Edge Heat' do
-  use_frameworks!
-  pod 'NabtoClient'
-  pod 'NabtoEdgeClientSwift'
-  pod 'NabtoEdgeIamUtil'
-
   post_install do |installer|
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|
@@ -13,8 +7,18 @@ target 'Edge Heat' do
       end
     end
   end
+
+def common
+  use_frameworks!
+  pod 'NabtoClient'
+  pod 'NabtoEdgeClientSwift'
+  pod 'NabtoEdgeIamUtil'
+end
+
+target 'Edge Heat' do
+  common
 end
 
 target 'HeatpumpDemoTests' do
-  pod 'NabtoClient'
+  common
 end

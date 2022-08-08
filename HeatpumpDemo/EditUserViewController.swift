@@ -2,8 +2,8 @@
 //  ProfileEditViewController.swift
 //  HeatpumpDemo
 //
-//  Created by Tiago Lira on 31/01/2017.
-//  Copyright © 2017 Nabto. All rights reserved.
+//  Created by Nabto on 31/01/2022.
+//  Copyright © 2022 Nabto. All rights reserved.
 //
 
 import UIKit
@@ -74,7 +74,7 @@ class EditUserViewController: UIViewController, UITextFieldDelegate {
     
     func confirmRemoveUser() {
         //avoid deleting the user's own account
-        guard user.fingerprint != ProfileTools.getSavedCertificate() else { return }
+        guard user.fingerprint != ProfileTools.getSavedPrivateKey() else { return }
         
         let title = "Remove user"
         let message = "Are you sure you want to remove \(user.name)?"

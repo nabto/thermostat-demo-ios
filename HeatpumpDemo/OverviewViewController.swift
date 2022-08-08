@@ -2,8 +2,8 @@
 //  ViewController.swift
 //  HeatpumpDemo
 //
-//  Created by Tiago Lira on 30/01/2017.
-//  Copyright © 2017 Nabto. All rights reserved.
+//  Created by Nabto on 30/01/2022.
+//  Copyright © 2022 Nabto. All rights reserved.
 //
 
 import UIKit
@@ -12,14 +12,13 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
 
     @IBOutlet weak var table: UITableView!
     
-    var devices: [NabtoDevice] = []
+    var devices: [EdgeDevice] = []
     var starting = true
     var waiting  = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
         table.contentInset.top += 16
-        
         startNabto()
     }
     
@@ -28,7 +27,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         if starting {
             starting = false
         } else {
-            getBookmarkedDevices()
+            self.populateDeviceOverview()
         }
     }
 
@@ -37,88 +36,35 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func startNabto() {
-        NabtoManager.shared.startup { (success, error) in
-            if success {
-                print("startup: \(success)")
-                if let username = ProfileTools.getSavedUsername() {
-                    //open session with the saved profile certificate
-                    NabtoManager.shared.openSessionForProfile(username: username, completion: { (success, error) in
-                        print("open session: \(success)")
-                        self.getBookmarkedDevices()
-                    })
-                } else {
-                    //no saved profile, prompt user to create one
-                    self.performSegue(withIdentifier: "toProfile", sender: nil)
-                }
-            }
+        if let username = ProfileTools.getSavedUsername() {
+            self.populateDeviceOverview()
+            // TODO load user
+        } else {
+            self.performSegue(withIdentifier: "toProfile", sender: nil)
         }
     }
-    
-    func getBookmarkedDevices() {
-        devices = []
-        waiting = true
-        self.table.reloadData()
 
+    func populateDeviceOverview() {
         let bookmarks = BookmarkManager.shared.deviceBookmarks
-        guard bookmarks.count > 0 else {
-            self.waiting = false
-            return
-        }
-        NabtoManager.shared.getDevicesInfo(bookmarks: bookmarks, progress: { (device) in
-            self.add(device: device)        //got reachable device!
-            self.waiting = false
-            self.table.reloadData()
-        }, failure: { (error) in     //will be called for each undiscoverable or unreachable item
-            switch error {
-            case .notInLocalList(deviceID: let deviceID):
-                //device not in local list. will try to connect
-                if let deviceID = deviceID,
-                    let bookmark = bookmarks.filter({ $0.id == deviceID }).first {
-                    let offlineDevice = NabtoDevice(unreachable: deviceID, name: bookmark.name, timedOut: false)
-                    self.add(device: offlineDevice)
-                }
-            case .timedOut(deviceID: let deviceID):
-                //device is unreachable
-                if let deviceID = deviceID,
-                    let bookmark = bookmarks.filter({ $0.id == deviceID }).first {
-                    let offlineDevice = NabtoDevice(unreachable: deviceID, name: bookmark.name, timedOut: true)
-                    self.add(device: offlineDevice)
-                }
-            default:
-                print("Undefined error")
-            }
-            self.waiting = false
-            self.table.reloadData()
-        })
-    }
-    
-    func add(device: NabtoDevice) {
-        for (i, item) in devices.enumerated() {
-            if item.id == device.id {
-                devices[i] = device     //replace
-                return
+        DispatchQueue.global().async {
+//            for b in bookmarks {
+//                let connection =
+//            }
+            DispatchQueue.main.async {
+                self.table.reloadData()
             }
         }
-        devices.append(device)  //not found in array, add
+        // todo: retrieve information about devices
     }
-    
-    
+
     @IBAction func refresh(_ sender: Any) {
-        getBookmarkedDevices()
+        self.populateDeviceOverview()
     }
     
     //MARK: - Handle device selection
     
-    func handleSelection(device: NabtoDevice) {
-        if !device.reachable {
-            handleOffline(device: device)
-        } else if device.currentUserIsPaired {
-            handlePaired(device: device)
-        } else if device.openForPairing {
-            handleUnpaired(device: device)
-        } else {
-            handleClosed(device: device)
-        }
+    func handleSelection(device: EdgeDevice) {
+        print("TODO - connect and pair or show device (or error); device: \(device.id)")
     }
     
     func handlePaired(device: NabtoDevice) {
@@ -156,13 +102,13 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     //MARK: - UITableView methods
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            if devices.count > 0 {
+        if (indexPath.section == 0) {
+            if (self.devices.count > 0) {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DeviceCell", for: indexPath) as! DeviceCell
                 let device = devices[indexPath.row]
                 cell.configure(device: device)
                 cell.lockIcon.isHidden = true
-                cell.statusIcon.image = UIImage(named: device.reachable ? "checkSmall" : "alert")?.withRenderingMode(.alwaysTemplate)
+                cell.statusIcon.image = UIImage(named: true /* TODO */ ? "checkSmall" : "alert")?.withRenderingMode(.alwaysTemplate)
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "NoDevicesCell", for: indexPath) as! NoDevicesCell
@@ -176,9 +122,8 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard indexPath.section == 0 && devices.count > 0 else { return }
-        
-        handleSelection(device: devices[indexPath.row])
+        guard indexPath.section == 0 && self.devices.count > 0 else { return }
+        handleSelection(device: self.devices[indexPath.row])
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

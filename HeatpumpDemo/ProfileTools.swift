@@ -2,27 +2,31 @@
 //  ProfileManager.swift
 //  HeatpumpDemo
 //
-//  Created by Tiago Lira on 02/02/2017.
-//  Copyright © 2017 Nabto. All rights reserved.
+//  Created by Nabto on 02/02/2022.
+//  Copyright © 2022 Nabto. All rights reserved.
 //
 
 import UIKit
-
-enum DefaultsKey: String {
-    case certificate = "certificate"
-    case username = "username"
-}
+import Foundation
 
 class ProfileTools {
 
-    class func saveProfile(username: String, certificate: String) {
+    enum DefaultsKey: String {
+        case username = "username"
+        case privateKey = "privateKey"
+        case displayName = "displayName"
+    }
+
+    class func saveProfile(username: String, privateKey: String, displayName: String) {
         ProfileTools.saveUsername(username: username)
-        ProfileTools.saveCertificate(certificate: certificate)
+        ProfileTools.savePrivateKey(privateKey: privateKey)
+        ProfileTools.saveDisplayName(displayName: displayName)
     }
     
     class func clearProfile() {
         ProfileTools.clearUsername()
-        ProfileTools.clearCertificate()
+        ProfileTools.clearPrivateKey()
+        ProfileTools.clearDisplayName()
     }
     
     class func getSavedUsername() -> String? {
@@ -41,19 +45,38 @@ class ProfileTools {
         defaults.synchronize()
     }
     
-    class func getSavedCertificate() -> String? {
-        return UserDefaults.standard.string(forKey: DefaultsKey.certificate.rawValue)
+    class func getSavedPrivateKey() -> String? {
+        return UserDefaults.standard.string(forKey: DefaultsKey.privateKey.rawValue)
     }
     
-    class func saveCertificate(certificate: String) {
+    class func savePrivateKey(privateKey: String) {
         let defaults = UserDefaults.standard
-        defaults.set(certificate, forKey: DefaultsKey.certificate.rawValue)
+        defaults.set(privateKey, forKey: DefaultsKey.privateKey.rawValue)
         defaults.synchronize()
     }
     
-    class func clearCertificate() {
+    class func clearPrivateKey() {
         let defaults = UserDefaults.standard
-        defaults.removeObject(forKey: DefaultsKey.certificate.rawValue)
+        defaults.removeObject(forKey: DefaultsKey.privateKey.rawValue)
         defaults.synchronize()
     }
+
+    class func getSavedDisplayName() -> String? {
+        return UserDefaults.standard.string(forKey: DefaultsKey.displayName.rawValue)
+    }
+
+    class func saveDisplayName(displayName: String) {
+        let defaults = UserDefaults.standard
+        defaults.set(displayName, forKey: DefaultsKey.displayName.rawValue)
+        defaults.synchronize()
+    }
+
+    class func clearDisplayName() {
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: DefaultsKey.displayName.rawValue)
+        defaults.synchronize()
+    }
+
+
+
 }
