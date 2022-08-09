@@ -11,8 +11,8 @@ import UIKit
 class DiscoverViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var table: UITableView!
-    
-    var devices: [EdgeDevice] = []
+
+    var devices: [DeviceRowModel] = []
     var waiting  = true
     var starting = true
 
@@ -52,7 +52,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
     
     //MARK: - Handle device selection
 
-    func handleSelection(device: EdgeDevice) {
+    func handleSelection(device: DeviceRowModel) {
         // TODO
 //        if device.currentUserIsPaired {
 //            handlePaired(device: device)

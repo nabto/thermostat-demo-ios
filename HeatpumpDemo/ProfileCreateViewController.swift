@@ -15,17 +15,19 @@ class ProfileCreateViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var clearButton      : UIButton!
     @IBOutlet weak var pagePosition     : NSLayoutConstraint!
     @IBOutlet weak var topLabel         : UILabel!
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
     
     var isReset = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.isModalInPresentation = true
 
         continueButton.clipsToBounds    = true
         clearButton.clipsToBounds       = true
         continueButton.layer.cornerRadius = 6
         clearButton.layer.cornerRadius    = 6
-        
+
         textField.text = getSimpleDeviceName()
     }
 
@@ -44,7 +46,8 @@ class ProfileCreateViewController: UIViewController, UITextFieldDelegate {
                     if let fingerprint = fingerprint {
                         print("fingerprint: \(fingerprint)")
                         ProfileTools.saveProfile(username: username, privateKey: fingerprint, displayName: "TBD")
-                            self.openSessionForNewProfile(username: username)
+                        self.dismiss(animated: true, completion: nil)
+                        // todo - inform parent view
                     } else {
                         print("fingerprint: error")
                     }
@@ -58,18 +61,7 @@ class ProfileCreateViewController: UIViewController, UITextFieldDelegate {
     @IBAction func clear(_ sender: Any) {
         textField.text = nil
     }
-    
-    func openSessionForNewProfile(username: String) {
-        NabtoManager.shared.openSessionForProfile(username: username) { (success, error) in
-            if success {
-                print("new session: \(success)")
-                self.dismiss(animated: true, completion: nil)
-            } else {
-                print("session error")
-            }
-        }
-    }
-    
+
     @IBAction func cancel(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }

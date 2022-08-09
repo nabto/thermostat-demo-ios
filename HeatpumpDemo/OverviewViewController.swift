@@ -7,27 +7,37 @@
 //
 
 import UIKit
+import NabtoEdgeIamUtil
+import NabtoEdgeClient
 
 class OverviewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var table: UITableView!
     
-    var devices: [EdgeDevice] = []
+    var devices: [DeviceRowModel] = []
+
     var starting = true
     var waiting  = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
         table.contentInset.top += 16
-        startNabto()
     }
-    
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("viewDidAppear")
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if starting {
             starting = false
-        } else {
+        }
+        if let username = ProfileTools.getSavedUsername() {
             self.populateDeviceOverview()
+        } else {
+            self.performSegue(withIdentifier: "toProfile", sender: nil)
         }
     }
 
@@ -36,25 +46,49 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func startNabto() {
-        if let username = ProfileTools.getSavedUsername() {
-            self.populateDeviceOverview()
-            // TODO load user
-        } else {
-            self.performSegue(withIdentifier: "toProfile", sender: nil)
-        }
     }
 
     func populateDeviceOverview() {
-        let bookmarks = BookmarkManager.shared.deviceBookmarks
         DispatchQueue.global().async {
-//            for b in bookmarks {
-//                let connection =
-//            }
+            self.devices = []
+            self.getDeviceDetailsForBookmarks()
             DispatchQueue.main.async {
                 self.table.reloadData()
             }
         }
-        // todo: retrieve information about devices
+    }
+
+    func getDeviceDetailsForBookmarks() {
+        let bookmarks = BookmarkManager.shared.deviceBookmarks
+        let group = DispatchGroup()
+        for b in bookmarks {
+            group.enter()
+            DispatchQueue.global().async {
+                var device = DeviceRowModel(bookmark: b)
+                do {
+                    let connection = try EdgeManager.shared.connect(b)
+                    device.isOnline = true
+                    let user = try NabtoEdgeIamUtil.IamUtil.getCurrentUser(connection: connection)
+                    if let role = user.Role {
+                        device.isPaired = true
+                        device.role = role
+                    } else {
+                        device.isPaired = false
+                    }
+                } catch NabtoEdgeClientError.NO_CHANNELS(let localError, let remoteError) {
+                    print("remoteError: \(remoteError)")
+                    device.isOnline = false
+                } catch IamError.USER_DOES_NOT_EXIST {
+                    device.isPaired = false
+                } catch {
+                    print("TODO: handle error \(error)")
+                }
+                self.devices.append(device)
+                group.leave()
+            }
+        }
+        group.wait()
+        self.waiting = false
     }
 
     @IBAction func refresh(_ sender: Any) {
@@ -63,7 +97,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     
     //MARK: - Handle device selection
     
-    func handleSelection(device: EdgeDevice) {
+    func handleSelection(device: DeviceRowModel) {
         print("TODO - connect and pair or show device (or error); device: \(device.id)")
     }
     
@@ -107,8 +141,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DeviceCell", for: indexPath) as! DeviceCell
                 let device = devices[indexPath.row]
                 cell.configure(device: device)
-                cell.lockIcon.isHidden = true
-                cell.statusIcon.image = UIImage(named: true /* TODO */ ? "checkSmall" : "alert")?.withRenderingMode(.alwaysTemplate)
+                cell.statusIcon.image = UIImage(named: device.isOnline ? "checkSmall" : "alert")?.withRenderingMode(.alwaysTemplate)
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "NoDevicesCell", for: indexPath) as! NoDevicesCell

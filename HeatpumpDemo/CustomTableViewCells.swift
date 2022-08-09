@@ -8,6 +8,21 @@
 
 import UIKit
 
+struct DeviceRowModel {
+    let bookmark: Bookmark
+    var isPaired: Bool = false
+    var isOnline: Bool = false
+    var role: String?
+    var id: String {
+        get {
+            return "\(self.bookmark.productId).\(self.bookmark.deviceId)"
+        }
+    }
+    init(bookmark: Bookmark) {
+        self.bookmark = bookmark
+    }
+}
+
 //Device cell on overview and discover screens
 class DeviceCell: UITableViewCell {
 
@@ -24,9 +39,10 @@ class DeviceCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
-    func configure(device: EdgeDevice) {
-// TBD        nameLabel.text = device.displayName
-        modelLabel.text = "ACME TBD 9000"
+    func configure(device: DeviceRowModel) {
+        nameLabel.text = device.bookmark.name ?? device.id
+        modelLabel.text = device.bookmark.modelName ?? "Unknown Model"
+        lockIcon.isHidden = device.isPaired
     }
 }
 

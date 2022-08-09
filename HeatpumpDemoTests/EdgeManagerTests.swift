@@ -55,9 +55,14 @@ class EdgeManagerTest: XCTestCase {
 
     var sut: EdgeManager!
 
-    override func setUp() {
+    override func setUpWithError() throws {
+        self.continueAfterFailure = false
         self.sut = EdgeManager()
         self.sut.start()
+        let key = try self.sut.client.createPrivateKey()
+        let username = "edgemanager-test-user"
+        let displayName = "EdgeManager Test User"
+        ProfileTools.saveProfile(username: username, privateKey: key, displayName: displayName)
     }
 
     override func tearDown() {
@@ -82,9 +87,9 @@ class EdgeManagerTest: XCTestCase {
         try self.sut.clearConnectionCacheEntry(bookmark)
 
         let connection3 = try self.sut.connect(bookmark)
-        XCTAssertNotEqual(Unmanaged.passUnretained(connection).toOpaque(), Unmanaged.passUnretained(connection2).toOpaque())
+        XCTAssertNotEqual(Unmanaged.passUnretained(connection).toOpaque(), Unmanaged.passUnretained(connection3).toOpaque())
 
-        let coap2 = try connection.createCoapRequest(method: "GET", path: "/hello-world")
+        let coap2 = try connection3.createCoapRequest(method: "GET", path: "/hello-world")
         let response2 = try coap2.execute()
         XCTAssertEqual(response2.status, 205)
 

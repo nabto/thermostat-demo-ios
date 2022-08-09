@@ -8,11 +8,12 @@
 
 import UIKit
 
-struct Bookmark : Equatable, Hashable {
+struct Bookmark : Equatable, Hashable, CustomStringConvertible {
     let deviceId: String
     var productId: String
     var sct: String?
     var name : String?
+    var modelName: String?
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(deviceId)
@@ -27,6 +28,10 @@ struct Bookmark : Equatable, Hashable {
             return false
         }
         return true
+    }
+
+    var description: String {
+        "Bookmark(deviceId: \(deviceId), productId: \(productId), sct: \(sct), name: \(name))"
     }
 }
 
@@ -59,18 +64,19 @@ class BookmarkManager {
     }
     
     func loadBookmarks() {
-        let url = bookmarksFileURL()
-        do {
-            let data = try Data(contentsOf: url)
-            let result = try PropertyListSerialization.propertyList(from: data, options: [], format: nil)
-            if let dict = result as? [[String : String?]] {
-                deviceBookmarks = dict.map { return Bookmark(
-                        deviceId: $0["deviceId"]!!, productId: $0["productId"]!!, name: $0["name"]!)
-                }
-            }
-        } catch {
-            print("error reading bookmarks file")
-        }
+//        let url = bookmarksFileURL()
+//        do {
+//            let data = try Data(contentsOf: url)
+//            let result = try PropertyListSerialization.propertyList(from: data, options: [], format: nil)
+//            if let dict = result as? [[String : String?]] {
+//                deviceBookmarks = dict.map { return Bookmark(
+//                        deviceId: $0["deviceId"]!!, productId: $0["productId"]!!, name: $0["name"]!)
+//                }
+//            }
+//        } catch {
+//            print("error reading bookmarks file")
+//        }
+        self.deviceBookmarks.append(Bookmark(deviceId: "de-ijrdq47i", productId: "pr-fatqcwj9", sct: "WzwjoTabnvux", name: "Stub device"))
     }
     
     func clearBookmarks() {
