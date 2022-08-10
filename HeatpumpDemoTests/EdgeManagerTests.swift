@@ -58,7 +58,6 @@ class EdgeManagerTest: XCTestCase {
     override func setUpWithError() throws {
         self.continueAfterFailure = false
         self.sut = EdgeManager()
-        self.sut.start()
         let key = try self.sut.client.createPrivateKey()
         let username = "edgemanager-test-user"
         let displayName = "EdgeManager Test User"

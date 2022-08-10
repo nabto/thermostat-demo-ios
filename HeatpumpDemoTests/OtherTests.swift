@@ -50,4 +50,9 @@ class OtherTests: XCTestCase {
         let formatted = UserInfo.format(fingerprint: string)
         XCTAssert(formatted == "60:74:fc:e1:48:dd:2d:d6:b3:91:06:fb:f4:b9:9d:bd")
     }
+
+    func testUsernameStrip() {
+        XCTAssertEqual(ProfileTools.convertToValidUsername(input: "ABC def-123æøå_Ghijkl+?-_foo🥳XY Z"), "abc-def-123_ghijkl-_fooxy-z")
+    }
+
 }

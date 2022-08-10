@@ -17,6 +17,16 @@ class ProfileTools {
         case displayName = "displayName"
     }
 
+    class func convertToValidUsername(input: String) -> String {
+        // valid chars in Edge IAM: https://docs.nabto.com/developer/api-reference/coap/iam/pairing-password-open.html
+        let validChars = NSCharacterSet(charactersIn: "abcdefghijklmnopqrstuvxyz0123456789-_.")
+        return input
+                .lowercased()
+                .replacingOccurrences(of: " ", with: "-")
+                .components(separatedBy: validChars.inverted)
+                .joined(separator: "")
+    }
+
     class func saveProfile(username: String, privateKey: String, displayName: String) {
         ProfileTools.saveUsername(username: username)
         ProfileTools.savePrivateKey(privateKey: privateKey)

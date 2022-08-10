@@ -381,7 +381,10 @@
 				"${PODS_ROOT}/Target Support Files/Pods-Edge Heat/Pods-Edge Heat-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/CBORCoding/CBORCoding.framework",
 				"${BUILT_PRODUCTS_DIR}/Half/Half.framework",
+				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
 				"${PODS_ROOT}/NabtoClient/NabtoClient.framework",
+				"${BUILT_PRODUCTS_DIR}/NotificationBannerSwift/NotificationBannerSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/NabtoEdgeClientSwift/NabtoEdgeClient.framework/NabtoEdgeClient",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/NabtoEdgeIamUtil/NabtoEdgeIamUtil.framework/NabtoEdgeIamUtil",
 			);
@@ -389,7 +392,10 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CBORCoding.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Half.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NabtoClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NotificationBannerSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NabtoEdgeClient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NabtoEdgeIamUtil.framework",
 			);
@@ -451,7 +457,10 @@
 				"${PODS_ROOT}/Target Support Files/Pods-HeatpumpDemoTests/Pods-HeatpumpDemoTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/CBORCoding/CBORCoding.framework",
 				"${BUILT_PRODUCTS_DIR}/Half/Half.framework",
+				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
 				"${PODS_ROOT}/NabtoClient/NabtoClient.framework",
+				"${BUILT_PRODUCTS_DIR}/NotificationBannerSwift/NotificationBannerSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/NabtoEdgeClientSwift/NabtoEdgeClient.framework/NabtoEdgeClient",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/NabtoEdgeIamUtil/NabtoEdgeIamUtil.framework/NabtoEdgeIamUtil",
 			);
@@ -459,7 +468,10 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CBORCoding.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Half.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NabtoClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NotificationBannerSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NabtoEdgeClient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NabtoEdgeIamUtil.framework",
 			);

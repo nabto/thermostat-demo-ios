@@ -13,6 +13,7 @@ def common
   pod 'NabtoClient'
   pod 'NabtoEdgeClientSwift'
   pod 'NabtoEdgeIamUtil'
+  pod 'NotificationBannerSwift', '~> 3.0.0'
 end
 
 target 'Edge Heat' do

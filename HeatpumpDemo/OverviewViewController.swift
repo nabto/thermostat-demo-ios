@@ -10,7 +10,7 @@ import UIKit
 import NabtoEdgeIamUtil
 import NabtoEdgeClient
 
-class OverviewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class OverviewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ProfileCreatedListener {
 
     @IBOutlet weak var table: UITableView!
     
@@ -37,6 +37,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         if let username = ProfileTools.getSavedUsername() {
             self.populateDeviceOverview()
         } else {
+
             self.performSegue(withIdentifier: "toProfile", sender: nil)
         }
     }
@@ -44,7 +45,11 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
+
+    func profileCreated() {
+        self.populateDeviceOverview()
+    }
+
     func startNabto() {
     }
 
@@ -175,8 +180,11 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destination = segue.destination as? ProfileCreateViewController {
+            destination.profileCreatedDelegate = self
+        }
+
         guard let device = sender as? NabtoDevice else { return }
-        
         if let destination = segue.destination as? PairingViewController {
             destination.device = device
         } else if let destination = segue.destination as? DeviceViewController {

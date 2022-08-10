@@ -7,6 +7,12 @@
 //
 
 import UIKit
+import NabtoEdgeClient
+import NotificationBannerSwift
+
+protocol ProfileCreatedListener {
+    func profileCreated()
+}
 
 class ProfileCreateViewController: UIViewController, UITextFieldDelegate {
 
@@ -18,6 +24,7 @@ class ProfileCreateViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     
     var isReset = false
+    var profileCreatedDelegate: ProfileCreatedListener?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,23 +45,17 @@ class ProfileCreateViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func createProfile(_ sender: Any) {
         guard let username = textField.text, username.count > 2 else { return }
-        
-        NabtoManager.shared.createKeyPair(username: username) { (success, error) in
-            print("create profile: \(success)")
-            if success {
-                NabtoManager.shared.getFingerprint(username: username, completion: { (fingerprint, error) in
-                    if let fingerprint = fingerprint {
-                        print("fingerprint: \(fingerprint)")
-                        ProfileTools.saveProfile(username: username, privateKey: fingerprint, displayName: "TBD")
-                        self.dismiss(animated: true, completion: nil)
-                        // todo - inform parent view
-                    } else {
-                        print("fingerprint: error")
-                    }
-                })
-            } else {
-                print("create profile: error")
-            }
+        let simplifiedUsername = ProfileTools.convertToValidUsername(input: username)
+        do {
+            let key = try EdgeManager.shared.client.createPrivateKey()
+            ProfileTools.saveProfile(username: simplifiedUsername, privateKey: key, displayName: username)
+            self.profileCreatedDelegate?.profileCreated()
+            let banner = NotificationBanner(title: "Hurra", subtitle: "\(simplifiedUsername)", style: .success)
+            banner.show()
+            self.dismiss(animated: true, completion: nil)
+        } catch {
+            let banner = NotificationBanner(title: "Error", subtitle: "Could not create private key: \(error)", style: .danger)
+            banner.show()
         }
     }
     
