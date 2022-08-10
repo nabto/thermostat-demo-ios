@@ -10,7 +10,7 @@ import UIKit
 
 class SecuritySettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    var device : NabtoDevice!
+    var device : Bookmark!
     var users  : [UserInfo] = []
     
     @IBOutlet weak var table: UITableView!
@@ -42,22 +42,22 @@ class SecuritySettingsViewController: UIViewController, UITableViewDataSource, U
     }
     
     @IBAction func remoteValueChanged(_ sender: UISwitch) {
-        device.remoteAccessEnabled = sender.isOn
-        NabtoManager.shared.updateSecuritySettings(device: device) { (success, device, error) in
-        }
-        mainCell?.updateNewUserSwitch(device: device)
+//        device.remoteAccessEnabled = sender.isOn
+//        NabtoManager.shared.updateSecuritySettings(device: device) { (success, device, error) in
+//        }
+//        mainCell?.updateNewUserSwitch(device: device)
     }
     
     @IBAction func pairingValueChanged(_ sender: UISwitch) {
-        device.openForPairing = sender.isOn
-        NabtoManager.shared.updateSecuritySettings(device: device) { (success, device, error) in
-        }
+//        device.openForPairing = sender.isOn
+//        NabtoManager.shared.updateSecuritySettings(device: device) { (success, device, error) in
+//        }
     }
     
     @IBAction func newUserValueChanged(_ sender: UISwitch) {
-        device.grantGuestRemoteAccess = sender.isOn
-        NabtoManager.shared.updateSecuritySettings(device: device) { (success, device, error) in
-        }
+//        device.grantGuestRemoteAccess = sender.isOn
+//        NabtoManager.shared.updateSecuritySettings(device: device) { (success, device, error) in
+//        }
     }
 
     // MARK: - Navigation
@@ -73,15 +73,15 @@ class SecuritySettingsViewController: UIViewController, UITableViewDataSource, U
     //MARK: - Retrieving users info
     
     func readUsers() {
-        NabtoManager.shared.getUsers(device: device) { (success, users, error) in
-            if success,
-                let users = users {
-                self.users = users
-                self.table.reloadData()
-            } else {
-                print("failed to get user list")
-            }
-        }
+//        NabtoManager.shared.getUsers(device: device) { (success, users, error) in
+//            if success,
+//                let users = users {
+//                self.users = users
+//                self.table.reloadData()
+//            } else {
+//                print("failed to get user list")
+//            }
+//        }
     }
     
     //MARK: - UITableView methods
@@ -89,7 +89,7 @@ class SecuritySettingsViewController: UIViewController, UITableViewDataSource, U
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SecurityMainCell", for: indexPath) as! SecurityMainCell
-            cell.configure(device: device)
+            cell.configure(/*device: device*/)
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SecurityUserCell", for: indexPath) as! SecurityUserCell

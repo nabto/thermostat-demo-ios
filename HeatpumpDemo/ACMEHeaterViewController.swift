@@ -104,14 +104,14 @@ class ACMEHeaterViewController: DeviceViewController, UIPickerViewDelegate, UIPi
     @objc func refresh() {
         busy = true
         let request = "heatpump_get_full_state.json"
-        NabtoManager.shared.invokeRpc(device: device.id, request: request, parameters: nil) { (result, error) in
-            if let state = result {
-                self.refreshState(state: state)
-            } else if let error = error {
-                self.handleError(error: error)
-            }
-            self.busy = false
-        }
+//        NabtoManager.shared.invokeRpc(device: device.id, request: request, parameters: nil) { (result, error) in
+//            if let state = result {
+//                self.refreshState(state: state)
+//            } else if let error = error {
+//                self.handleError(error: error)
+//            }
+//            self.busy = false
+//        }
     }
     
     func refreshState(state: [String : Any]) {
@@ -138,31 +138,31 @@ class ACMEHeaterViewController: DeviceViewController, UIPickerViewDelegate, UIPi
         busy = true
         let request = "heatpump_set_target_temperature.json"
         let params = ["temperature" : temperature]
-        NabtoManager.shared.invokeRpc(device: device.id, request: request, parameters: params) { (result, error) in
-            if let temperature = result?["temperature"] as? Int {
-                self.temperature = temperature
-                self.temperatureSlider.value = Float(temperature)
-                self.markNotOffline()
-            } else if let error = error {
-                self.handleError(error: error)
-            }
-            self.busy = false
-        }
+//        NabtoManager.shared.invokeRpc(device: device.id, request: request, parameters: params) { (result, error) in
+//            if let temperature = result?["temperature"] as? Int {
+//                self.temperature = temperature
+//                self.temperatureSlider.value = Float(temperature)
+//                self.markNotOffline()
+//            } else if let error = error {
+//                self.handleError(error: error)
+//            }
+//            self.busy = false
+//        }
     }
     
     func applyActivate(activated: Bool) {
         busy = true
         let request = "heatpump_set_activation_state.json"
         let params = ["activated" : Int(activated)]
-        NabtoManager.shared.invokeRpc(device: device.id, request: request, parameters: params) { (result, error) in
-            if let activated = result?["activated"] as? Bool {
-                self.activeSwitch.setOn(activated, animated: false)
-                self.markNotOffline()
-            } else if let error = error {
-                self.handleError(error: error)
-            }
-            self.busy = false
-        }
+//        NabtoManager.shared.invokeRpc(device: device.id, request: request, parameters: params) { (result, error) in
+//            if let activated = result?["activated"] as? Bool {
+//                self.activeSwitch.setOn(activated, animated: false)
+//                self.markNotOffline()
+//            } else if let error = error {
+//                self.handleError(error: error)
+//            }
+//            self.busy = false
+//        }
     }
     
     func applyMode(mode: DeviceMode) {
@@ -170,15 +170,15 @@ class ACMEHeaterViewController: DeviceViewController, UIPickerViewDelegate, UIPi
         busy = true
         let request = "heatpump_set_mode.json"
         let params = ["mode" : mode.rawValue]
-        NabtoManager.shared.invokeRpc(device: device.id, request: request, parameters: params) { (result, error) in
-            if let modeValue = result?["mode"] as? Int {
-                self.mode = DeviceMode(rawValue: modeValue)
-                self.markNotOffline()
-            } else if let error = error {
-                self.handleError(error: error)
-            }
-            self.busy = false
-        }
+//        NabtoManager.shared.invokeRpc(device: device.id, request: request, parameters: params) { (result, error) in
+//            if let modeValue = result?["mode"] as? Int {
+//                self.mode = DeviceMode(rawValue: modeValue)
+//                self.markNotOffline()
+//            } else if let error = error {
+//                self.handleError(error: error)
+//            }
+//            self.busy = false
+//        }
     }
     
     func handleError(error: NabtoError) {

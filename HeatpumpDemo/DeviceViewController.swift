@@ -13,7 +13,7 @@ import UIKit
 
 class DeviceViewController: UIViewController {
 
-    var device : NabtoDevice!
+    var device : Bookmark!
 
     override func viewDidLoad() {
         super.viewDidLoad()

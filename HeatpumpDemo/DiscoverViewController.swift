@@ -63,7 +63,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 //        }
     }
     
-    func handlePaired(device: NabtoDevice) {
+    func handlePaired(device: Bookmark) {
         let message = "Device is already paired"
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         
@@ -78,7 +78,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
         present(alert, animated: true, completion: nil)
         
         //add bookmark (just in case it was deleted before)
-        BookmarkManager.shared.add(bookmark: Bookmark(deviceId: device.id, productId: "TBD", name: device.name))
+        BookmarkManager.shared.add(bookmark: device)
     }
     
     func handleUnpaired(device: NabtoDevice) {
@@ -100,7 +100,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let device = sender as? NabtoDevice else { return }
+        guard let device = sender as? Bookmark else { return }
         
         if let destination = segue.destination as? PairingViewController {
             destination.device = device
@@ -128,7 +128,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
                 let device = devices[indexPath.row]
                 cell.configure(device: device)
                 cell.statusIcon.isHidden = true
-                cell.lockIcon.image = UIImage(named: true /* TODO */ ? "open" : "locked")?.withRenderingMode(.alwaysTemplate)
+                cell.lockIcon.isHidden = true
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "NoDevicesCell", for: indexPath) as! NoDevicesCell

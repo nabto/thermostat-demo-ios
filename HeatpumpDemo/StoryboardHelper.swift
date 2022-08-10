@@ -15,7 +15,7 @@ import UIKit
 
 class StoryboardHelper {
     
-    class func viewControllerFor(device: NabtoDevice) -> DeviceViewController? {
+    class func viewControllerFor(device: Bookmark) -> DeviceViewController? {
         
         let storyboard =  UIStoryboard(name: "Main", bundle: nil)
         
@@ -23,8 +23,8 @@ class StoryboardHelper {
         
         //Add custom device screens here
         let demoProductType = "ACME 9002 Heatpump"
-        if device.product != demoProductType {
-            NSLog("Warning: Target device is of type \(device.product), this app only supports \(demoProductType)")
+        if device.modelName != demoProductType {
+            NSLog("Warning: Target device is of type \(device.modelName), this app only supports \(demoProductType)")
         }
         controller = storyboard.instantiateViewController(withIdentifier: "ACMEHeaterViewController") as! ACMEHeaterViewController
 

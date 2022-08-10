@@ -10,7 +10,7 @@ import UIKit
 
 class DeviceSettingsViewController: UIViewController, UITextFieldDelegate {
 
-    var device : NabtoDevice!
+    var device : Bookmark!
 
     @IBOutlet weak var nameTextField : UITextField!
     @IBOutlet weak var deviceIDLabel : UILabel!
@@ -27,7 +27,7 @@ class DeviceSettingsViewController: UIViewController, UITextFieldDelegate {
         securityButton.layer.cornerRadius = 6
         
         nameTextField.text = device.name
-        deviceIDLabel.text = device.id
+        deviceIDLabel.text = "\(device.productId).\(device.deviceId)"
         
         readSecuritySettings()
     }
@@ -40,8 +40,8 @@ class DeviceSettingsViewController: UIViewController, UITextFieldDelegate {
         } else {
             starting = false
         }
-        securityButton.isHidden = !(device.currentUserIsOwner)
-        guestLabel.isHidden = device.currentUserIsOwner
+        securityButton.isHidden = false // todo !(device.role == "Admin")
+        guestLabel.isHidden = true // todo device.currentUserIsOwner
     }
 
     override func didReceiveMemoryWarning() {
@@ -53,32 +53,32 @@ class DeviceSettingsViewController: UIViewController, UITextFieldDelegate {
     }
     
     func readSecuritySettings() {
-        guard device.currentUserIsOwner else { return }
-        NabtoManager.shared.readSecuritySettings(device: device) { (success, device, error) in
-            if success {
-                self.device = device
-                self.updateSecurityMessage()
-            }
-        }
+//        guard device.currentUserIsOwner else { return }
+//        NabtoManager.shared.readSecuritySettings(device: device) { (success, device, error) in
+//            if success {
+//                self.device = device
+//                self.updateSecurityMessage()
+//            }
+//        }
     }
     
     func updateSecurityMessage() {
-        if device.openForPairing {
-            securityLabel.text = "This device is currently open for pairing to grant new guests access.";
-        } else {
-            securityLabel.text = "This device is closed for pairing, change this to grant new guests access.";
-        }
+//        if device.openForPairing {
+//            securityLabel.text = "This device is currently open for pairing to grant new guests access.";
+//        } else {
+//            securityLabel.text = "This device is closed for pairing, change this to grant new guests access.";
+//        }
     }
     
     func saveDeviceName() {
-        NabtoManager.shared.updateDeviceInfo(device: device) { (success, device, error) in
-            if success {
-                self.device = device
-                self.confirmDeviceUpdate()
-            } else {
-                print("error saving device name")
-            }
-        }
+//        NabtoManager.shared.updateDeviceInfo(device: device) { (success, device, error) in
+//            if success {
+//                self.device = device
+//                self.confirmDeviceUpdate()
+//            } else {
+//                print("error saving device name")
+//            }
+//        }
     }
     
     func confirmDeviceUpdate() {

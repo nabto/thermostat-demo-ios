@@ -9,6 +9,7 @@
 import UIKit
 import NabtoEdgeIamUtil
 import NabtoEdgeClient
+import NotificationBannerSwift
 
 class OverviewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ProfileCreatedListener {
 
@@ -33,10 +34,9 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         if starting {
             starting = false
         }
-        if let username = ProfileTools.getSavedUsername() {
+        if (ProfileTools.getSavedUsername() != nil) {
             self.populateDeviceOverview()
         } else {
-
             self.performSegue(withIdentifier: "toProfile", sender: nil)
         }
     }
@@ -85,9 +85,12 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
                 } catch IamError.USER_DOES_NOT_EXIST {
                     device.isPaired = false
                 } catch {
+                    let banner = NotificationBanner(title: "Error", subtitle: "An error occurred when retrieving device information: \(error)", style: .danger)
+
                     print("TODO: handle error \(error)")
                 }
                 self.devices.append(device)
+                print(" *** added device: paired=\(device.isPaired), online=\(device.isOnline), role=\(device.role)")
                 group.leave()
             }
         }
@@ -103,15 +106,23 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     
     func handleSelection(device: DeviceRowModel) {
         print("TODO - connect and pair or show device (or error); device: \(device.id)")
+        if (device.isOnline) {
+            if (device.isPaired) {
+            } else {
+                self.handleUnpaired(device: device.bookmark)
+            }
+        } else {
+
+        }
     }
     
-    func handlePaired(device: NabtoDevice) {
+    func handlePaired(device: Bookmark) {
         if let controller = StoryboardHelper.viewControllerFor(device: device) {
                 self.navigationController?.pushViewController(controller, animated: true)
         }
     }
     
-    func handleUnpaired(device: NabtoDevice) {
+    func handleUnpaired(device: Bookmark) {
         performSegue(withIdentifier: "toPairing", sender: device)
     }
     
@@ -145,7 +156,9 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DeviceCell", for: indexPath) as! DeviceCell
                 let device = devices[indexPath.row]
                 cell.configure(device: device)
-                cell.statusIcon.image = UIImage(named: device.isOnline ? "checkSmall" : "alert")?.withRenderingMode(.alwaysTemplate)
+                let ok = device.isOnline && device.isPaired
+                cell.lockIcon.isHidden = true
+                cell.statusIcon.image = UIImage(named: ok ? "checkSmall" : "alert")?.withRenderingMode(.alwaysTemplate)
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "NoDevicesCell", for: indexPath) as! NoDevicesCell
@@ -183,7 +196,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             destination.profileCreatedDelegate = self
         }
 
-        guard let device = sender as? NabtoDevice else { return }
+        guard let device = sender as? Bookmark else { return }
         if let destination = segue.destination as? PairingViewController {
             destination.device = device
         } else if let destination = segue.destination as? DeviceViewController {

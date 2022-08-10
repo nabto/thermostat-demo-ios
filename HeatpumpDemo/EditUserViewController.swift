@@ -10,7 +10,7 @@ import UIKit
 
 class EditUserViewController: UIViewController, UITextFieldDelegate {
     
-    var device : NabtoDevice!
+    var device : Bookmark!
     var user   : UserInfo!
     
     @IBOutlet weak var remoteSwitch : UISwitch!
@@ -41,54 +41,54 @@ class EditUserViewController: UIViewController, UITextFieldDelegate {
     }
     
     func configureLabels() {
-        topLabel.text = "Control how \(user.name) may access your \(device.product!) device."
-        accessLabel.text = "If remote access is enabled for your \(device.product!) device, allow this specific user to access it from remote."
+        topLabel.text = "Control how \(user.name) may access your \(device.modelName!) device."
+        accessLabel.text = "If remote access is enabled for your \(device.modelName!) device, allow this specific user to access it from remote."
         removeLabel.text = "Revoke the access granted to \(user.name)"
     }
     
     //MARK: - Editing user account
     
     func saveUserName() {
-        NabtoManager.shared.setUserName(device: device, user: user) { (success, user, error) in
-            if success {
-                self.configureLabels()
-            }
-        }
+//        NabtoManager.shared.setUserName(device: device, user: user) { (success, user, error) in
+//            if success {
+//                self.configureLabels()
+//            }
+//        }
     }
     
     func removeUser() {
-        NabtoManager.shared.removeUser(device: device, user: user) { (success, error) in
-            if success {
-                _ = self.navigationController?.popViewController(animated: true)
-            }
-        }
+//        NabtoManager.shared.removeUser(device: device, user: user) { (success, error) in
+//            if success {
+//                _ = self.navigationController?.popViewController(animated: true)
+//            }
+//        }
     }
     
     func saveUserPermissions() {
-        user.setRemoteAccessPermission(allowed: remoteSwitch.isOn)
-        NabtoManager.shared.setUserPermissions(device: device, user: user) { (success, user, error) in
-            if success {
-            }
-        }
+//        user.setRemoteAccessPermission(allowed: remoteSwitch.isOn)
+//        NabtoManager.shared.setUserPermissions(device: device, user: user) { (success, user, error) in
+//            if success {
+//            }
+//        }
     }
     
     func confirmRemoveUser() {
-        //avoid deleting the user's own account
-        guard user.fingerprint != ProfileTools.getSavedPrivateKey() else { return }
-        
-        let title = "Remove user"
-        let message = "Are you sure you want to remove \(user.name)?"
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let yesAction = UIAlertAction(title: "Yes", style: .default) { action in
-            self.removeUser()
-            alert.dismiss(animated: true, completion: nil)
-        }
-        let noAction = UIAlertAction(title: "No", style: .cancel) { action in
-            alert.dismiss(animated: true, completion: nil)
-        }
-        alert.addAction(noAction)
-        alert.addAction(yesAction)
-        present(alert, animated: true, completion: nil)
+//        //avoid deleting the user's own account
+//        guard user.fingerprint != ProfileTools.getSavedPrivateKey() else { return }
+//
+//        let title = "Remove user"
+//        let message = "Are you sure you want to remove \(user.name)?"
+//        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+//        let yesAction = UIAlertAction(title: "Yes", style: .default) { action in
+//            self.removeUser()
+//            alert.dismiss(animated: true, completion: nil)
+//        }
+//        let noAction = UIAlertAction(title: "No", style: .cancel) { action in
+//            alert.dismiss(animated: true, completion: nil)
+//        }
+//        alert.addAction(noAction)
+//        alert.addAction(yesAction)
+//        present(alert, animated: true, completion: nil)
     }
 
     

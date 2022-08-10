@@ -147,11 +147,11 @@ class SecurityMainCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
-    func configure(device: NabtoDevice) {
-        remoteSwitch.isOn = device.remoteAccessEnabled
-        pairingSwitch.isOn = device.openForPairing
-        newUserSwitch.isOn = device.grantGuestRemoteAccess
-        updateNewUserSwitch(device: device)
+    func configure(/*todo*/) {
+//        remoteSwitch.isOn = device.remoteAccessEnabled
+//        pairingSwitch.isOn = device.openForPairing
+//        newUserSwitch.isOn = device.grantGuestRemoteAccess
+//        updateNewUserSwitch(device: device)
     }
     
     func updateNewUserSwitch(device: NabtoDevice) {
