@@ -50,8 +50,6 @@ class ProfileCreateViewController: UIViewController, UITextFieldDelegate {
             let key = try EdgeManager.shared.client.createPrivateKey()
             ProfileTools.saveProfile(username: simplifiedUsername, privateKey: key, displayName: username)
             self.profileCreatedDelegate?.profileCreated()
-            let banner = NotificationBanner(title: "Hurra", subtitle: "\(simplifiedUsername)", style: .success)
-            banner.show()
             self.dismiss(animated: true, completion: nil)
         } catch {
             let banner = NotificationBanner(title: "Error", subtitle: "Could not create private key: \(error)", style: .danger)

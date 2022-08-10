@@ -26,7 +26,6 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("viewDidAppear")
     }
 
     override func viewWillAppear(_ animated: Bool) {
