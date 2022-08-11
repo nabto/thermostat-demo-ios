@@ -35,7 +35,7 @@ class ProfileCreateViewController: UIViewController, UITextFieldDelegate {
         continueButton.layer.cornerRadius = 6
         clearButton.layer.cornerRadius    = 6
 
-        textField.text = getSimpleDeviceName()
+        textField.text = UIDevice.current.name
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,12 +63,6 @@ class ProfileCreateViewController: UIViewController, UITextFieldDelegate {
 
     @IBAction func cancel(_ sender: Any) {
         dismiss(animated: true, completion: nil)
-    }
-    
-    func getSimpleDeviceName() -> String {
-        let okayChars : Set<Character> =
-            Set("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLKMNOPQRSTUVWXYZ1234567890+-*=(),.:!_")
-        return String(UIDevice.current.name.filter {okayChars.contains($0) })
     }
     
     //MARK: - Textfield

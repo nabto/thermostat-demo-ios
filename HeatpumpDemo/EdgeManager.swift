@@ -8,14 +8,16 @@ import NabtoEdgeClient
 
 class EdgeManager {
 
-    // coap
+    // coap test app
     // let appSpecificApiKey = "sk-5f3ab4bea7cc2585091539fb950084ce"
 
-    // password-open
+    // password-open test app
     let appSpecificApiKey = "sk-9c826d2ebb4343a789b280fe22b98305"
 
     internal static let shared = EdgeManager()
+    private var cache: [Bookmark:Connection] = [:]
     private var client_: NabtoEdgeClient.Client! = nil
+
     internal var client: NabtoEdgeClient.Client {
         get {
             if (self.client_ == nil) {
@@ -25,9 +27,8 @@ class EdgeManager {
         }
     }
 
-    private var cache: [Bookmark:Connection] = [:]
-
     func stop() {
+        self.cache = [:]
         self.client_?.stop()
         self.client_ = nil
     }

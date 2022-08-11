@@ -28,10 +28,15 @@ class PairingViewController: UIViewController {
     let defaultPairingText = "You are about to pair with this device."
     let passwordText = "This device requires a password for pairing:"
 
+    let confirmSpinner: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView()
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.hidesWhenStopped = true
+        return spinner
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-
         confirmButton.clipsToBounds     = true
         newDeviceButton.clipsToBounds   = true
         homeButton.clipsToBounds        = true
@@ -39,6 +44,10 @@ class PairingViewController: UIViewController {
         newDeviceButton.layer.cornerRadius  = 6
         homeButton.layer.cornerRadius       = 6
         checkMark.image = checkMark.image?.withRenderingMode(.alwaysTemplate)
+
+        confirmButton.addSubview(confirmSpinner)
+        confirmSpinner.leftAnchor.constraint(equalTo: confirmButton.leftAnchor, constant: 20.0).isActive = true
+        confirmSpinner.centerYAnchor.constraint(equalTo: confirmButton.centerYAnchor).isActive = true
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -54,14 +63,15 @@ class PairingViewController: UIViewController {
     }
 
     func showPairingError(_ msg: String) {
-        let banner = GrowingNotificationBanner(title: "Pairing Error", subtitle: msg, style: .danger)
         DispatchQueue.main.async {
+            let banner = GrowingNotificationBanner(title: "Pairing Error", subtitle: msg, style: .danger)
             banner.show()
         }
     }
 
     @IBAction func confirmPairing(_ sender: Any) {
         guard let device = device else { return }
+        self.confirmSpinner.startAnimating()
         DispatchQueue.global().async {
             do {
                 let connection = try EdgeManager.shared.connect(device)
@@ -83,6 +93,9 @@ class PairingViewController: UIViewController {
                 self.showPairingError("Pairing password not valid for this device")
             } catch {
                 self.showPairingError("An error occurred when pairing with device: \(error)")
+            }
+            DispatchQueue.main.async {
+                self.confirmSpinner.stopAnimating()
             }
         }
     }
