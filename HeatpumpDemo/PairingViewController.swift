@@ -67,12 +67,7 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
     }
 
     func pairingConfirmed() {
-        self.navigationController?.popToRootViewController(animated: false)
-        if let device = self.device {
-            if let controller = StoryboardHelper.viewControllerFor(device: device) {
-                self.navigationController?.pushViewController(controller, animated: true)
-            }
-        }
+        self.navigationController?.popToRootViewController(animated: true)
     }
 
     @IBAction func confirmPairing(_ sender: Any) {

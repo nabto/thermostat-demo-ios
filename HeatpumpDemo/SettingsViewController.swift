@@ -10,7 +10,6 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-    @IBOutlet weak var fingerprintLabel : UILabel!
     @IBOutlet weak var keypairButton    : UIButton!
     @IBOutlet weak var clearButton      : UIButton!
     
@@ -29,8 +28,6 @@ class SettingsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        fingerprintLabel.text = getFormattedFingerprint()
     }
     
     func resetKeypair() {

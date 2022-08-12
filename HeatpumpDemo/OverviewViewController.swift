@@ -123,7 +123,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
 
         if (device.isOnline) {
             if (device.isPaired) {
-                // todo show device
+                self.handlePaired(device: device.bookmark)
             } else {
                 self.handleUnpaired(device: device.bookmark)
             }
