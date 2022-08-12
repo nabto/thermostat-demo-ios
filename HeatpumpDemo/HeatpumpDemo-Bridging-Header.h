@@ -11,5 +11,3 @@
 
 #endif /* ios_starter_nabto_Bridging_Header_h */
 
-//#import "nabto_client_api.h"
-#import "NabtoClient/NabtoClient.h"

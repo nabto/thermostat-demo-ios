@@ -10,7 +10,6 @@ platform :ios, '12.0'
 
 def common
   use_frameworks!
-  pod 'NabtoClient'
   pod 'NabtoEdgeClientSwift'
   pod 'NabtoEdgeIamUtil'
   pod 'NotificationBannerSwift', '~> 3.0.0'
