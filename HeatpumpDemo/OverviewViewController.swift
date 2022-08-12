@@ -68,9 +68,16 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         for b in bookmarks {
             group.enter()
             DispatchQueue.global().async {
-                var device = self.getInfoForDevice(bookmark: b)
-                self.devices.append(device)
-                print(" *** added device: paired=\(device.isPaired), online=\(device.isOnline), role=\(device.role)")
+                do {
+                    let device = try self.getInfoForDevice(bookmark: b)
+                    self.devices.append(device)
+                    print(" *** added device: paired=\(device.isPaired), online=\(device.isOnline), role=\(device.bookmark.role ?? "(no role)"  )")
+                } catch {
+                    DispatchQueue.main.async {
+                        let banner = NotificationBanner(title: "Error", subtitle: "An error occurred when retrieving device information: \(error)", style: .danger)
+                        banner.show()
+                    }
+                }
                 group.leave()
             }
         }
@@ -78,42 +85,45 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         self.waiting = false
     }
 
-    private func getInfoForDevice(bookmark: Bookmark) -> DeviceRowModel {
+    private func getInfoForDevice(bookmark: Bookmark) throws -> DeviceRowModel {
         var device = DeviceRowModel(bookmark: bookmark)
         do {
-            let connection = try EdgeManager.shared.connect(bookmark)
+            let connection = try EdgeManager.shared.getConnection(bookmark)
             device.isOnline = true
             let user = try NabtoEdgeIamUtil.IamUtil.getCurrentUser(connection: connection)
             if let role = user.Role {
                 device.isPaired = true
-                device.role = role
+                device.bookmark.role = role
             } else {
                 device.isPaired = false
             }
-        } catch NabtoEdgeClientError.NO_CHANNELS(let localError, let remoteError) {
-            print("remoteError: \(remoteError)")
+        } catch NabtoEdgeClientError.NO_CHANNELS(_, _) {
             device.isOnline = false
         } catch IamError.USER_DOES_NOT_EXIST {
             device.isPaired = false
-        } catch {
-            let banner = NotificationBanner(title: "Error", subtitle: "An error occurred when retrieving device information: \(error)", style: .danger)
-
-            print("TODO: handle error \(error)")
         }
         return device
     }
 
     @IBAction func refresh(_ sender: Any) {
-        //self.populateDeviceOverview()
         EdgeManager.shared.stop()
+        self.populateDeviceOverview()
     }
     
     //MARK: - Handle device selection
     
     func handleSelection(device: DeviceRowModel) {
         print("TODO - connect and pair or show device (or error); device: \(device.id)")
+
+//        // dev shortcut
+//        let controller = StoryboardHelper.getViewController(id: "PairingConfirmedViewController")
+//        controller.device = device.bookmark
+//        self.present(controller, animated: true)
+//        navigationController?.pushViewController(controller, animated: true)
+
         if (device.isOnline) {
             if (device.isPaired) {
+                // todo show device
             } else {
                 self.handleUnpaired(device: device.bookmark)
             }
@@ -205,7 +215,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         guard let device = sender as? Bookmark else { return }
         if let destination = segue.destination as? PairingViewController {
             destination.device = device
-        } else if let destination = segue.destination as? DeviceViewController {
+        } else if let destination = segue.destination as? DeviceDetailsViewController {
             destination.device = device
         }
     }

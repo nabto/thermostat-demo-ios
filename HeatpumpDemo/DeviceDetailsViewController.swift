@@ -11,9 +11,11 @@ import UIKit
 // You should subclass this controller to implement custom devices.
 // More info on StoryboardHelper.swift
 
-class DeviceViewController: UIViewController {
-
+class ViewControllerWithDevice: UIViewController {
     var device : Bookmark!
+}
+
+class DeviceDetailsViewController: ViewControllerWithDevice {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +23,6 @@ class DeviceViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         navigationItem.title = device.name
     }
 

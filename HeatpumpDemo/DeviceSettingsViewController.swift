@@ -104,7 +104,7 @@ class DeviceSettingsViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         if let text = textField.text,
-            text.characters.count > 0 && text != device.name {
+            text.count > 0 && text != device.name {
             device.name = text
             saveDeviceName()
         }

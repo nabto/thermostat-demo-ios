@@ -111,7 +111,7 @@ class EditUserViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         if let text = textField.text,
-            text.characters.count > 0 && text != user.name {
+            text.count > 0 && text != user.name {
             user.name = text
             saveUserName()
         }

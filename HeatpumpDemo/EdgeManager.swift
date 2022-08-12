@@ -33,7 +33,7 @@ class EdgeManager {
         self.client_ = nil
     }
 
-    func connect(_ target: Bookmark) throws -> Connection {
+    func getConnection(_ target: Bookmark) throws -> Connection {
         if (cache[target] == nil) {
             cache[target] = try doConnect(target)
         }

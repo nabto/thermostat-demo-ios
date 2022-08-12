@@ -75,17 +75,17 @@ class EdgeManagerTest: XCTestCase {
     func testConnectionCache() throws {
         let bookmark = self.createTestBookmark()
 
-        let connection = try self.sut.connect(bookmark)
+        let connection = try self.sut.getConnection(bookmark)
         let coap = try connection.createCoapRequest(method: "GET", path: "/hello-world")
         let response = try coap.execute()
         XCTAssertEqual(response.status, 205)
 
-        let connection2 = try self.sut.connect(bookmark)
+        let connection2 = try self.sut.getConnection(bookmark)
         XCTAssertEqual(Unmanaged.passUnretained(connection).toOpaque(), Unmanaged.passUnretained(connection2).toOpaque())
 
         try self.sut.clearConnectionCacheEntry(bookmark)
 
-        let connection3 = try self.sut.connect(bookmark)
+        let connection3 = try self.sut.getConnection(bookmark)
         XCTAssertNotEqual(Unmanaged.passUnretained(connection).toOpaque(), Unmanaged.passUnretained(connection3).toOpaque())
 
         let coap2 = try connection3.createCoapRequest(method: "GET", path: "/hello-world")

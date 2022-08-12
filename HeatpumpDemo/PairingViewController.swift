@@ -10,7 +10,7 @@ import UIKit
 import NabtoEdgeIamUtil
 import NotificationBannerSwift
 
-class PairingViewController: UIViewController {
+class PairingViewController: UIViewController, PairingConfirmedListener {
 
     @IBOutlet weak var nameLabel        : UILabel!
     @IBOutlet weak var modelLabel       : UILabel!
@@ -18,9 +18,6 @@ class PairingViewController: UIViewController {
     @IBOutlet weak var confirmView      : UIView!
     @IBOutlet weak var resultView       : UIView!
     @IBOutlet weak var confirmButton    : UIButton!
-    @IBOutlet weak var newDeviceButton  : UIButton!
-    @IBOutlet weak var homeButton       : UIButton!
-    @IBOutlet weak var checkMark        : UIImageView!
     @IBOutlet weak var passwordField: UITextField!
     
     var device : Bookmark?
@@ -38,13 +35,7 @@ class PairingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         confirmButton.clipsToBounds     = true
-        newDeviceButton.clipsToBounds   = true
-        homeButton.clipsToBounds        = true
         confirmButton.layer.cornerRadius    = 6
-        newDeviceButton.layer.cornerRadius  = 6
-        homeButton.layer.cornerRadius       = 6
-        checkMark.image = checkMark.image?.withRenderingMode(.alwaysTemplate)
-
         confirmButton.addSubview(confirmSpinner)
         confirmSpinner.leftAnchor.constraint(equalTo: confirmButton.leftAnchor, constant: 20.0).isActive = true
         confirmSpinner.centerYAnchor.constraint(equalTo: confirmButton.centerYAnchor).isActive = true
@@ -54,6 +45,12 @@ class PairingViewController: UIViewController {
         super.viewDidAppear(animated)
         nameLabel.text  = device?.name
         modelLabel.text = device?.modelName
+        passwordField.isHidden = true
+        confirmLabel.text = self.defaultPairingText
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         passwordField.isHidden = true
         confirmLabel.text = self.defaultPairingText
     }
@@ -69,13 +66,21 @@ class PairingViewController: UIViewController {
         }
     }
 
+    func pairingConfirmed() {
+        self.navigationController?.popToRootViewController(animated: false)
+        if let device = self.device {
+            if let controller = StoryboardHelper.viewControllerFor(device: device) {
+                self.navigationController?.pushViewController(controller, animated: true)
+            }
+        }
+    }
+
     @IBAction func confirmPairing(_ sender: Any) {
         guard let device = device else { return }
         self.confirmSpinner.startAnimating()
         DispatchQueue.global().async {
             do {
-                let connection = try EdgeManager.shared.connect(device)
-                let modes = try IamUtil.getAvailablePairingModes(connection: connection)
+                let modes = try IamUtil.getAvailablePairingModes(connection: EdgeManager.shared.getConnection(device))
                 if (modes.count == 0) {
                     self.showPairingError("Device is not open for pairing - please contact the owner. If you are the owner, you can factory reset it to get access again.")
                 } else {
@@ -85,6 +90,10 @@ class PairingViewController: UIViewController {
                         try self.pairLocalOpen()
                     } else if (modes.contains(PairingMode.PasswordOpen)) {
                         try self.pairPasswordOpen()
+                    }
+                    if (try IamUtil.isCurrentUserPaired(connection: EdgeManager.shared.getConnection(device))) {
+                        try self.updateBookmarkWithDeviceInfo(device)
+                        self.showConfirmation()
                     }
                 }
             } catch IamError.USERNAME_EXISTS {
@@ -100,9 +109,19 @@ class PairingViewController: UIViewController {
         }
     }
 
+    private func updateBookmarkWithDeviceInfo(_ device: Bookmark) throws {
+        let user = try IamUtil.getCurrentUser(connection: EdgeManager.shared.getConnection(device))
+        device.role = user.Role
+        device.sct = user.Sct
+        let details = try IamUtil.getDeviceDetails(connection: EdgeManager.shared.getConnection(device))
+        if let appname = details.AppName {
+            device.name = appname
+        }
+    }
+
     private func pairLocalOpen() throws {
         guard let device = self.device else { return }
-        let connection = try EdgeManager.shared.connect(device)
+        let connection = try EdgeManager.shared.getConnection(device)
         if let user = ProfileTools.getSavedUsername() {
             try IamUtil.pairLocalOpen(connection: connection, desiredUsername: user)
         } else {
@@ -112,21 +131,25 @@ class PairingViewController: UIViewController {
 
     private func pairLocalInitial() throws {
         guard let device = self.device else { return }
-        let connection = try EdgeManager.shared.connect(device)
+        let connection = try EdgeManager.shared.getConnection(device)
         try IamUtil.pairLocalInitial(connection: connection)
     }
 
     private func pairPasswordOpen() throws {
         guard let device = self.device else { return }
-        let connection = try EdgeManager.shared.connect(device)
-        if (self.passwordField.isHidden) {
-            DispatchQueue.main.async {
+        var password: String? = nil
+        DispatchQueue.main.sync {
+            if (self.passwordField.isHidden) {
                 self.confirmLabel.text = self.passwordText
                 self.passwordField.isHidden = false
                 self.passwordField.becomeFirstResponder()
+            } else if let userPassword = self.passwordField.text {
+                password = userPassword
             }
-        } else if let password = self.passwordField.text {
+        }
+        if let password = password {
             if let user = ProfileTools.getSavedUsername() {
+                let connection = try EdgeManager.shared.getConnection(device)
                 try IamUtil.pairPasswordOpen(connection: connection, desiredUsername: user, password: password)
             } else {
                 self.showPairingError("User profile not found, please re-configure app")
@@ -134,9 +157,11 @@ class PairingViewController: UIViewController {
         }
     }
 
-    @IBAction func goToNewDevice(_ sender: Any) {
-        if let device = device,
-            let controller = StoryboardHelper.viewControllerFor(device: device) {
+    func showConfirmation() {
+        DispatchQueue.main.sync {
+            let controller = StoryboardHelper.getViewController(id: "PairingConfirmedViewController") as! PairingConfirmedViewController
+            controller.device = self.device
+            controller.pairingConfirmedDelegate = self
             navigationController?.pushViewController(controller, animated: true)
         }
     }
@@ -145,17 +170,11 @@ class PairingViewController: UIViewController {
         _ = navigationController?.popToRootViewController(animated: true)
     }
     
-    func showResultView() {
-        resultView.isHidden = false
-        confirmView.isHidden = true
-    }
-    
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let device = sender as? Bookmark else { return }
-        
-        if let destination = segue.destination as? DeviceViewController {
+        if let destination = segue.destination as? DeviceDetailsViewController {
             destination.device = device
         }
     }

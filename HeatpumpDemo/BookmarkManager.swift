@@ -8,12 +8,13 @@
 
 import UIKit
 
-struct Bookmark : Equatable, Hashable, CustomStringConvertible {
+class Bookmark : Equatable, Hashable, CustomStringConvertible {
     let deviceId: String
-    var productId: String
+    let productId: String
     var sct: String?
-    var name : String?
+    var name : String = "Anonymous Heatpump"
     var modelName: String?
+    var role: String?
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(deviceId)
@@ -32,6 +33,17 @@ struct Bookmark : Equatable, Hashable, CustomStringConvertible {
 
     var description: String {
         "Bookmark(deviceId: \(deviceId), productId: \(productId), sct: \(sct), name: \(name))"
+    }
+
+    init(deviceId: String, productId: String, sct: String?=nil, name: String?=nil, modelName: String?=nil, role: String?=nil) {
+        self.deviceId = deviceId
+        self.productId = productId
+        self.sct = sct
+        if let name = name {
+            self.name = name
+        }
+        self.modelName = modelName
+        self.role = role
     }
 }
 

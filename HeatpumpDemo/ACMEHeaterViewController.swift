@@ -22,7 +22,7 @@ enum DeviceMode : Int {
 }
 
 
-class ACMEHeaterViewController: DeviceViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
     @IBOutlet weak var temperatureLabel     : UILabel!
     @IBOutlet weak var localTemperatureLabel: UILabel!

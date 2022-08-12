@@ -14,20 +14,20 @@ import UIKit
 // 3 - Add it to the options in this method
 
 class StoryboardHelper {
-    
-    class func viewControllerFor(device: Bookmark) -> DeviceViewController? {
-        
+
+    class func getViewController(id: String) -> ViewControllerWithDevice {
         let storyboard =  UIStoryboard(name: "Main", bundle: nil)
-        
-        var controller : DeviceViewController?
-        
+        let controller = storyboard.instantiateViewController(withIdentifier: id) as! ViewControllerWithDevice
+        return controller
+    }
+
+    class func viewControllerFor(device: Bookmark) -> DeviceDetailsViewController? {
         //Add custom device screens here
         let demoProductType = "ACME 9002 Heatpump"
         if device.modelName != demoProductType {
-            NSLog("Warning: Target device is of type \(device.modelName), this app only supports \(demoProductType)")
+            NSLog("Warning: Target device is of type \(device.modelName ?? "(n/a)"), this app only supports \(demoProductType)")
         }
-        controller = storyboard.instantiateViewController(withIdentifier: "ACMEHeaterViewController") as! ACMEHeaterViewController
-
+        let controller: DeviceDetailsViewController? = getViewController(id: "ACMEHeaterViewController") as! ACMEHeaterViewController
         controller?.device = device
         return controller
     }

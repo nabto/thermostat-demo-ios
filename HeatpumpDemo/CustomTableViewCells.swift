@@ -9,10 +9,9 @@
 import UIKit
 
 struct DeviceRowModel {
-    let bookmark: Bookmark
+    var bookmark: Bookmark
     var isPaired: Bool = false
     var isOnline: Bool = false
-    var role: String?
     var id: String {
         get {
             return "\(self.bookmark.productId).\(self.bookmark.deviceId)"
