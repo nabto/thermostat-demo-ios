@@ -42,7 +42,7 @@
 		6DC4A1E81E410420005B6CAD /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1E71E410420005B6CAD /* UserInfo.swift */; };
 		6DC4A1EA1E410449005B6CAD /* NabtoDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1E91E410449005B6CAD /* NabtoDevice.swift */; };
 		6DC4A1F41E42633F005B6CAD /* CustomTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1F31E42633F005B6CAD /* CustomTableViewCells.swift */; };
-		D455B17C28A51AA90011FD72 /* PairingConfirmedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D455B17B28A51AA90011FD72 /* PairingConfirmedView.swift */; };
+		D455B17C28A51AA90011FD72 /* PairingConfirmedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D455B17B28A51AA90011FD72 /* PairingConfirmedViewController.swift */; };
 		E92590D603F5D8FABBE76426 /* EdgeManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92ABEF8BBC6C0A9BC56081D /* EdgeManagerTests.swift */; };
 		E92B3EED654E44CDD80E089D /* EdgeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9223BABCA33CFC89FFAB851 /* EdgeManager.swift */; };
 		E92DFA06F9E1E0BBD1692EC9 /* EdgeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9223BABCA33CFC89FFAB851 /* EdgeManager.swift */; };
@@ -102,7 +102,7 @@
 		6DC4A1E91E410449005B6CAD /* NabtoDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NabtoDevice.swift; sourceTree = "<group>"; };
 		6DC4A1F31E42633F005B6CAD /* CustomTableViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTableViewCells.swift; sourceTree = "<group>"; };
 		71942C3051274190DD6AADFE /* Pods_HeatpumpDemoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HeatpumpDemoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D455B17B28A51AA90011FD72 /* PairingConfirmedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingConfirmedView.swift; sourceTree = "<group>"; };
+		D455B17B28A51AA90011FD72 /* PairingConfirmedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingConfirmedViewController.swift; sourceTree = "<group>"; };
 		E9223BABCA33CFC89FFAB851 /* EdgeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeManager.swift; sourceTree = "<group>"; };
 		E92ABEF8BBC6C0A9BC56081D /* EdgeManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeManagerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -219,7 +219,7 @@
 				6DC4A1D11E40F812005B6CAD /* ProfileCreateViewController.swift */,
 				6DC4A1D31E40F823005B6CAD /* HelpViewController.swift */,
 				6DC4A1F31E42633F005B6CAD /* CustomTableViewCells.swift */,
-				D455B17B28A51AA90011FD72 /* PairingConfirmedView.swift */,
+				D455B17B28A51AA90011FD72 /* PairingConfirmedViewController.swift */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -493,7 +493,7 @@
 				6DC4A1EA1E410449005B6CAD /* NabtoDevice.swift in Sources */,
 				6DC4A1D81E40F853005B6CAD /* DeviceSettingsViewController.swift in Sources */,
 				6DC4A1DF1E40F973005B6CAD /* DeviceDetailsViewController.swift in Sources */,
-				D455B17C28A51AA90011FD72 /* PairingConfirmedView.swift in Sources */,
+				D455B17C28A51AA90011FD72 /* PairingConfirmedViewController.swift in Sources */,
 				6DC4A1DC1E40F945005B6CAD /* SecuritySettingsViewController.swift in Sources */,
 				6DC4A1F41E42633F005B6CAD /* CustomTableViewCells.swift in Sources */,
 				6D04A6DD1E3F4C4800DD9F70 /* OverviewViewController.swift in Sources */,
