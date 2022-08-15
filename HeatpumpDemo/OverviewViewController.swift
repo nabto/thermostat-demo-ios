@@ -14,12 +14,12 @@ import NotificationBannerSwift
 class OverviewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ProfileCreatedListener {
 
     @IBOutlet weak var table: UITableView!
-    
+
     var devices: [DeviceRowModel] = []
 
     var starting = true
     var waiting  = true
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         table.contentInset.top += 16
@@ -49,15 +49,14 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         self.populateDeviceOverview()
     }
 
-    func startNabto() {
-    }
-
     func populateDeviceOverview() {
+        self.devices = []
+        self.waiting = true
         DispatchQueue.global().async {
-            self.devices = []
             self.getDeviceDetailsForBookmarks()
             DispatchQueue.main.async {
                 self.table.reloadData()
+                self.waiting = false
             }
         }
     }
@@ -82,7 +81,6 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
         group.wait()
-        self.waiting = false
     }
 
     private func getInfoForDevice(bookmark: Bookmark) throws -> DeviceRowModel {
@@ -101,12 +99,17 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             device.isOnline = false
         } catch IamError.USER_DOES_NOT_EXIST {
             device.isPaired = false
+        } catch {
+            print(" **** ERROR: \(error)")
+            throw error
         }
         return device
     }
 
     @IBAction func refresh(_ sender: Any) {
         EdgeManager.shared.stop()
+        self.devices = []
+        self.table.reloadData()
         self.populateDeviceOverview()
     }
     

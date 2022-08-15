@@ -88,7 +88,8 @@ class BookmarkManager {
 //        } catch {
 //            print("error reading bookmarks file")
 //        }
-        self.deviceBookmarks.append(Bookmark(deviceId: "de-ijrdq47i", productId: "pr-fatqcwj9", sct: "WzwjoTabnvux", name: "Stub device"))
+        //self.deviceBookmarks.append(Bookmark(deviceId: "de-ijrdq47i", productId: "pr-fatqcwj9", sct: "WzwjoTabnvux", name: "Remote integration test"))
+        self.deviceBookmarks.append(Bookmark(deviceId: "de-3cqgxbdm", productId: "pr-cc9i4y7r", name: "Local heatpump"))
     }
     
     func clearBookmarks() {

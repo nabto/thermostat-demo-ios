@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import NotificationBannerSwift
+import CBORCoding
+import NabtoEdgeClient
 
 enum DeviceMode : Int {
     case cool       = 0
@@ -19,6 +22,33 @@ enum DeviceMode : Int {
     }
     
     static let all = [cool, heat, circulate, dehumidify]
+}
+
+public struct HeatpumpDetails: Codable, CustomStringConvertible {
+    public let Mode: String
+    public let Target: Double
+    public let Power: Bool
+    public let Temperature: Double
+
+    public init(Mode: String, Target: Double, Power: Bool, Temperature: Double) {
+        self.Mode = Mode
+        self.Target = Target
+        self.Power = Power
+        self.Temperature = Temperature
+    }
+
+    public static func decode(cbor: Data) throws -> HeatpumpDetails {
+        let decoder = CBORDecoder()
+        do {
+            return try decoder.decode(HeatpumpDetails.self, from: cbor)
+        } catch {
+            throw NabtoEdgeClientError.FAILED_WITH_DETAIL(detail: "Could not decode heatpump response: \(error)")
+        }
+    }
+
+    public var description: String {
+        "HeatpumpDetails(Mode: \(Mode), Target: \(Target), Power: \(Power), Temperature: \(Temperature))"
+    }
 }
 
 
@@ -100,10 +130,35 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     }
     
     //MARK:- Device
-    
+
+    func showDeviceError(_ msg: String) {
+        DispatchQueue.main.async {
+            let banner = GrowingNotificationBanner(title: "Communication Error", subtitle: msg, style: .danger)
+            banner.show()
+        }
+    }
+
     @objc func refresh() {
         busy = true
-        let request = "heatpump_get_full_state.json"
+        DispatchQueue.global().async {
+            do {
+                let connection = try EdgeManager.shared.getConnection(self.device)
+                let coap = try connection.createCoapRequest(method: "GET", path: "/heat-pump")
+                let response = try coap.execute()
+                if (response.status == 205) {
+                    let details = try HeatpumpDetails.decode(cbor: response.payload)
+                    DispatchQueue.main.async {
+                        let banner = GrowingNotificationBanner(title: "Yay!", subtitle: "\(details)", style: .success)
+                        banner.show()
+                    }
+                    print("Got details: \(details)")
+                } else {
+                    self.showDeviceError("Could not get heatpump details, device returned status \(response.status)")
+                }
+            } catch {
+                self.showDeviceError("\(error)")
+            }
+        }
 //        NabtoManager.shared.invokeRpc(device: device.id, request: request, parameters: nil) { (result, error) in
 //            if let state = result {
 //                self.refreshState(state: state)

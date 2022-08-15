@@ -6,7 +6,7 @@
 import UIKit
 import NabtoEdgeClient
 
-class EdgeManager {
+class EdgeManager : ConnectionEventReceiver {
 
     // coap test app
     // let appSpecificApiKey = "sk-5f3ab4bea7cc2585091539fb950084ce"
@@ -33,9 +33,18 @@ class EdgeManager {
         self.client_ = nil
     }
 
+    func onEvent(event: NabtoEdgeClientConnectionEvent) {
+        if (event == NabtoEdgeClientConnectionEvent.CLOSED) {
+            // flush entire cache on any error ... a proper finegrained cleanup requires a connection wrapper
+            self.cache = [:]
+        }
+    }
+
     func getConnection(_ target: Bookmark) throws -> Connection {
         if (cache[target] == nil) {
-            cache[target] = try doConnect(target)
+            let connection = try doConnect(target)
+            try connection.addConnectionEventsReceiver(cb: self)
+            cache[target] = connection
         }
         return cache[target]!
     }

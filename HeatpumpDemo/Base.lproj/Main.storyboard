@@ -2026,7 +2026,7 @@ Through the security settings page of the device, the owner can control who has 
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="Pzf-OU-J9K"/>
-        <segue reference="6cz-9P-FD7"/>
+        <segue reference="zUV-pr-k1o"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
     <resources>
