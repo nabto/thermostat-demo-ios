@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct DeviceRowModel {
+class DeviceRowModel {
     var bookmark: Bookmark
     var isPaired: Bool = false
     var isOnline: Bool = false
@@ -28,8 +28,7 @@ class DeviceCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var modelLabel: UILabel!
     @IBOutlet weak var statusIcon: UIImageView!
-    @IBOutlet weak var lockIcon: UIImageView!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -41,7 +40,6 @@ class DeviceCell: UITableViewCell {
     func configure(device: DeviceRowModel) {
         nameLabel.text = device.bookmark.name ?? device.id
         modelLabel.text = device.bookmark.modelName ?? "Unknown Model"
-        lockIcon.isHidden = device.isPaired
     }
 }
 

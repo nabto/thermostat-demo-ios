@@ -35,7 +35,7 @@ class EdgeManager : ConnectionEventReceiver {
 
     func onEvent(event: NabtoEdgeClientConnectionEvent) {
         if (event == NabtoEdgeClientConnectionEvent.CLOSED) {
-            // flush entire cache on any error ... a proper finegrained cleanup requires a connection wrapper
+            // flush entire cache on any connection close (error or controller) ... a proper finegrained cleanup requires a connection wrapper
             self.cache = [:]
         }
     }

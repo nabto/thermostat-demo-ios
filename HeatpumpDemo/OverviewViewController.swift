@@ -19,10 +19,19 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
 
     var starting = true
     var waiting  = true
+    var errorBanner: GrowingNotificationBanner? = nil
+
+    let busySpinner: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView()
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.hidesWhenStopped = true
+        return spinner
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         table.contentInset.top += 16
+        self.navigationItem.leftBarButtonItems?.append(UIBarButtonItem(customView: self.busySpinner))
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -72,10 +81,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
                     self.devices.append(device)
                     print(" *** added device: paired=\(device.isPaired), online=\(device.isOnline), role=\(device.bookmark.role ?? "(no role)"  )")
                 } catch {
-                    DispatchQueue.main.async {
-                        let banner = NotificationBanner(title: "Error", subtitle: "An error occurred when retrieving device information: \(error)", style: .danger)
-                        banner.show()
-                    }
+                    self.handleError(msg: "An error occurred when retrieving device information: \(error)")
                 }
                 group.leave()
             }
@@ -108,6 +114,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
 
     @IBAction func refresh(_ sender: Any) {
         EdgeManager.shared.stop()
+        self.errorBanner?.dismiss()
         self.devices = []
         self.table.reloadData()
         self.populateDeviceOverview()
@@ -116,22 +123,43 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     //MARK: - Handle device selection
     
     func handleSelection(device: DeviceRowModel) {
-        print("TODO - connect and pair or show device (or error); device: \(device.id)")
-
-//        // dev shortcut
-//        let controller = StoryboardHelper.getViewController(id: "PairingConfirmedViewController")
-//        controller.device = device.bookmark
-//        self.present(controller, animated: true)
-//        navigationController?.pushViewController(controller, animated: true)
-
+        self.errorBanner?.dismiss()
         if (device.isOnline) {
-            if (device.isPaired) {
-                self.handlePaired(device: device.bookmark)
-            } else {
-                self.handleUnpaired(device: device.bookmark)
-            }
+            self.handleOnlineDevice(device)
         } else {
+            self.handleOfflineDevice(device)
+        }
+    }
 
+    private func handleOfflineDevice(_ device: DeviceRowModel) {
+        self.busySpinner.startAnimating()
+        self.table.allowsSelection = false
+        DispatchQueue.global().async {
+            defer {
+                DispatchQueue.main.sync {
+                    self.busySpinner.stopAnimating()
+                    self.table.allowsSelection = true
+                }
+            }
+            do {
+                let updatedDevice = try self.getInfoForDevice(bookmark: device.bookmark)
+                if (device.isOnline) {
+                    self.handleOnlineDevice(updatedDevice)
+                } else {
+                    self.handleError(msg: "Device is offline")
+                }
+            } catch {
+                self.handleError(msg: "\(error)")
+                return
+            }
+        }
+    }
+
+    func handleOnlineDevice(_ device: DeviceRowModel) {
+        if (device.isPaired) {
+            self.handlePaired(device: device.bookmark)
+        } else {
+            self.handleUnpaired(device: device.bookmark)
         }
     }
     
@@ -144,7 +172,14 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     func handleUnpaired(device: Bookmark) {
         performSegue(withIdentifier: "toPairing", sender: device)
     }
-    
+
+    func handleError(msg: String) {
+        DispatchQueue.main.async {
+            self.errorBanner = GrowingNotificationBanner(title: "Error", subtitle: msg, style: .danger)
+            self.errorBanner?.show()
+        }
+    }
+
     func handleClosed(device: NabtoDevice) {
         let title = "Device not open"
         let message = "Device is not open for pairing - please contact owner (or factory reset if you are the owner."
@@ -175,9 +210,15 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DeviceCell", for: indexPath) as! DeviceCell
                 let device = devices[indexPath.row]
                 cell.configure(device: device)
-                let ok = device.isOnline && device.isPaired
-                cell.lockIcon.isHidden = true
-                cell.statusIcon.image = UIImage(named: ok ? "checkSmall" : "alert")?.withRenderingMode(.alwaysTemplate)
+                if (device.isOnline) {
+                    if (device.isPaired) {
+                        cell.statusIcon.image = UIImage(named: "checkSmall")?.withRenderingMode(.alwaysTemplate)
+                    } else {
+                        cell.statusIcon.image = UIImage(named: "open")?.withRenderingMode(.alwaysTemplate)
+                    }
+                } else {
+                    cell.statusIcon.image = UIImage(named: "alert")?.withRenderingMode(.alwaysTemplate)
+                }
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "NoDevicesCell", for: indexPath) as! NoDevicesCell
@@ -192,7 +233,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section == 0 && self.devices.count > 0 else { return }
-        handleSelection(device: self.devices[indexPath.row])
+        self.handleSelection(device: self.devices[indexPath.row])
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -128,7 +128,6 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
                 let device = devices[indexPath.row]
                 cell.configure(device: device)
                 cell.statusIcon.isHidden = true
-                cell.lockIcon.isHidden = true
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "NoDevicesCell", for: indexPath) as! NoDevicesCell

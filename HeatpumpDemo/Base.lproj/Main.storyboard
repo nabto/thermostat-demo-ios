@@ -45,18 +45,11 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Model" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xub-TY-7WZ">
-                                                    <rect key="frame" x="82" y="36.5" width="224.5" height="17"/>
+                                                    <rect key="frame" x="82" y="36.5" width="40" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="alert" translatesAutoresizingMaskIntoConstraints="NO" id="XJI-ov-XrW">
-                                                    <rect key="frame" x="314.5" y="26" width="20" height="20"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="20" id="OLf-my-Lv4"/>
-                                                        <constraint firstAttribute="width" constant="20" id="dEj-k1-CqS"/>
-                                                    </constraints>
-                                                </imageView>
                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="alert" translatesAutoresizingMaskIntoConstraints="NO" id="Sln-SM-3C8">
                                                     <rect key="frame" x="189" y="16" width="20" height="20"/>
                                                     <color key="tintColor" red="0.97647058819999999" green="0.50196078430000002" blue="0.2156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -77,22 +70,17 @@
                                                 <constraint firstItem="Xub-TY-7WZ" firstAttribute="leading" secondItem="wEN-CE-3Ia" secondAttribute="leading" id="12c-82-j7a"/>
                                                 <constraint firstItem="Xub-TY-7WZ" firstAttribute="top" secondItem="wEN-CE-3Ia" secondAttribute="bottom" id="737-AK-3vc"/>
                                                 <constraint firstItem="Xub-TY-7WZ" firstAttribute="leading" secondItem="GIP-qm-u3P" secondAttribute="trailing" constant="16" id="8wg-ur-1Ba"/>
-                                                <constraint firstItem="XJI-ov-XrW" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Sln-SM-3C8" secondAttribute="trailing" constant="8" id="9Mc-UX-OQj"/>
-                                                <constraint firstItem="XJI-ov-XrW" firstAttribute="centerY" secondItem="Aoq-SC-ZP9" secondAttribute="centerY" id="IXn-AN-i9L"/>
                                                 <constraint firstItem="Y5U-Au-agH" firstAttribute="leading" secondItem="Aoq-SC-ZP9" secondAttribute="leading" constant="16" id="Ktg-yd-WcJ"/>
                                                 <constraint firstItem="Sln-SM-3C8" firstAttribute="leading" secondItem="wEN-CE-3Ia" secondAttribute="trailing" constant="8" id="a2d-Vm-SN2"/>
                                                 <constraint firstItem="wEN-CE-3Ia" firstAttribute="centerY" secondItem="GIP-qm-u3P" secondAttribute="centerY" constant="-10" id="aBW-xR-8fm"/>
                                                 <constraint firstItem="GIP-qm-u3P" firstAttribute="leading" secondItem="Aoq-SC-ZP9" secondAttribute="leading" constant="16" id="aRN-Wg-dXj"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="XJI-ov-XrW" secondAttribute="trailing" constant="8" id="eNe-Ok-F2w"/>
                                                 <constraint firstItem="GIP-qm-u3P" firstAttribute="centerY" secondItem="Aoq-SC-ZP9" secondAttribute="centerY" id="h8c-E8-4zc"/>
                                                 <constraint firstItem="Sln-SM-3C8" firstAttribute="centerY" secondItem="wEN-CE-3Ia" secondAttribute="centerY" id="sfF-Os-ZQH"/>
-                                                <constraint firstItem="XJI-ov-XrW" firstAttribute="leading" secondItem="Xub-TY-7WZ" secondAttribute="trailing" constant="8" id="slQ-Rz-Et8"/>
                                                 <constraint firstAttribute="bottom" secondItem="Y5U-Au-agH" secondAttribute="bottom" id="swG-Y4-nuw"/>
                                                 <constraint firstAttribute="trailing" secondItem="Y5U-Au-agH" secondAttribute="trailing" constant="-17" id="v8y-0N-TzN"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="lockIcon" destination="XJI-ov-XrW" id="3P1-mP-5la"/>
                                             <outlet property="modelLabel" destination="Xub-TY-7WZ" id="0Zb-BX-XSq"/>
                                             <outlet property="nameLabel" destination="wEN-CE-3Ia" id="9xD-Xc-Kys"/>
                                             <outlet property="statusIcon" destination="Sln-SM-3C8" id="2eg-KY-fEE"/>
@@ -533,7 +521,7 @@
                                                     <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="chip-small" translatesAutoresizingMaskIntoConstraints="NO" id="MPm-Vk-nBJ">
+                                                <imageView hidden="YES" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="chip-small" translatesAutoresizingMaskIntoConstraints="NO" id="MPm-Vk-nBJ">
                                                     <rect key="frame" x="314.5" y="26" width="20" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="20" id="qCC-v0-lCO"/>
