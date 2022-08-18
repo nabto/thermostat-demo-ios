@@ -21,7 +21,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     var waiting  = true
     var errorBanner: GrowingNotificationBanner? = nil
 
-    let busySpinner: UIActivityIndicatorView = {
+    let buttonBarSpinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView()
         spinner.translatesAutoresizingMaskIntoConstraints = false
         spinner.hidesWhenStopped = true
@@ -31,7 +31,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         table.contentInset.top += 16
-        self.navigationItem.leftBarButtonItems?.append(UIBarButtonItem(customView: self.busySpinner))
+        self.navigationItem.leftBarButtonItems?.append(UIBarButtonItem(customView: self.buttonBarSpinner))
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -60,28 +60,46 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
 
     func populateDeviceOverview() {
         self.devices = []
-        self.waiting = true
+        if (BookmarkManager.shared.deviceBookmarks.isEmpty) {
+            // show big spinner in table
+            self.waiting = true
+        } else {
+            // show spinner above table
+            self.buttonBarSpinner.startAnimating()
+        }
+        self.addEmptyBookmarks()
         DispatchQueue.global().async {
             self.getDeviceDetailsForBookmarks()
             DispatchQueue.main.async {
                 self.table.reloadData()
+                self.buttonBarSpinner.stopAnimating()
                 self.waiting = false
             }
         }
     }
 
+    func addEmptyBookmarks() {
+        let bookmarks = BookmarkManager.shared.deviceBookmarks
+        self.devices = []
+        for b in bookmarks {
+            self.devices.append(DeviceRowModel(bookmark: b))
+        }
+        self.table.reloadData()
+    }
+
     func getDeviceDetailsForBookmarks() {
         let bookmarks = BookmarkManager.shared.deviceBookmarks
         let group = DispatchGroup()
-        for b in bookmarks {
+        for device in self.devices {
             group.enter()
             DispatchQueue.global().async {
                 do {
-                    let device = try self.getInfoForDevice(bookmark: b)
-                    self.devices.append(device)
-                    print(" *** added device: paired=\(device.isPaired), online=\(device.isOnline), role=\(device.bookmark.role ?? "(no role)"  )")
+                    try self.populateWithDetails(device)
                 } catch {
-                    self.handleError(msg: "An error occurred when retrieving device information: \(error)")
+                    print("An error occurred when retrieving device information for \(device.bookmark): \(error)")
+                }
+                DispatchQueue.main.sync {
+                    self.table.reloadData()
                 }
                 group.leave()
             }
@@ -89,10 +107,9 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         group.wait()
     }
 
-    private func getInfoForDevice(bookmark: Bookmark) throws -> DeviceRowModel {
-        var device = DeviceRowModel(bookmark: bookmark)
+    private func populateWithDetails(_ device: DeviceRowModel) throws {
         do {
-            let connection = try EdgeManager.shared.getConnection(bookmark)
+            let connection = try EdgeManager.shared.getConnection(device.bookmark)
             device.isOnline = true
             let user = try NabtoEdgeIamUtil.IamUtil.getCurrentUser(connection: connection)
             if let role = user.Role {
@@ -106,10 +123,8 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         } catch IamError.USER_DOES_NOT_EXIST {
             device.isPaired = false
         } catch {
-            print(" **** ERROR: \(error)")
-            throw error
+            device.isOnline = false
         }
-        return device
     }
 
     @IBAction func refresh(_ sender: Any) {
@@ -124,7 +139,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     
     func handleSelection(device: DeviceRowModel) {
         self.errorBanner?.dismiss()
-        if (device.isOnline) {
+        if (device.isOnline ?? false) {
             self.handleOnlineDevice(device)
         } else {
             self.handleOfflineDevice(device)
@@ -132,18 +147,18 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     }
 
     private func handleOfflineDevice(_ device: DeviceRowModel) {
-        self.busySpinner.startAnimating()
-        self.table.allowsSelection = false
+        // expect timeout, so indicate activity in the UI 
+        self.buttonBarSpinner.startAnimating()
         DispatchQueue.global().async {
             defer {
                 DispatchQueue.main.sync {
-                    self.busySpinner.stopAnimating()
-                    self.table.allowsSelection = true
+                    self.buttonBarSpinner.stopAnimating()
                 }
             }
             do {
-                let updatedDevice = try self.getInfoForDevice(bookmark: device.bookmark)
-                if (device.isOnline) {
+                let updatedDevice = DeviceRowModel(bookmark: device.bookmark)
+                try self.populateWithDetails(updatedDevice)
+                if (device.isOnline ?? false) {
                     self.handleOnlineDevice(updatedDevice)
                 } else {
                     self.handleError(msg: "Device is offline")
@@ -210,14 +225,19 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DeviceCell", for: indexPath) as! DeviceCell
                 let device = devices[indexPath.row]
                 cell.configure(device: device)
-                if (device.isOnline) {
-                    if (device.isPaired) {
-                        cell.statusIcon.image = UIImage(named: "checkSmall")?.withRenderingMode(.alwaysTemplate)
+                if (device.isOnline != nil) {
+                    cell.statusIcon.isHidden = false
+                    if (device.isOnline!) {
+                        if (device.isPaired) {
+                            cell.statusIcon.image = UIImage(named: "checkSmall")?.withRenderingMode(.alwaysTemplate)
+                        } else {
+                            cell.statusIcon.image = UIImage(named: "open")?.withRenderingMode(.alwaysTemplate)
+                        }
                     } else {
-                        cell.statusIcon.image = UIImage(named: "open")?.withRenderingMode(.alwaysTemplate)
+                        cell.statusIcon.image = UIImage(named: "alert")?.withRenderingMode(.alwaysTemplate)
                     }
                 } else {
-                    cell.statusIcon.image = UIImage(named: "alert")?.withRenderingMode(.alwaysTemplate)
+                    cell.statusIcon.isHidden = true
                 }
                 return cell
             } else {

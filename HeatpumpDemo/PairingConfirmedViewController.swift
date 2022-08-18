@@ -41,6 +41,7 @@ class PairingConfirmedViewController: ViewControllerWithDevice {
             if (name.count > 0) {
                 self.device.name = name
                 self.pairingConfirmedDelegate?.pairingConfirmed()
+                BookmarkManager.shared.add(bookmark: self.device)
                 dismiss(animated: true, completion: nil)
             }
         }

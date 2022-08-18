@@ -11,6 +11,7 @@ import UIKit
 class Bookmark : Equatable, Hashable, CustomStringConvertible {
     let deviceId: String
     let productId: String
+    var timeAdded: Date
     var sct: String?
     var name : String = "Anonymous Heatpump"
     var modelName: String?
@@ -32,12 +33,13 @@ class Bookmark : Equatable, Hashable, CustomStringConvertible {
     }
 
     var description: String {
-        "Bookmark(deviceId: \(deviceId), productId: \(productId), sct: \(sct), name: \(name))"
+        "Bookmark(deviceId: \(deviceId), productId: \(productId), timeAdded: \(timeAdded), sct: \(sct), name: \(name), modelName: \(modelName), role: \(role))"
     }
 
-    init(deviceId: String, productId: String, sct: String?=nil, name: String?=nil, modelName: String?=nil, role: String?=nil) {
+    init(deviceId: String, productId: String, creationTime: Date, sct: String?=nil, name: String?=nil, modelName: String?=nil, role: String?=nil) {
         self.deviceId = deviceId
         self.productId = productId
+        self.timeAdded = creationTime
         self.sct = sct
         if let name = name {
             self.name = name
@@ -58,6 +60,7 @@ class BookmarkManager {
 
     func add(bookmark: Bookmark) {
         if !deviceBookmarks.contains(bookmark){
+            bookmark.timeAdded = Date()
             deviceBookmarks.append(bookmark)
             saveBookmarks()
         }
@@ -88,8 +91,12 @@ class BookmarkManager {
 //        } catch {
 //            print("error reading bookmarks file")
 //        }
-        //self.deviceBookmarks.append(Bookmark(deviceId: "de-ijrdq47i", productId: "pr-fatqcwj9", sct: "WzwjoTabnvux", name: "Remote integration test"))
-        self.deviceBookmarks.append(Bookmark(deviceId: "de-3cqgxbdm", productId: "pr-cc9i4y7r", name: "Local heatpump"))
+        var bookmarks: [Bookmark] = []
+        bookmarks.append(Bookmark(deviceId: "de-xxxxxxxx", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 0), sct: "WzwjoTabnvux", name: "1 Offline device (top)"))
+        bookmarks.append(Bookmark(deviceId: "de-ijrdq47i", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 1), sct: "WzwjoTabnvux", name: "2 Remote integration test"))
+        bookmarks.append(Bookmark(deviceId: "de-3cqgxbdm", productId: "pr-cc9i4y7r", creationTime: Date(timeIntervalSince1970: 2), name: "3 Local heatpump"))
+        bookmarks.append(Bookmark(deviceId: "de-yyyyyyyy", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 3), sct: "WzwjoTabnvux", name: "4 Offline device (bottom)"))
+        self.deviceBookmarks = bookmarks.sorted(by: { $0.timeAdded < $1.timeAdded })
     }
     
     func clearBookmarks() {

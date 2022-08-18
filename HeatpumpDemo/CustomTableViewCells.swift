@@ -11,7 +11,7 @@ import UIKit
 class DeviceRowModel {
     var bookmark: Bookmark
     var isPaired: Bool = false
-    var isOnline: Bool = false
+    var isOnline: Bool? = nil
     var id: String {
         get {
             return "\(self.bookmark.productId).\(self.bookmark.deviceId)"

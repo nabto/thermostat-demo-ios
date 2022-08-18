@@ -18,16 +18,21 @@ class EdgeManager : ConnectionEventReceiver {
     private var cache: [Bookmark:Connection] = [:]
     private var client_: NabtoEdgeClient.Client! = nil
 
+    private let cacheQueue = DispatchQueue(label: "cacheQueue")
+
     internal var client: NabtoEdgeClient.Client {
         get {
             if (self.client_ == nil) {
                 self.client_ = NabtoEdgeClient.Client()
+                self.client_.enableNsLogLogging()
+                try! self.client_.setLogLevel(level: "trace")
             }
             return self.client_
         }
     }
 
     func stop() {
+        print(" XX stopping!")
         self.cache = [:]
         self.client_?.stop()
         self.client_ = nil
@@ -36,17 +41,25 @@ class EdgeManager : ConnectionEventReceiver {
     func onEvent(event: NabtoEdgeClientConnectionEvent) {
         if (event == NabtoEdgeClientConnectionEvent.CLOSED) {
             // flush entire cache on any connection close (error or controller) ... a proper finegrained cleanup requires a connection wrapper
-            self.cache = [:]
+            //self.cache = [:]
         }
     }
 
     func getConnection(_ target: Bookmark) throws -> Connection {
-        if (cache[target] == nil) {
-            let connection = try doConnect(target)
-            try connection.addConnectionEventsReceiver(cb: self)
-            cache[target] = connection
+        var cached: Connection?
+        cacheQueue.sync {
+            cached = cache[target]
         }
-        return cache[target]!
+        if (cached == nil) {
+            let newConnection = try doConnect(target)
+            try newConnection.addConnectionEventsReceiver(cb: self)
+            cacheQueue.sync {
+                cache[target] = newConnection
+            }
+            return newConnection
+        } else {
+            return cached!
+        }
     }
 
     func doConnect(_ target: Bookmark) throws -> Connection {
@@ -54,18 +67,14 @@ class EdgeManager : ConnectionEventReceiver {
         try connection.setProductId(id: target.productId)
         try connection.setDeviceId(id: target.deviceId)
         try connection.setServerKey(key: self.appSpecificApiKey)
-
         guard let key = ProfileTools.getSavedPrivateKey() else {
             throw NabtoEdgeClientError.FAILED_WITH_DETAIL(detail: "Private key not set")
         }
         try connection.setPrivateKey(key: key)
-
         if let sct = target.sct {
             try connection.setServerConnectToken(sct: sct)
         }
-
         try connection.connect()
-
         return connection
     }
 

@@ -63,23 +63,23 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 //        }
     }
     
-    func handlePaired(device: Bookmark) {
-        let message = "Device is already paired"
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        
-        let okAction = UIAlertAction(title: "Ok", style: .default) { action in
-            alert.dismiss(animated: true, completion: nil)
-            
-            if let controller = StoryboardHelper.viewControllerFor(device: device) {
-                self.navigationController?.pushViewController(controller, animated: true)
-            }
-        }
-        alert.addAction(okAction)
-        present(alert, animated: true, completion: nil)
-        
-        //add bookmark (just in case it was deleted before)
-        BookmarkManager.shared.add(bookmark: device)
-    }
+//    func handlePaired(device: Bookmark) {
+//        let message = "Device is already paired"
+//        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+//
+//        let okAction = UIAlertAction(title: "Ok", style: .default) { action in
+//            alert.dismiss(animated: true, completion: nil)
+//
+//            if let controller = StoryboardHelper.viewControllerFor(device: device) {
+//                self.navigationController?.pushViewController(controller, animated: true)
+//            }
+//        }
+//        alert.addAction(okAction)
+//        present(alert, animated: true, completion: nil)
+//
+//        //add bookmark (just in case it was deleted before)
+//        BookmarkManager.shared.add(bookmark: device)
+//    }
     
     func handleUnpaired(device: NabtoDevice) {
         performSegue(withIdentifier: "toPairing", sender: device)
