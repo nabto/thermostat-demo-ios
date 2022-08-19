@@ -11,17 +11,9 @@ import NotificationBannerSwift
 import CBORCoding
 import NabtoEdgeClient
 
-enum DeviceMode : Int {
-    case cool       = 0
-    case heat       = 1
-    case circulate  = 2
-    case dehumidify = 3
-    
-    func toText() -> String {
-        return String(describing: self).capitalized
-    }
-    
-    static let all = [cool, heat, circulate, dehumidify]
+enum DeviceMode: String {
+    case COOL, HEAT, FAN, DRY
+    static let all = [COOL, HEAT, FAN, DRY]
 }
 
 public struct HeatpumpDetails: Codable, CustomStringConvertible {
@@ -55,7 +47,7 @@ public struct HeatpumpDetails: Codable, CustomStringConvertible {
 class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
     @IBOutlet weak var temperatureLabel     : UILabel!
-    @IBOutlet weak var localTemperatureLabel: UILabel!
+    @IBOutlet weak var roomTemperatureLabel: UILabel!
     @IBOutlet weak var temperatureSlider    : UISlider!
     @IBOutlet weak var activeSwitch         : UISwitch!
     @IBOutlet weak var errorLabel           : UILabel!
@@ -72,20 +64,19 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     var offline         = false
     
     var roomTemperature = -1 {
-        didSet { localTemperatureLabel.text = "\(roomTemperature)ºC in room" }
+        didSet { roomTemperatureLabel.text = "\(roomTemperature)ºC in room" }
     }
     var temperature = -1 {
         didSet { temperatureLabel.text = "\(temperature)ºC" }
     }
     var mode : DeviceMode? {
-        didSet { modeField.text = mode?.toText() ?? "-" }
+        didSet { modeField.text = mode?.rawValue }
     }
     
     var busy = false {
         didSet {
-            UIApplication.shared.isNetworkActivityIndicatorVisible = busy
             if busy {
-                perform(#selector(showSpinner), with: nil, afterDelay: 2)
+                perform(#selector(showSpinner), with: nil, afterDelay: 1)
             } else {
                 hideSpinner()
             }
@@ -117,7 +108,6 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         if !starting {
             refresh()
         } else {
@@ -135,11 +125,12 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
         DispatchQueue.main.async {
             let banner = GrowingNotificationBanner(title: "Communication Error", subtitle: msg, style: .danger)
             banner.show()
+            self.busy = false
         }
     }
 
     @objc func refresh() {
-        busy = true
+        self.busy = true
         DispatchQueue.global().async {
             do {
                 let connection = try EdgeManager.shared.getConnection(self.device)
@@ -148,10 +139,9 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
                 if (response.status == 205) {
                     let details = try HeatpumpDetails.decode(cbor: response.payload)
                     DispatchQueue.main.async {
-                        let banner = GrowingNotificationBanner(title: "Yay!", subtitle: "\(details)", style: .success)
-                        banner.show()
+                        self.busy = false
+                        self.refreshState(details)
                     }
-                    print("Got details: \(details)")
                 } else {
                     self.showDeviceError("Could not get heatpump details, device returned status \(response.status)")
                 }
@@ -159,28 +149,14 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
                 self.showDeviceError("\(error)")
             }
         }
-//        NabtoManager.shared.invokeRpc(device: device.id, request: request, parameters: nil) { (result, error) in
-//            if let state = result {
-//                self.refreshState(state: state)
-//            } else if let error = error {
-//                self.handleError(error: error)
-//            }
-//            self.busy = false
-//        }
     }
     
-    func refreshState(state: [String : Any]) {
-        activeSwitch.isOn = state["activated"] as? Bool ?? false
-        mode = DeviceMode(rawValue: (state["mode"] as? Int) ?? -1)
-        
-        if let temp = state["target_temperature"] as? Int {
-            temperature = min(maxTemp, max(minTemp, temp))
-            temperatureSlider.value = Float(temperature)
-        }
-        if let tempR = state["room_temperature"] as? Int {
-            roomTemperature = tempR
-        }
-        
+    func refreshState(_ details: HeatpumpDetails) {
+        self.activeSwitch.isOn = details.Power
+        self.mode = DeviceMode(rawValue: details.Mode)
+        self.temperatureSlider.value = Float(details.Target)
+        self.temperature = Int(details.Target)
+        self.roomTemperature = Int(details.Temperature)
         markNotOffline()
     }
     
@@ -188,83 +164,92 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
         offline = false
         showErrorLabel(show: !(activeSwitch.isOn), message: "Device powered off")
     }
-    
+
     func applyTemperature(temperature: Int) {
-        busy = true
-        let request = "heatpump_set_target_temperature.json"
-        let params = ["temperature" : temperature]
-//        NabtoManager.shared.invokeRpc(device: device.id, request: request, parameters: params) { (result, error) in
-//            if let temperature = result?["temperature"] as? Int {
-//                self.temperature = temperature
-//                self.temperatureSlider.value = Float(temperature)
-//                self.markNotOffline()
-//            } else if let error = error {
-//                self.handleError(error: error)
-//            }
-//            self.busy = false
-//        }
-    }
-    
-    func applyActivate(activated: Bool) {
-        busy = true
-        let request = "heatpump_set_activation_state.json"
-        let params = ["activated" : Int(activated)]
-//        NabtoManager.shared.invokeRpc(device: device.id, request: request, parameters: params) { (result, error) in
-//            if let activated = result?["activated"] as? Bool {
-//                self.activeSwitch.setOn(activated, animated: false)
-//                self.markNotOffline()
-//            } else if let error = error {
-//                self.handleError(error: error)
-//            }
-//            self.busy = false
-//        }
-    }
-    
-    func applyMode(mode: DeviceMode) {
-        self.mode = mode
-        busy = true
-        let request = "heatpump_set_mode.json"
-        let params = ["mode" : mode.rawValue]
-//        NabtoManager.shared.invokeRpc(device: device.id, request: request, parameters: params) { (result, error) in
-//            if let modeValue = result?["mode"] as? Int {
-//                self.mode = DeviceMode(rawValue: modeValue)
-//                self.markNotOffline()
-//            } else if let error = error {
-//                self.handleError(error: error)
-//            }
-//            self.busy = false
-//        }
-    }
-    
-    func handleError(error: NabtoError) {
-        print(error)
-        
-        switch error {
-        case .timedOut(deviceID: _):
-            showErrorLabel(show: true, message: "Device is offline")
-            if !offline {
-                offline = true
-                perform(#selector(refresh), with: nil, afterDelay: 4)
+        self.busy = true
+        DispatchQueue.global().async {
+            defer {
+                DispatchQueue.main.sync {
+                    self.busy = false
+                }
             }
-        case .noAccess:
-            noAccessNotice()
-        default:
-            showErrorLabel(show: true, message: "Error invoking device")
-            if !offline {
-                offline = true
-                perform(#selector(refresh), with: nil, afterDelay: 4)
+            do {
+                let connection = try EdgeManager.shared.getConnection(self.device)
+                let coap = try connection.createCoapRequest(method: "POST", path: "/heat-pump/target")
+                let encoder = CBOREncoder()
+                let cbor = try encoder.encode(Float(self.temperature))
+                try coap.setRequestPayload(contentFormat: ContentFormat.APPLICATION_CBOR.rawValue, data: cbor)
+                let response = try coap.execute()
+                if (response.status == 204) {
+                    self.refresh()
+                } else {
+                    self.showDeviceError("Could not set heatpump temperature, device returned status \(response.status)")
+                }
+            } catch {
+                self.showDeviceError("\(error)")
             }
         }
     }
     
+    func applyActivate(activated: Bool) {
+        self.busy = true
+        DispatchQueue.global().async {
+            defer {
+                DispatchQueue.main.sync {
+                    self.busy = false
+                }
+            }
+            do {
+                let connection = try EdgeManager.shared.getConnection(self.device)
+                let coap = try connection.createCoapRequest(method: "POST", path: "/heat-pump/power")
+                let encoder = CBOREncoder()
+                let cbor = try encoder.encode(activated)
+                try coap.setRequestPayload(contentFormat: ContentFormat.APPLICATION_CBOR.rawValue, data: cbor)
+                let response = try coap.execute()
+                if (response.status == 204) {
+                    self.refresh()
+                } else {
+                    self.showDeviceError("Could not set heatpump power status, device returned status \(response.status)")
+                }
+            } catch {
+                self.showDeviceError("\(error)")
+            }
+        }
+    }
+    
+    func applyMode(mode: DeviceMode) {
+        self.mode = mode
+        self.busy = true
+        DispatchQueue.global().async {
+            defer {
+                DispatchQueue.main.sync {
+                    self.busy = false
+                }
+            }
+            do {
+                let connection = try EdgeManager.shared.getConnection(self.device)
+                let coap = try connection.createCoapRequest(method: "POST", path: "/heat-pump/mode")
+                let encoder = CBOREncoder()
+                let cbor = try encoder.encode(mode.rawValue)
+                try coap.setRequestPayload(contentFormat: ContentFormat.APPLICATION_CBOR.rawValue, data: cbor)
+                let response = try coap.execute()
+                if (response.status == 204) {
+                    self.refresh()
+                } else {
+                    self.showDeviceError("Could not set heatpump mode, device returned status \(response.status)")
+                }
+            } catch {
+                self.showDeviceError("\(error)")
+            }
+        }
+    }
+
     //will be called after a small delay
     //if the app is still waiting response, will show the spinner
     @objc func showSpinner() {
         if busy {
             connectingView.isHidden = false
             spinner.startAnimating()
-            //remove the status bar spinner, it's redundant
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
         }
     }
     
@@ -317,7 +302,7 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     }
 
     //MARK: - PickerView
-    
+
     func configurePicker() {
         let picker = UIPickerView()
         picker.delegate = self
@@ -333,7 +318,7 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return DeviceMode.all[row].toText()
+        return DeviceMode.all[row].rawValue
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -346,7 +331,7 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
         errorLabel.text = message
         errorLabel.isHidden = !show
         temperatureLabel.isHidden = show
-        localTemperatureLabel.isHidden = show
+        roomTemperatureLabel.isHidden = show
         
     }
 }

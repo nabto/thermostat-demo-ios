@@ -1176,7 +1176,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="22ºC in room" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VYa-Ld-NhW">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="22ºC in room" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VYa-Ld-NhW" userLabel="Room Temperature Label">
                                         <rect key="frame" x="211.5" y="16.5" width="99.5" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -1428,9 +1428,9 @@
                         <outlet property="connectingView" destination="SEn-d0-Gzg" id="2sF-Mx-oOm"/>
                         <outlet property="errorLabel" destination="Fwm-OO-gyh" id="PqY-gO-3ka"/>
                         <outlet property="hotIcon" destination="k7Y-Q5-8mX" id="Zmt-vM-fCa"/>
-                        <outlet property="localTemperatureLabel" destination="VYa-Ld-NhW" id="7as-01-Opi"/>
                         <outlet property="modeField" destination="ebS-ua-IPU" id="TXS-ik-RBX"/>
                         <outlet property="refreshButton" destination="Rsb-tf-RTi" id="bOj-6l-HKI"/>
+                        <outlet property="roomTemperatureLabel" destination="VYa-Ld-NhW" id="7as-01-Opi"/>
                         <outlet property="settingsButton" destination="lX5-lp-x9w" id="MlC-sy-UHs"/>
                         <outlet property="spinner" destination="wTj-Kb-KzJ" id="R3S-BU-QIH"/>
                         <outlet property="temperatureLabel" destination="kqH-7S-SDe" id="fcA-bC-mfc"/>

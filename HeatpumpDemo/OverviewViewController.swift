@@ -147,7 +147,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     }
 
     private func handleOfflineDevice(_ device: DeviceRowModel) {
-        // expect timeout, so indicate activity in the UI 
+        // expect timeout, so indicate activity in the UI
         self.buttonBarSpinner.startAnimating()
         DispatchQueue.global().async {
             defer {
