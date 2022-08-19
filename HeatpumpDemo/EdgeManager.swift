@@ -24,15 +24,14 @@ class EdgeManager : ConnectionEventReceiver {
         get {
             if (self.client_ == nil) {
                 self.client_ = NabtoEdgeClient.Client()
-                self.client_.enableNsLogLogging()
-                try! self.client_.setLogLevel(level: "trace")
+//                self.client_.enableNsLogLogging()
+//                try! self.client_.setLogLevel(level: "trace")
             }
             return self.client_
         }
     }
 
     func stop() {
-        print(" XX stopping!")
         self.cache = [:]
         self.client_?.stop()
         self.client_ = nil

@@ -123,6 +123,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         } catch IamError.USER_DOES_NOT_EXIST {
             device.isPaired = false
         } catch {
+            print("Device \(device.bookmark.name) is not available due to error: \(error)")
             device.isOnline = false
         }
     }
@@ -161,7 +162,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
                 if (device.isOnline ?? false) {
                     self.handleOnlineDevice(updatedDevice)
                 } else {
-                    self.handleError(msg: "Device is offline")
+                    self.handleError(msg: "Device '\(device.bookmark.name)' is offline")
                 }
             } catch {
                 self.handleError(msg: "\(error)")
@@ -205,18 +206,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         alert.addAction(okAction)
         present(alert, animated: true, completion: nil)
     }
-    
-    func handleOffline(device: NabtoDevice) {
-        let title = "Device offline"
-        let message = "Please check device state."
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "Ok", style: .default) { action in
-            alert.dismiss(animated: true, completion: nil)
-        }
-        alert.addAction(okAction)
-        present(alert, animated: true, completion: nil)
-    }
-    
+
     //MARK: - UITableView methods
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
