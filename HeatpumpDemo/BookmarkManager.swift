@@ -94,7 +94,7 @@ class BookmarkManager {
         var bookmarks: [Bookmark] = []
         bookmarks.append(Bookmark(deviceId: "de-xxxxxxxx", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 0), sct: "WzwjoTabnvux", name: "Offline device (top)"))
         bookmarks.append(Bookmark(deviceId: "de-ijrdq47i", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 1), sct: "WzwjoTabnvux", name: "Remote integration test"))
-        bookmarks.append(Bookmark(deviceId: "de-3cqgxbdm", productId: "pr-cc9i4y7r", creationTime: Date(timeIntervalSince1970: 2), name: "Local heatpump"))
+//        bookmarks.append(Bookmark(deviceId: "de-3cqgxbdm", productId: "pr-cc9i4y7r", creationTime: Date(timeIntervalSince1970: 2), name: "Local heatpump"))
         bookmarks.append(Bookmark(deviceId: "de-yyyyyyyy", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 3), sct: "WzwjoTabnvux", name: "Offline device (bottom)"))
         self.deviceBookmarks = bookmarks.sorted(by: { $0.timeAdded < $1.timeAdded })
     }

@@ -44,8 +44,10 @@
 		6DC4A1F41E42633F005B6CAD /* CustomTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1F31E42633F005B6CAD /* CustomTableViewCells.swift */; };
 		D455B17C28A51AA90011FD72 /* PairingConfirmedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D455B17B28A51AA90011FD72 /* PairingConfirmedViewController.swift */; };
 		E92590D603F5D8FABBE76426 /* EdgeManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92ABEF8BBC6C0A9BC56081D /* EdgeManagerTests.swift */; };
+		E929A104DC701DA1AE31ED84 /* AddDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9272A38B76AF9CE5C3FE8CF /* AddDeviceViewController.swift */; };
 		E92B3EED654E44CDD80E089D /* EdgeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9223BABCA33CFC89FFAB851 /* EdgeManager.swift */; };
 		E92DFA06F9E1E0BBD1692EC9 /* EdgeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9223BABCA33CFC89FFAB851 /* EdgeManager.swift */; };
+		E92FC3EBBDC9264942C1A7FB /* AddDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9272A38B76AF9CE5C3FE8CF /* AddDeviceViewController.swift */; };
 		FEEC29FBA4ABB0416CB21F61 /* Pods_Edge_Heat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45A7FF98A5AF6A3FAEF62B9A /* Pods_Edge_Heat.framework */; };
 /* End PBXBuildFile section */
 
@@ -104,6 +106,7 @@
 		71942C3051274190DD6AADFE /* Pods_HeatpumpDemoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HeatpumpDemoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D455B17B28A51AA90011FD72 /* PairingConfirmedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingConfirmedViewController.swift; sourceTree = "<group>"; };
 		E9223BABCA33CFC89FFAB851 /* EdgeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeManager.swift; sourceTree = "<group>"; };
+		E9272A38B76AF9CE5C3FE8CF /* AddDeviceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDeviceViewController.swift; sourceTree = "<group>"; };
 		E92ABEF8BBC6C0A9BC56081D /* EdgeManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeManagerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -220,6 +223,7 @@
 				6DC4A1D31E40F823005B6CAD /* HelpViewController.swift */,
 				6DC4A1F31E42633F005B6CAD /* CustomTableViewCells.swift */,
 				D455B17B28A51AA90011FD72 /* PairingConfirmedViewController.swift */,
+				E9272A38B76AF9CE5C3FE8CF /* AddDeviceViewController.swift */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -507,6 +511,7 @@
 				6DC4A1E81E410420005B6CAD /* UserInfo.swift in Sources */,
 				6DC4A1D61E40F845005B6CAD /* SettingsViewController.swift in Sources */,
 				E92DFA06F9E1E0BBD1692EC9 /* EdgeManager.swift in Sources */,
+				E92FC3EBBDC9264942C1A7FB /* AddDeviceViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,6 +529,7 @@
 				6D95FF271E49FC3800FB070F /* ProfileTools.swift in Sources */,
 				E92590D603F5D8FABBE76426 /* EdgeManagerTests.swift in Sources */,
 				E92B3EED654E44CDD80E089D /* EdgeManager.swift in Sources */,
+				E929A104DC701DA1AE31ED84 /* AddDeviceViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -663,7 +669,7 @@
 				DEVELOPMENT_TEAM = E55K8RCV2E;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = HeatpumpDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -687,7 +693,7 @@
 				DEVELOPMENT_TEAM = E55K8RCV2E;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = HeatpumpDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

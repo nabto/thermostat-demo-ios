@@ -164,7 +164,7 @@
                                                         <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
-                                                        <segue destination="iQE-Ou-Jwx" kind="show" id="GEC-ao-7L2"/>
+                                                        <segue destination="5YR-MB-x8z" kind="show" id="WnB-mV-pMo"/>
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2if-xw-4XF">
@@ -1645,6 +1645,127 @@
             </objects>
             <point key="canvasLocation" x="3479.1999999999998" y="-30.134932533733135"/>
         </scene>
+        <!--Add Device-->
+        <scene sceneID="FAy-Vz-Rno">
+            <objects>
+                <viewController id="5YR-MB-x8z" userLabel="Add Device" customClass="AddDeviceViewController" customModule="Edge_Heat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="YGP-cJ-2cp"/>
+                        <viewControllerLayoutGuide type="bottom" id="njy-4f-22j"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="N1l-CT-vPk">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3H0-48-Lbb">
+                                <rect key="frame" x="0.0" y="0.0" width="391" height="44"/>
+                                <items>
+                                    <navigationItem title="Title" id="tfM-Mq-gxo"/>
+                                </items>
+                            </navigationBar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add new device" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tac-9g-A6V">
+                                <rect key="frame" x="16" y="59" width="343" height="37"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="31"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter a pairing string to pair with any device, remote or local:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y0V-jq-CCk">
+                                <rect key="frame" x="16" y="113" width="343" height="47"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="47" id="t0r-Bh-Bt5"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="p=pr-aaaaaaaa,d=de-bbbbbbbb,pwd=secret,sct=FUmot9E9XCKW" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kmv-lK-hiG">
+                                <rect key="frame" x="16" y="167" width="343" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A pairing string is normally obtained from the owner of a device (who wants to invite guests)." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FX0-P8-kJK">
+                                <rect key="frame" x="16" y="209" width="343" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="oxf-nu-wOw"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" systemColor="placeholderTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GRR-OY-CNL">
+                                <rect key="frame" x="16" y="249" width="343" height="46"/>
+                                <color key="backgroundColor" red="0.91372549530000002" green="0.52549022440000004" blue="0.28627452250000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="46" id="XgZ-fv-eKx"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Attempt to pair using pairing string">
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </buttonConfiguration>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If you don't know a pairing string, you can try to discover local devices to pair with:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rrW-RL-mkE">
+                                <rect key="frame" x="16" y="337" width="343" height="47"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="47" id="UAj-rc-XVS"/>
+                                    <constraint firstAttribute="height" constant="47" id="a9E-fd-lAs"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="trF-bi-eCd">
+                                <rect key="frame" x="16" y="392" width="343" height="47"/>
+                                <color key="backgroundColor" red="0.91372549530000002" green="0.52549022440000004" blue="0.28627452250000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="47" id="9Ax-uZ-xNe"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Discover local devices">
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <segue destination="iQE-Ou-Jwx" kind="show" id="4ne-0u-YvL"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="y0V-jq-CCk" firstAttribute="top" secondItem="Tac-9g-A6V" secondAttribute="bottom" constant="17" id="3OL-jN-uqW"/>
+                            <constraint firstItem="y0V-jq-CCk" firstAttribute="leading" secondItem="Tac-9g-A6V" secondAttribute="leading" id="4OX-r9-43Z"/>
+                            <constraint firstItem="kmv-lK-hiG" firstAttribute="leading" secondItem="N1l-CT-vPk" secondAttribute="leadingMargin" id="501-5g-Tgf"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="3H0-48-Lbb" secondAttribute="trailing" constant="-32" id="6xE-Y5-9nY"/>
+                            <constraint firstItem="Tac-9g-A6V" firstAttribute="top" secondItem="3H0-48-Lbb" secondAttribute="bottom" constant="15" id="87a-uH-yf7"/>
+                            <constraint firstItem="kmv-lK-hiG" firstAttribute="top" secondItem="y0V-jq-CCk" secondAttribute="bottom" constant="7" id="9ay-Zz-1cZ"/>
+                            <constraint firstItem="Tac-9g-A6V" firstAttribute="trailing" secondItem="N1l-CT-vPk" secondAttribute="trailingMargin" id="AOM-WA-4s8"/>
+                            <constraint firstItem="Tac-9g-A6V" firstAttribute="leading" secondItem="N1l-CT-vPk" secondAttribute="leadingMargin" id="DM0-JD-cH4"/>
+                            <constraint firstItem="GRR-OY-CNL" firstAttribute="top" secondItem="FX0-P8-kJK" secondAttribute="bottom" constant="8" symbolic="YES" id="Gbo-BY-RwN"/>
+                            <constraint firstItem="FX0-P8-kJK" firstAttribute="leading" secondItem="N1l-CT-vPk" secondAttribute="leadingMargin" id="GxN-TI-ksU"/>
+                            <constraint firstItem="rrW-RL-mkE" firstAttribute="top" secondItem="GRR-OY-CNL" secondAttribute="bottom" constant="42" id="Ohr-gV-jXI"/>
+                            <constraint firstItem="trF-bi-eCd" firstAttribute="leading" secondItem="rrW-RL-mkE" secondAttribute="leading" id="SZK-Uz-MKL"/>
+                            <constraint firstItem="FX0-P8-kJK" firstAttribute="top" secondItem="kmv-lK-hiG" secondAttribute="bottom" constant="8" id="VG0-nk-fEZ"/>
+                            <constraint firstItem="trF-bi-eCd" firstAttribute="trailing" secondItem="rrW-RL-mkE" secondAttribute="trailing" id="XJR-hX-yfM"/>
+                            <constraint firstItem="FX0-P8-kJK" firstAttribute="trailing" secondItem="N1l-CT-vPk" secondAttribute="trailingMargin" id="Xb5-2m-mZd"/>
+                            <constraint firstItem="3H0-48-Lbb" firstAttribute="leading" secondItem="N1l-CT-vPk" secondAttribute="leading" id="aZk-VG-yNr"/>
+                            <constraint firstItem="GRR-OY-CNL" firstAttribute="leading" secondItem="FX0-P8-kJK" secondAttribute="leading" id="fqA-KL-yd6"/>
+                            <constraint firstItem="GRR-OY-CNL" firstAttribute="trailing" secondItem="FX0-P8-kJK" secondAttribute="trailing" id="kw5-zN-3NV"/>
+                            <constraint firstItem="GRR-OY-CNL" firstAttribute="trailing" secondItem="rrW-RL-mkE" secondAttribute="trailing" id="l8I-Wp-CKo"/>
+                            <constraint firstItem="kmv-lK-hiG" firstAttribute="trailing" secondItem="N1l-CT-vPk" secondAttribute="trailingMargin" id="pNx-8L-wGb"/>
+                            <constraint firstItem="GRR-OY-CNL" firstAttribute="leading" secondItem="rrW-RL-mkE" secondAttribute="leading" id="pgP-Is-7ho"/>
+                            <constraint firstItem="y0V-jq-CCk" firstAttribute="trailing" secondItem="Tac-9g-A6V" secondAttribute="trailing" id="ph0-hM-Gtq"/>
+                            <constraint firstItem="3H0-48-Lbb" firstAttribute="bottom" secondItem="YGP-cJ-2cp" secondAttribute="bottom" id="wa4-6I-i0F"/>
+                            <constraint firstItem="trF-bi-eCd" firstAttribute="top" secondItem="rrW-RL-mkE" secondAttribute="bottom" constant="8" symbolic="YES" id="zBv-mJ-id7"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="aso-Ss-XCM"/>
+                    <connections>
+                        <outlet property="discoverButton" destination="trF-bi-eCd" id="hv3-Ky-rgC"/>
+                        <outlet property="pairingStringButton" destination="GRR-OY-CNL" id="b6c-do-HSF"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wwj-AR-wrC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="724" y="829.83508245877067"/>
+        </scene>
         <!--Help-->
         <scene sceneID="dw7-5T-PJm">
             <objects>
@@ -2030,6 +2151,9 @@ Through the security settings page of the device, the owner can control who has 
         <image name="settingsSmall" width="20" height="20"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="placeholderTextColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

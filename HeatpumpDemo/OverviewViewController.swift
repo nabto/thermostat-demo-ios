@@ -67,9 +67,9 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             // show spinner above table
             self.buttonBarSpinner.startAnimating()
         }
-        self.addEmptyBookmarks()
+        self.addDevicesFromBookmarks()
         DispatchQueue.global().async {
-            self.getDeviceDetailsForBookmarks()
+            self.getDetailsForDevices()
             DispatchQueue.main.async {
                 self.table.reloadData()
                 self.buttonBarSpinner.stopAnimating()
@@ -78,7 +78,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
 
-    func addEmptyBookmarks() {
+    func addDevicesFromBookmarks() {
         let bookmarks = BookmarkManager.shared.deviceBookmarks
         self.devices = []
         for b in bookmarks {
@@ -87,8 +87,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         self.table.reloadData()
     }
 
-    func getDeviceDetailsForBookmarks() {
-        let bookmarks = BookmarkManager.shared.deviceBookmarks
+    func getDetailsForDevices() {
         let group = DispatchGroup()
         for device in self.devices {
             group.enter()
