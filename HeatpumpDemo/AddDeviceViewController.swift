@@ -64,7 +64,7 @@ class AddDeviceViewController: UIViewController {
                     let pairingDetails = try Self.parsePairingString(pairingString: str)
                     let bookmark = Bookmark(deviceId: pairingDetails.deviceId, productId: pairingDetails.productId, sct: pairingDetails.sct)
                     destination.device = bookmark
-                    destination.pairingPassword = pairingDetails.password
+                    destination.pairingStringPassword = pairingDetails.password
                 } catch {
                     print("Never here: Pairing string invalid")
                     return

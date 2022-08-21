@@ -8,12 +8,13 @@
 
 import UIKit
 import NabtoEdgeIamUtil
+import NabtoEdgeClient
 import NotificationBannerSwift
 
 class PairingViewController: UIViewController, PairingConfirmedListener {
 
     @IBOutlet weak var nameLabel        : UILabel!
-    @IBOutlet weak var modelLabel       : UILabel!
+    @IBOutlet weak var deviceIdLabel       : UILabel!
     @IBOutlet weak var confirmLabel     : UILabel!
     @IBOutlet weak var confirmView      : UIView!
     @IBOutlet weak var resultView       : UIView!
@@ -21,10 +22,11 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
     @IBOutlet weak var passwordField: UITextField!
     
     var device : Bookmark?
-    var pairingPassword: String?
+    var pairingStringPassword: String?
 
     let defaultPairingText = "You are about to pair with this device."
     let passwordText = "This device requires a password for pairing:"
+    let errorText = "Error! Could not connect to device for pairing."
 
     let confirmSpinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView()
@@ -44,9 +46,11 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        nameLabel.text  = device?.name
-        modelLabel.text = device?.modelName
-        passwordField.isHidden = true
+        if let device = device {
+            nameLabel.text = device.name
+            deviceIdLabel.text = "\(device.productId).\(device.deviceId)"
+            passwordField.isHidden = true
+        }
         confirmLabel.text = self.defaultPairingText
     }
 
@@ -75,35 +79,55 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
         guard let device = device else { return }
         self.confirmSpinner.startAnimating()
         DispatchQueue.global().async {
-            do {
-                let modes = try IamUtil.getAvailablePairingModes(connection: EdgeManager.shared.getConnection(device))
-                if (modes.count == 0) {
-                    self.showPairingError("Device is not open for pairing - please contact the owner. If you are the owner, you can factory reset it to get access again.")
-                } else {
-                    if (modes.contains(PairingMode.LocalInitial)) {
-                        try self.pairLocalInitial()
-                    } else if (modes.contains(PairingMode.LocalOpen)) {
-                        try self.pairLocalOpen()
-                    } else if (modes.contains(PairingMode.PasswordOpen)) {
-                        try self.pairPasswordOpen()
-                    } else {
-                        self.showPairingError("This app only supports initial and open pairing modes - please reconfigure target device")
-                    }
-                    if (try IamUtil.isCurrentUserPaired(connection: EdgeManager.shared.getConnection(device))) {
-                        try self.updateBookmarkWithDeviceInfo(device)
-                        self.showConfirmation()
-                    }
-                }
-            } catch IamError.USERNAME_EXISTS {
-                self.showPairingError("User name '\(ProfileTools.getSavedUsername() ?? "nil")' already in use on device")
-            } catch IamError.AUTHENTICATION_ERROR {
-                self.showPairingError("Pairing password not valid for this device")
-            } catch {
-                self.showPairingError("An error occurred when pairing with device: \(error)")
-            }
+            self.performPairing(device: device)
             DispatchQueue.main.async {
                 self.confirmSpinner.stopAnimating()
             }
+        }
+    }
+
+    private func performPairing(device: Bookmark) {
+        do {
+            let modes = try IamUtil.getAvailablePairingModes(connection: EdgeManager.shared.getConnection(device))
+            if (modes.count == 0) {
+                self.showPairingError("Device is not open for pairing - please contact the owner. If you are the owner, you can factory reset it to get access again.")
+            } else {
+                if (modes.contains(PairingMode.LocalInitial)) {
+                    try self.pairLocalInitial()
+                } else if (modes.contains(PairingMode.LocalOpen)) {
+                    try self.pairLocalOpen()
+                } else if (modes.contains(PairingMode.PasswordOpen)) {
+                    try self.pairPasswordOpen()
+                } else {
+                    self.showPairingError("This app only supports initial and open pairing modes - please reconfigure target device")
+                }
+                if (try IamUtil.isCurrentUserPaired(connection: EdgeManager.shared.getConnection(device))) {
+                    try self.updateBookmarkWithDeviceInfo(device)
+                    self.showConfirmation()
+                }
+            }
+        } catch IamError.USERNAME_EXISTS {
+            self.showPairingError("User name '\(ProfileTools.getSavedUsername() ?? "nil")' already in use on device")
+        } catch IamError.AUTHENTICATION_ERROR {
+            self.showPairingError("Pairing password not valid for this device")
+            if (self.pairingStringPassword != nil) {
+                self.handleBadPairingStringPassword()
+            }
+        } catch NabtoEdgeClientError.NO_CHANNELS(_, _) {
+            self.showPairingError("Could not connect to device for pairing - device offline or invalid id in pairing string")
+        } catch {
+            self.showPairingError("An error occurred when pairing with device: \(error)")
+        }
+    }
+
+    private func handleBadPairingStringPassword() {
+        DispatchQueue.main.sync {
+            // enable user to edit password
+            self.passwordField.isHidden = false
+            self.passwordField.text = self.pairingStringPassword
+
+            // do not try automatic pairing again using password from pairing string
+            self.pairingStringPassword = nil
         }
     }
 
@@ -136,16 +160,20 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
     private func pairPasswordOpen() throws {
         guard let device = self.device else { return }
         var password: String? = nil
-        DispatchQueue.main.sync {
-            if (self.passwordField.isHidden) {
-                self.confirmLabel.text = self.passwordText
-                self.passwordField.isHidden = false
-                if let pairingStringPassword = self.pairingPassword {
-                    self.passwordField.text = pairingStringPassword
+
+        // if available, try password from pairing string
+        if let pairingStringPassword = self.pairingStringPassword {
+            password = pairingStringPassword
+        } else {
+            // otherwise show password input field
+            DispatchQueue.main.sync {
+                if (self.passwordField.isHidden) {
+                    self.confirmLabel.text = self.passwordText
+                    self.passwordField.isHidden = false
+                    self.passwordField.becomeFirstResponder()
+                } else if let userPassword = self.passwordField.text {
+                    password = userPassword
                 }
-                self.passwordField.becomeFirstResponder()
-            } else if let userPassword = self.passwordField.text {
-                password = userPassword
             }
         }
         if let password = password {

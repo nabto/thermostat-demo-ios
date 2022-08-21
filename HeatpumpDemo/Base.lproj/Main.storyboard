@@ -1484,8 +1484,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Model" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OQo-SE-ffb">
-                                <rect key="frame" x="82" y="93.5" width="40" height="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Device id" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OQo-SE-ffb" userLabel="Device id Label">
+                                <rect key="frame" x="82" y="93.5" width="60" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1558,7 +1558,7 @@
                         <outlet property="confirmButton" destination="oiy-c3-zyo" id="lWF-cg-f3o"/>
                         <outlet property="confirmLabel" destination="Njw-iK-dA3" id="MUq-ww-aKC"/>
                         <outlet property="confirmView" destination="Hd9-hj-XM1" id="2FB-OR-TBc"/>
-                        <outlet property="modelLabel" destination="OQo-SE-ffb" id="aTW-S7-NGq"/>
+                        <outlet property="deviceIdLabel" destination="OQo-SE-ffb" id="aTW-S7-NGq"/>
                         <outlet property="nameLabel" destination="1Fy-od-oiZ" id="d7o-04-Wnw"/>
                         <outlet property="passwordField" destination="NL9-OV-5k4" id="C0O-gF-IgF"/>
                     </connections>
