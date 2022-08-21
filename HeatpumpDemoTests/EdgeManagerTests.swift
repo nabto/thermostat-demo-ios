@@ -50,6 +50,7 @@ class EdgeManagerTest: XCTestCase {
         return Bookmark(
                 deviceId: self.testDevice.deviceId,
                 productId: self.testDevice.productId,
+                creationTime: Date(),
                 name: "Test Device")
     }
 

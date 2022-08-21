@@ -43,10 +43,24 @@
 		6DC4A1EA1E410449005B6CAD /* NabtoDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1E91E410449005B6CAD /* NabtoDevice.swift */; };
 		6DC4A1F41E42633F005B6CAD /* CustomTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1F31E42633F005B6CAD /* CustomTableViewCells.swift */; };
 		D455B17C28A51AA90011FD72 /* PairingConfirmedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D455B17B28A51AA90011FD72 /* PairingConfirmedViewController.swift */; };
+		E920766EB32AAE28F1B3CEDB /* SecuritySettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1DB1E40F945005B6CAD /* SecuritySettingsViewController.swift */; };
+		E920D288C89CD29330CB4CD9 /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1D91E40F8CB005B6CAD /* DiscoverViewController.swift */; };
+		E920DFE72A1FC74A01EAB79A /* DeviceSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1D71E40F853005B6CAD /* DeviceSettingsViewController.swift */; };
+		E92248EECE69F6EA40964931 /* CustomTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1F31E42633F005B6CAD /* CustomTableViewCells.swift */; };
+		E922EC96B5E07D077263B6DB /* PairingConfirmedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D455B17B28A51AA90011FD72 /* PairingConfirmedViewController.swift */; };
+		E923340B1E1D4C1BB1619DAC /* StoryboardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D423F691E4510DF00DFC8B9 /* StoryboardHelper.swift */; };
+		E924551915F078D5573D2794 /* PairingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1E01E40F9F1005B6CAD /* PairingViewController.swift */; };
 		E92590D603F5D8FABBE76426 /* EdgeManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92ABEF8BBC6C0A9BC56081D /* EdgeManagerTests.swift */; };
+		E92782D3FB6D223AADA0A009 /* ProfileCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1D11E40F812005B6CAD /* ProfileCreateViewController.swift */; };
+		E929836D13B9C3988BDD586E /* DeviceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1DE1E40F973005B6CAD /* DeviceDetailsViewController.swift */; };
 		E929A104DC701DA1AE31ED84 /* AddDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9272A38B76AF9CE5C3FE8CF /* AddDeviceViewController.swift */; };
+		E92A38C0D6987C838BE90500 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1D31E40F823005B6CAD /* HelpViewController.swift */; };
 		E92B3EED654E44CDD80E089D /* EdgeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9223BABCA33CFC89FFAB851 /* EdgeManager.swift */; };
+		E92CE696B6751331756AD57C /* ACMEHeaterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D423F671E45107500DFC8B9 /* ACMEHeaterViewController.swift */; };
 		E92DFA06F9E1E0BBD1692EC9 /* EdgeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9223BABCA33CFC89FFAB851 /* EdgeManager.swift */; };
+		E92F044E847046F46F7DF721 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1D51E40F845005B6CAD /* SettingsViewController.swift */; };
+		E92F8E68FE8BD10428C6095C /* EditUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1E21E40FBF5005B6CAD /* EditUserViewController.swift */; };
+		E92F9082DBA9B75261176A39 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04A6DC1E3F4C4800DD9F70 /* OverviewViewController.swift */; };
 		E92FC3EBBDC9264942C1A7FB /* AddDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9272A38B76AF9CE5C3FE8CF /* AddDeviceViewController.swift */; };
 		FEEC29FBA4ABB0416CB21F61 /* Pods_Edge_Heat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45A7FF98A5AF6A3FAEF62B9A /* Pods_Edge_Heat.framework */; };
 /* End PBXBuildFile section */
@@ -530,6 +544,20 @@
 				E92590D603F5D8FABBE76426 /* EdgeManagerTests.swift in Sources */,
 				E92B3EED654E44CDD80E089D /* EdgeManager.swift in Sources */,
 				E929A104DC701DA1AE31ED84 /* AddDeviceViewController.swift in Sources */,
+				E924551915F078D5573D2794 /* PairingViewController.swift in Sources */,
+				E92782D3FB6D223AADA0A009 /* ProfileCreateViewController.swift in Sources */,
+				E92248EECE69F6EA40964931 /* CustomTableViewCells.swift in Sources */,
+				E922EC96B5E07D077263B6DB /* PairingConfirmedViewController.swift in Sources */,
+				E92F9082DBA9B75261176A39 /* OverviewViewController.swift in Sources */,
+				E920D288C89CD29330CB4CD9 /* DiscoverViewController.swift in Sources */,
+				E92A38C0D6987C838BE90500 /* HelpViewController.swift in Sources */,
+				E923340B1E1D4C1BB1619DAC /* StoryboardHelper.swift in Sources */,
+				E929836D13B9C3988BDD586E /* DeviceDetailsViewController.swift in Sources */,
+				E92CE696B6751331756AD57C /* ACMEHeaterViewController.swift in Sources */,
+				E92F044E847046F46F7DF721 /* SettingsViewController.swift in Sources */,
+				E92F8E68FE8BD10428C6095C /* EditUserViewController.swift in Sources */,
+				E920766EB32AAE28F1B3CEDB /* SecuritySettingsViewController.swift in Sources */,
+				E920DFE72A1FC74A01EAB79A /* DeviceSettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

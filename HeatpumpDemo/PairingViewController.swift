@@ -21,6 +21,7 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
     @IBOutlet weak var passwordField: UITextField!
     
     var device : Bookmark?
+    var pairingPassword: String?
 
     let defaultPairingText = "You are about to pair with this device."
     let passwordText = "This device requires a password for pairing:"
@@ -49,7 +50,7 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
         confirmLabel.text = self.defaultPairingText
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         passwordField.isHidden = true
         confirmLabel.text = self.defaultPairingText
@@ -85,6 +86,8 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
                         try self.pairLocalOpen()
                     } else if (modes.contains(PairingMode.PasswordOpen)) {
                         try self.pairPasswordOpen()
+                    } else {
+                        self.showPairingError("This app only supports initial and open pairing modes - please reconfigure target device")
                     }
                     if (try IamUtil.isCurrentUserPaired(connection: EdgeManager.shared.getConnection(device))) {
                         try self.updateBookmarkWithDeviceInfo(device)
@@ -137,6 +140,9 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
             if (self.passwordField.isHidden) {
                 self.confirmLabel.text = self.passwordText
                 self.passwordField.isHidden = false
+                if let pairingStringPassword = self.pairingPassword {
+                    self.passwordField.text = pairingStringPassword
+                }
                 self.passwordField.becomeFirstResponder()
             } else if let userPassword = self.passwordField.text {
                 password = userPassword

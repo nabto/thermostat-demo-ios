@@ -8,17 +8,119 @@
 
 import Foundation
 import UIKit
+import NabtoEdgeClient
 
 class AddDeviceViewController: UIViewController {
-    
+
     @IBOutlet weak var pairingStringButton: UIButton!
     @IBOutlet weak var discoverButton: UIButton!
-    
+    @IBOutlet weak var pairingStringField: UITextField!
+    @IBAction func handlePairPairingString(_ sender: Any) {
+    }
+
+    @IBAction func handlePairingStringChanged(_ sender: Any) {
+        if let str = pairingStringField.text {
+            do {
+                let _ = try Self.parsePairingString(pairingString: str)
+                self.enablePairingButton()
+            } catch {
+                self.disablePairingButton()
+            }
+        } else {
+            self.disablePairingButton()
+        }
+    }
+
+    @IBAction func handleDiscover(_ sender: Any) {
+    }
+
+    func enablePairingButton() {
+        self.pairingStringButton.isEnabled = true
+    }
+
+    func disablePairingButton() {
+        self.pairingStringButton.isEnabled = false
+    }
+
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        super.shouldPerformSegue(withIdentifier: identifier, sender: sender)
+        guard identifier == "pairUsingString" else { return true }
+        if let str = pairingStringField.text {
+            do {
+                let _ = try Self.parsePairingString(pairingString: str)
+                return true
+            } catch {
+                return false
+            }
+        }
+        return false
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        if let destination = segue.destination as? PairingViewController {
+            if let str = pairingStringField.text {
+                do {
+                    let pairingDetails = try Self.parsePairingString(pairingString: str)
+                    let bookmark = Bookmark(deviceId: pairingDetails.deviceId, productId: pairingDetails.productId, sct: pairingDetails.sct)
+                    destination.device = bookmark
+                    destination.pairingPassword = pairingDetails.password
+                } catch {
+                    print("Never here: Pairing string invalid")
+                    return
+                }
+            } else {
+                print("Never here: Pairing string empty")
+                return
+            }
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        discoverButton.layer.cornerRadius  = 6
-        discoverButton.clipsToBounds   = true
-        pairingStringButton.layer.cornerRadius  = 6
-        pairingStringButton.clipsToBounds   = true
+        self.pairingStringButton.isEnabled = false
+        self.discoverButton.layer.cornerRadius  = 6
+        self.discoverButton.clipsToBounds   = true
+        self.pairingStringButton.layer.cornerRadius  = 6
+        self.pairingStringButton.clipsToBounds   = true
+        self.pairingStringButton.setTitle("Attempt to pair (invalid pairing string)", for: .disabled)
+        self.pairingStringButton.setTitle("Attempt to pair using pairing string", for: .normal)
     }
+
+    struct PairingDetails {
+        var productId: String!
+        var deviceId: String!
+        var password: String!
+        var sct: String?
+        var username: String?
+    }
+
+    static internal func parsePairingString(pairingString: String) throws -> PairingDetails {
+        var result = PairingDetails()
+        let elements = pairingString.components(separatedBy: ",")
+        if (elements.count < 3 || elements.count > 5) {
+            throw NabtoEdgeClientError.FAILED_WITH_DETAIL(detail: "Unexpected number of elements in pairing string")
+        }
+        for element in elements {
+            let tuple = element.components(separatedBy: "=")
+            if (tuple.count != 2) {
+                throw NabtoEdgeClientError.FAILED_WITH_DETAIL(detail: "Badly formatted pairing string, missing '='")
+            }
+            let key = tuple[0]
+            let value = tuple[1]
+            switch (key) {
+            case "p": result.productId = value; break
+            case "d": result.deviceId = value; break
+            case "pwd": result.password = value; break
+            case "sct": result.sct = value; break
+            case "u": result.username = value; break
+            default: throw NabtoEdgeClientError.FAILED_WITH_DETAIL(detail: "Unexpected element in pairing string: \(key)")
+            }
+        }
+        if (result.productId == nil || result.deviceId == nil || result.password == nil) {
+            throw NabtoEdgeClientError.FAILED_WITH_DETAIL(detail: "Missing element in pairing string")
+        }
+        return result
+    }
+
 }

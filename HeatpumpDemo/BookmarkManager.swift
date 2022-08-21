@@ -11,7 +11,7 @@ import UIKit
 class Bookmark : Equatable, Hashable, CustomStringConvertible {
     let deviceId: String
     let productId: String
-    var timeAdded: Date
+    var timeAdded: Date?
     var sct: String?
     var name : String = "Anonymous Heatpump"
     var modelName: String?
@@ -36,7 +36,7 @@ class Bookmark : Equatable, Hashable, CustomStringConvertible {
         "Bookmark(deviceId: \(deviceId), productId: \(productId), timeAdded: \(timeAdded), sct: \(sct), name: \(name), modelName: \(modelName), role: \(role))"
     }
 
-    init(deviceId: String, productId: String, creationTime: Date, sct: String?=nil, name: String?=nil, modelName: String?=nil, role: String?=nil) {
+    init(deviceId: String, productId: String, creationTime: Date?=nil, sct: String?=nil, name: String?=nil, modelName: String?=nil, role: String?=nil) {
         self.deviceId = deviceId
         self.productId = productId
         self.timeAdded = creationTime
@@ -96,7 +96,13 @@ class BookmarkManager {
         bookmarks.append(Bookmark(deviceId: "de-ijrdq47i", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 1), sct: "WzwjoTabnvux", name: "Remote integration test"))
 //        bookmarks.append(Bookmark(deviceId: "de-3cqgxbdm", productId: "pr-cc9i4y7r", creationTime: Date(timeIntervalSince1970: 2), name: "Local heatpump"))
         bookmarks.append(Bookmark(deviceId: "de-yyyyyyyy", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 3), sct: "WzwjoTabnvux", name: "Offline device (bottom)"))
-        self.deviceBookmarks = bookmarks.sorted(by: { $0.timeAdded < $1.timeAdded })
+        self.deviceBookmarks = bookmarks.sorted(by: {
+            if ($0.timeAdded != nil && $1.timeAdded != nil) {
+                return $0.timeAdded! < $1.timeAdded!
+            } else {
+                return false
+            }
+        })
     }
     
     func clearBookmarks() {

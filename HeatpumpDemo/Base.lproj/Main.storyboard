@@ -1681,7 +1681,10 @@
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="p=pr-aaaaaaaa,d=de-bbbbbbbb,pwd=secret,sct=FUmot9E9XCKW" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kmv-lK-hiG">
                                 <rect key="frame" x="16" y="167" width="343" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="alphabet" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                <connections>
+                                    <action selector="handlePairingStringChanged:" destination="5YR-MB-x8z" eventType="editingChanged" id="Rnp-W1-g4H"/>
+                                </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A pairing string is normally obtained from the owner of a device (who wants to invite guests)." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FX0-P8-kJK">
                                 <rect key="frame" x="16" y="209" width="343" height="32"/>
@@ -1702,6 +1705,10 @@
                                 <buttonConfiguration key="configuration" style="plain" title="Attempt to pair using pairing string">
                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="handlePairPairingString:" destination="5YR-MB-x8z" eventType="touchUpInside" id="Rzg-bf-Pbt"/>
+                                    <segue destination="OZe-rU-UnQ" kind="show" identifier="pairUsingString" id="FD2-AY-kef"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If you don't know a pairing string, you can try to discover local devices to pair with:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rrW-RL-mkE">
                                 <rect key="frame" x="16" y="337" width="343" height="47"/>
@@ -1724,6 +1731,7 @@
                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
                                 <connections>
+                                    <action selector="handleDiscover:" destination="5YR-MB-x8z" eventType="touchUpInside" id="A4t-DZ-vyC"/>
                                     <segue destination="iQE-Ou-Jwx" kind="show" id="4ne-0u-YvL"/>
                                 </connections>
                             </button>
@@ -1760,6 +1768,7 @@
                     <connections>
                         <outlet property="discoverButton" destination="trF-bi-eCd" id="hv3-Ky-rgC"/>
                         <outlet property="pairingStringButton" destination="GRR-OY-CNL" id="b6c-do-HSF"/>
+                        <outlet property="pairingStringField" destination="kmv-lK-hiG" id="hwh-CD-xao"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wwj-AR-wrC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -2134,7 +2143,7 @@ Through the security settings page of the device, the owner can control who has 
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Pzf-OU-J9K"/>
+        <segue reference="FD2-AY-kef"/>
         <segue reference="zUV-pr-k1o"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
