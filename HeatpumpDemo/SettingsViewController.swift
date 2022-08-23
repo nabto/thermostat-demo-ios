@@ -32,7 +32,6 @@ class SettingsViewController: UIViewController {
     
     func resetKeypair() {
         ProfileTools.clearProfile() //remove from saved data
-        performSegue(withIdentifier: "toProfile", sender: nil)
     }
     
     func getFormattedFingerprint() -> String? {

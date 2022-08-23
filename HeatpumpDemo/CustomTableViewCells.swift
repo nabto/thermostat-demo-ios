@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import NabtoEdgeClient
+import NabtoEdgeIamUtil
 
 class DeviceRowModel {
     var bookmark: Bookmark
@@ -17,9 +19,32 @@ class DeviceRowModel {
             return "\(self.bookmark.productId).\(self.bookmark.deviceId)"
         }
     }
+
     init(bookmark: Bookmark) {
         self.bookmark = bookmark
     }
+
+    internal func populateWithDetails() throws {
+        do {
+            let connection = try EdgeManager.shared.getConnection(self.bookmark)
+            self.isOnline = true
+            let user = try NabtoEdgeIamUtil.IamUtil.getCurrentUser(connection: connection)
+            if let role = user.Role {
+                self.isPaired = true
+                self.bookmark.role = role
+            } else {
+                self.isPaired = false
+            }
+        } catch NabtoEdgeClientError.NO_CHANNELS(_, _) {
+            self.isOnline = false
+        } catch IamError.USER_DOES_NOT_EXIST {
+            self.isPaired = false
+        } catch {
+            print("Device \(bookmark.name) is not available due to error: \(error)")
+            self.isOnline = false
+        }
+    }
+
 }
 
 //Device cell on overview and discover screens

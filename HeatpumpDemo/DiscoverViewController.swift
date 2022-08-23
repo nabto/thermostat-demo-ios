@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import NabtoEdgeClient
 
-class DiscoverViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class DiscoverViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MdnsResultReceiver {
 
     @IBOutlet weak var table: UITableView!
 
@@ -35,19 +36,34 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
+
+    func onResultReady(result: MdnsResult) {
+        if (result.action == .ADD) {
+            // todo: include name from txt item
+            let bookmark = Bookmark(deviceId: result.deviceId, productId: result.productId)
+            self.devices.append(DeviceRowModel(bookmark: bookmark))
+            self.table.reloadData()
+        }
+    }
+
     func findDevices() {
-        devices = []
-        waiting = true
+        self.devices = []
+        self.waiting = true
         self.table.reloadData()
-        // TODO invoke mdns discovery
-//        NabtoManager.shared.discover(progress: { (device) in
-//            self.devices.append(device)
-//            self.table.reloadData()
-//        }, failure: { (error) in
-//            self.waiting = false
-//            self.table.reloadData()
-//        })
+        let scanner = EdgeManager.shared.client.createMdnsScanner(/*subType: "heatpump"*/)
+        scanner.addMdnsResultReceiver(self)
+        do {
+            try scanner.start()
+            DispatchQueue.global().asyncAfter(deadline: .now() + 2.0) {
+                scanner.stop()
+                self.waiting  = false
+                DispatchQueue.main.sync {
+                    self.table.reloadData()
+                }
+            }
+        } catch {
+            print("Could not start scan: \(error)")
+        }
     }
     
     //MARK: - Handle device selection

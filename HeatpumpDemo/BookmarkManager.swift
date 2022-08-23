@@ -59,11 +59,13 @@ class BookmarkManager {
     var deviceBookmarks: [Bookmark] = []
 
     func add(bookmark: Bookmark) {
-        if !deviceBookmarks.contains(bookmark){
-            bookmark.timeAdded = Date()
-            deviceBookmarks.append(bookmark)
-            saveBookmarks()
+        let index = self.deviceBookmarks.firstIndex(of: bookmark)
+        if let index = index {
+            self.deviceBookmarks.remove(at: index)
         }
+        bookmark.timeAdded = Date()
+        deviceBookmarks.append(bookmark)
+        saveBookmarks()
     }
     
     func saveBookmarks() {
@@ -79,6 +81,9 @@ class BookmarkManager {
     }
     
     func loadBookmarks() {
+        if (self.deviceBookmarks.count > 0) {
+            return
+        }
 //        let url = bookmarksFileURL()
 //        do {
 //            let data = try Data(contentsOf: url)
@@ -94,7 +99,7 @@ class BookmarkManager {
         var bookmarks: [Bookmark] = []
         bookmarks.append(Bookmark(deviceId: "de-xxxxxxxx", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 0), sct: "WzwjoTabnvux", name: "Offline device (top)"))
         bookmarks.append(Bookmark(deviceId: "de-ijrdq47i", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 1), sct: "WzwjoTabnvux", name: "Remote integration test"))
-//        bookmarks.append(Bookmark(deviceId: "de-3cqgxbdm", productId: "pr-cc9i4y7r", creationTime: Date(timeIntervalSince1970: 2), name: "Local heatpump"))
+        bookmarks.append(Bookmark(deviceId: "de-3cqgxbdm", productId: "pr-cc9i4y7r", creationTime: Date(timeIntervalSince1970: 2), name: "Local heatpump"))
         bookmarks.append(Bookmark(deviceId: "de-yyyyyyyy", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 3), sct: "WzwjoTabnvux", name: "Offline device (bottom)"))
         self.deviceBookmarks = bookmarks.sorted(by: {
             if ($0.timeAdded != nil && $1.timeAdded != nil) {

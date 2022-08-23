@@ -17,7 +17,6 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
 
     var devices: [DeviceRowModel] = []
 
-    var starting = true
     var waiting  = true
     var errorBanner: GrowingNotificationBanner? = nil
 
@@ -34,19 +33,29 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         self.navigationItem.leftBarButtonItems?.append(UIBarButtonItem(customView: self.buttonBarSpinner))
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if starting {
-            starting = false
-        }
-        if (ProfileTools.getSavedUsername() != nil) {
-            self.populateDeviceOverview()
+        if (ProfileTools.getSavedPrivateKey() != nil) {
+            self.doRefresh()
         } else {
-            self.performSegue(withIdentifier: "toProfile", sender: nil)
+            DispatchQueue.global().async {
+                self.createProfile()
+                DispatchQueue.main.async {
+                    self.doRefresh()
+                }
+            }
+        }
+    }
+
+    func createProfile() {
+        do {
+            let key = try EdgeManager.shared.client.createPrivateKey()
+            let username = UIDevice.current.name
+            let simplifiedUsername = ProfileTools.convertToValidUsername(input: username)
+            ProfileTools.saveProfile(username: simplifiedUsername, privateKey: key, displayName: username)
+        } catch {
+            let banner = NotificationBanner(title: "Error", subtitle: "Could not create private key: \(error)", style: .danger)
+            banner.show()
         }
     }
 
@@ -128,6 +137,11 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     }
 
     @IBAction func refresh(_ sender: Any) {
+        self.doRefresh()
+    }
+
+    func doRefresh() {
+        print(" *** doRefresh ***")
         EdgeManager.shared.stop()
         self.errorBanner?.dismiss()
         self.devices = []
@@ -157,7 +171,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             }
             do {
                 let updatedDevice = DeviceRowModel(bookmark: device.bookmark)
-                try self.populateWithDetails(updatedDevice)
+                try updatedDevice.populateWithDetails()
                 if (device.isOnline ?? false) {
                     self.handleOnlineDevice(updatedDevice)
                 } else {
@@ -195,17 +209,6 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
 
-    func handleClosed(device: NabtoDevice) {
-        let title = "Device not open"
-        let message = "Device is not open for pairing - please contact owner (or factory reset if you are the owner."
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "Ok", style: .default) { action in
-            alert.dismiss(animated: true, completion: nil)
-        }
-        alert.addAction(okAction)
-        present(alert, animated: true, completion: nil)
-    }
-
     //MARK: - UITableView methods
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -219,11 +222,14 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
                     if (device.isOnline!) {
                         if (device.isPaired) {
                             cell.statusIcon.image = UIImage(named: "checkSmall")?.withRenderingMode(.alwaysTemplate)
+                            cell.statusIcon.tintColor = UIColor(named: "NabtoColor")
                         } else {
                             cell.statusIcon.image = UIImage(named: "open")?.withRenderingMode(.alwaysTemplate)
+                            cell.statusIcon.tintColor = UIColor(named: "NabtoColor")
                         }
                     } else {
                         cell.statusIcon.image = UIImage(named: "alert")?.withRenderingMode(.alwaysTemplate)
+                        cell.statusIcon.tintColor = .systemRed
                     }
                 } else {
                     cell.statusIcon.isHidden = true

@@ -14,17 +14,18 @@ import NotificationBannerSwift
 class PairingViewController: UIViewController, PairingConfirmedListener {
 
     @IBOutlet weak var nameLabel        : UILabel!
-    @IBOutlet weak var deviceIdLabel       : UILabel!
+    @IBOutlet weak var deviceIdLabel    : UILabel!
     @IBOutlet weak var confirmLabel     : UILabel!
     @IBOutlet weak var confirmView      : UIView!
     @IBOutlet weak var resultView       : UIView!
     @IBOutlet weak var confirmButton    : UIButton!
-    @IBOutlet weak var passwordField: UITextField!
+    @IBOutlet weak var passwordField    : UITextField!
+    @IBOutlet weak var usernameField    : UITextField!
     
     var device : Bookmark?
     var pairingStringPassword: String?
 
-    let defaultPairingText = "You are about to pair with this device."
+    let defaultPairingText = "You are about to pair with device '%@.%@'."
     let passwordText = "This device requires a password for pairing:"
     let errorText = "Error! Could not connect to device for pairing."
 
@@ -47,17 +48,19 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if let device = device {
-            nameLabel.text = device.name
-            deviceIdLabel.text = "\(device.productId).\(device.deviceId)"
-            passwordField.isHidden = true
+            self.nameLabel.text = device.name
+            self.deviceIdLabel.text = "\(device.productId).\(device.deviceId)"
+            self.passwordField.isHidden = true
+            self.confirmLabel.text = String(format: self.defaultPairingText, device.productId, device.deviceId)
+            self.usernameField.text = UIDevice.current.name
+        } else {
+            self.confirmLabel.text = "Error! No device to pair with!"
         }
-        confirmLabel.text = self.defaultPairingText
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         passwordField.isHidden = true
-        confirmLabel.text = self.defaultPairingText
     }
 
     override func didReceiveMemoryWarning() {
@@ -107,7 +110,10 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
                 }
             }
         } catch IamError.USERNAME_EXISTS {
-            self.showPairingError("User name '\(ProfileTools.getSavedUsername() ?? "nil")' already in use on device")
+            self.showPairingError("Name already in use on device - please change the name and try again")
+            DispatchQueue.main.sync {
+                self.usernameField.becomeFirstResponder()
+            }
         } catch IamError.AUTHENTICATION_ERROR {
             self.showPairingError("Pairing password not valid for this device")
             if (self.pairingStringPassword != nil) {
@@ -144,10 +150,9 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
     private func pairLocalOpen() throws {
         guard let device = self.device else { return }
         let connection = try EdgeManager.shared.getConnection(device)
-        if let user = ProfileTools.getSavedUsername() {
-            try IamUtil.pairLocalOpen(connection: connection, desiredUsername: user)
-        } else {
-            self.showPairingError("User profile not found, please re-configure app")
+        if let user = self.usernameField.text {
+            let validUserName = ProfileTools.convertToValidUsername(input: user)
+            try IamUtil.pairLocalOpen(connection: connection, desiredUsername: validUserName)
         }
     }
 
@@ -176,13 +181,10 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
                 }
             }
         }
-        if let password = password {
-            if let user = ProfileTools.getSavedUsername() {
-                let connection = try EdgeManager.shared.getConnection(device)
-                try IamUtil.pairPasswordOpen(connection: connection, desiredUsername: user, password: password)
-            } else {
-                self.showPairingError("User profile not found, please re-configure app")
-            }
+        if let password = password, let user = self.usernameField.text {
+            let validUserName = ProfileTools.convertToValidUsername(input: user)
+            let connection = try EdgeManager.shared.getConnection(device)
+            try IamUtil.pairPasswordOpen(connection: connection, desiredUsername: validUserName, password: password)
         }
     }
 

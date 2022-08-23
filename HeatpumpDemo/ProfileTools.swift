@@ -28,31 +28,11 @@ class ProfileTools {
     }
 
     class func saveProfile(username: String, privateKey: String, displayName: String) {
-        ProfileTools.saveUsername(username: username)
         ProfileTools.savePrivateKey(privateKey: privateKey)
-        ProfileTools.saveDisplayName(displayName: displayName)
     }
     
     class func clearProfile() {
-        ProfileTools.clearUsername()
         ProfileTools.clearPrivateKey()
-        ProfileTools.clearDisplayName()
-    }
-    
-    class func getSavedUsername() -> String? {
-        return UserDefaults.standard.string(forKey: DefaultsKey.username.rawValue)
-    }
-    
-    class func saveUsername(username: String) {
-        let defaults = UserDefaults.standard
-        defaults.set(username, forKey: DefaultsKey.username.rawValue)
-        defaults.synchronize()
-    }
-
-    class func clearUsername() {
-        let defaults = UserDefaults.standard
-        defaults.removeObject(forKey: DefaultsKey.username.rawValue)
-        defaults.synchronize()
     }
     
     class func getSavedPrivateKey() -> String? {
@@ -70,23 +50,4 @@ class ProfileTools {
         defaults.removeObject(forKey: DefaultsKey.privateKey.rawValue)
         defaults.synchronize()
     }
-
-    class func getSavedDisplayName() -> String? {
-        return UserDefaults.standard.string(forKey: DefaultsKey.displayName.rawValue)
-    }
-
-    class func saveDisplayName(displayName: String) {
-        let defaults = UserDefaults.standard
-        defaults.set(displayName, forKey: DefaultsKey.displayName.rawValue)
-        defaults.synchronize()
-    }
-
-    class func clearDisplayName() {
-        let defaults = UserDefaults.standard
-        defaults.removeObject(forKey: DefaultsKey.displayName.rawValue)
-        defaults.synchronize()
-    }
-
-
-
 }
