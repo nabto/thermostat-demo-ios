@@ -81,26 +81,23 @@ class BookmarkManager {
     }
     
     func loadBookmarks() {
-        if (self.deviceBookmarks.count > 0) {
-            return
-        }
-//        let url = bookmarksFileURL()
-//        do {
-//            let data = try Data(contentsOf: url)
-//            let result = try PropertyListSerialization.propertyList(from: data, options: [], format: nil)
-//            if let dict = result as? [[String : String?]] {
-//                deviceBookmarks = dict.map { return Bookmark(
-//                        deviceId: $0["deviceId"]!!, productId: $0["productId"]!!, name: $0["name"]!)
-//                }
-//            }
-//        } catch {
-//            print("error reading bookmarks file")
-//        }
+        let url = bookmarksFileURL()
         var bookmarks: [Bookmark] = []
         bookmarks.append(Bookmark(deviceId: "de-xxxxxxxx", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 0), sct: "WzwjoTabnvux", name: "Offline device (top)"))
 //        bookmarks.append(Bookmark(deviceId: "de-ijrdq47i", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 1), sct: "WzwjoTabnvux", name: "Remote integration test"))
 //        bookmarks.append(Bookmark(deviceId: "de-3cqgxbdm", productId: "pr-cc9i4y7r", creationTime: Date(timeIntervalSince1970: 2), name: "Local heatpump"))
         bookmarks.append(Bookmark(deviceId: "de-yyyyyyyy", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 3), sct: "WzwjoTabnvux", name: "Offline device (bottom)"))
+        do {
+            let data = try Data(contentsOf: url)
+            let result = try PropertyListSerialization.propertyList(from: data, options: [], format: nil)
+            if let dict = result as? [[String : String?]] {
+                bookmarks.append(contentsOf: dict.map { return Bookmark(
+                        deviceId: $0["deviceId"]!!, productId: $0["productId"]!!, name: $0["name"]!)
+                })
+            }
+        } catch {
+            print("error reading bookmarks file")
+        }
         self.deviceBookmarks = bookmarks.sorted(by: {
             if ($0.timeAdded != nil && $1.timeAdded != nil) {
                 return $0.timeAdded! < $1.timeAdded!
