@@ -10,6 +10,7 @@ import UIKit
 import NotificationBannerSwift
 import CBORCoding
 import NabtoEdgeClient
+import NabtoEdgeIamUtil
 
 enum DeviceMode: String {
     case COOL, HEAT, FAN, DRY
@@ -58,6 +59,12 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     @IBOutlet weak var settingsButton       : UIButton!
     @IBOutlet weak var connectingView       : UIView!
     @IBOutlet weak var spinner              : UIActivityIndicatorView!
+    
+    @IBOutlet weak var deviceIdLabel         : UILabel!
+    @IBOutlet weak var appNameAndVersionLabel: UILabel!
+    @IBOutlet weak var usernameLabel         : UILabel!
+    @IBOutlet weak var displayNameLabel      : UILabel!
+    @IBOutlet weak var roleLabel             : UILabel!
     
     let maxTemp         = 30
     let minTemp         = 16
@@ -134,24 +141,49 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
         DispatchQueue.global().async {
             do {
                 let connection = try EdgeManager.shared.getConnection(self.device)
-                let coap = try connection.createCoapRequest(method: "GET", path: "/heat-pump")
-                let response = try coap.execute()
-                if (response.status == 205) {
-                    let details = try HeatpumpDetails.decode(cbor: response.payload)
-                    DispatchQueue.main.async {
-                        self.busy = false
-                        self.refreshState(details)
-                    }
-                } else {
-                    self.showDeviceError("Could not get heatpump details, device returned status \(response.status)")
-                }
+                try self.refreshThermostatInfo(connection: connection)
+                try self.refreshDeviceDetails(connection: connection)
+                try self.refreshUserInfo(connection: connection)
             } catch {
                 self.showDeviceError("\(error)")
             }
         }
     }
-    
-    func refreshState(_ details: HeatpumpDetails) {
+
+    private func refreshThermostatInfo(connection: Connection) throws {
+        let request = try connection.createCoapRequest(method: "GET", path: "/heat-pump")
+        let response = try request.execute()
+        if (response.status == 205) {
+            let details = try HeatpumpDetails.decode(cbor: response.payload)
+            DispatchQueue.main.sync {
+                self.busy = false
+                self.refreshThermostatState(details)
+            }
+        } else {
+            self.showDeviceError("Could not get heatpump details, device returned status \(response.status)")
+        }
+    }
+
+    private func refreshDeviceDetails(connection: Connection) throws {
+        let details = try IamUtil.getDeviceDetails(connection: connection)
+        DispatchQueue.main.sync {
+            self.busy = false
+            self.deviceIdLabel.text = "\(details.ProductId).\(details.DeviceId)"
+            self.appNameAndVersionLabel.text = "\(details.AppName ?? "n/a") (\(details.AppVersion ?? "n/a"))"
+        }
+    }
+
+    private func refreshUserInfo(connection: Connection) throws {
+        let user = try IamUtil.getCurrentUser(connection: connection)
+        DispatchQueue.main.sync {
+            self.busy = false
+            self.usernameLabel.text = user.Username
+            self.displayNameLabel.text = user.DisplayName ?? "n/a"
+            self.roleLabel.text = user.Role ?? "n/a"
+        }
+    }
+
+    func refreshThermostatState(_ details: HeatpumpDetails) {
         self.activeSwitch.isOn = details.Power
         self.mode = DeviceMode(rawValue: details.Mode)
         self.temperatureSlider.value = Float(details.Target)
