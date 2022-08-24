@@ -1453,10 +1453,10 @@
             </objects>
             <point key="canvasLocation" x="122" y="88"/>
         </scene>
-        <!--Pair device-->
+        <!--Confirm Pairing-->
         <scene sceneID="tW8-cj-yoe">
             <objects>
-                <viewController title="Pair device" id="OZe-rU-UnQ" customClass="PairingViewController" customModule="Edge_Heat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Pair device" id="OZe-rU-UnQ" userLabel="Confirm Pairing" customClass="PairingViewController" customModule="Edge_Heat" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="T9A-lo-nmK"/>
                         <viewControllerLayoutGuide type="bottom" id="KDU-ru-eBE"/>
@@ -2160,7 +2160,7 @@ Through the security settings page of the device, the owner can control who has 
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Pzf-OU-J9K"/>
+        <segue reference="5RW-eh-vA1"/>
         <segue reference="zUV-pr-k1o"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>

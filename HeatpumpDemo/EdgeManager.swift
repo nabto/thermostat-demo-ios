@@ -17,26 +17,30 @@ class EdgeManager : ConnectionEventReceiver {
     internal static let shared = EdgeManager()
     private var cache: [Bookmark:Connection] = [:]
     private var client_: NabtoEdgeClient.Client! = nil
-
     private let cacheQueue = DispatchQueue(label: "cacheQueue")
+    private let clientQueue = DispatchQueue(label: "clientQueue")
 
     internal var client: NabtoEdgeClient.Client {
         get {
-            if (self.client_ == nil) {
-                print(" *** manager init")
-                self.client_ = NabtoEdgeClient.Client()
+            self.clientQueue.sync {
+                if (self.client_ == nil) {
+                    self.client_ = NabtoEdgeClient.Client()
 //                self.client_.enableNsLogLogging()
 //                try! self.client_.setLogLevel(level: "trace")
+                }
+                return self.client_
             }
-            return self.client_
         }
     }
 
     func stop() {
-        print(" *** manager stop")
-        self.cache = [:]
-        self.client_?.stop()
-        self.client_ = nil
+        self.cacheQueue.sync {
+            self.cache = [:]
+        }
+        self.clientQueue.sync {
+            self.client_?.stop()
+            self.client_ = nil
+        }
     }
 
     func onEvent(event: NabtoEdgeClientConnectionEvent) {

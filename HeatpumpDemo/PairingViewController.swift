@@ -150,7 +150,11 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
     private func pairLocalOpen() throws {
         guard let device = self.device else { return }
         let connection = try EdgeManager.shared.getConnection(device)
-        if let user = self.usernameField.text {
+        var userInput: String?
+        DispatchQueue.main.sync {
+            userInput = self.usernameField.text
+        }
+        if let user = userInput {
             let validUserName = ProfileTools.convertToValidUsername(input: user)
             try IamUtil.pairLocalOpen(connection: connection, desiredUsername: validUserName)
         }

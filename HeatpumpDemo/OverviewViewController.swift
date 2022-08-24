@@ -141,7 +141,6 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     }
 
     func doRefresh() {
-        print(" *** doRefresh ***")
         EdgeManager.shared.stop()
         self.errorBanner?.dismiss()
         self.devices = []
@@ -222,10 +221,12 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
                     if (device.isOnline!) {
                         if (device.isPaired) {
                             cell.statusIcon.image = UIImage(named: "checkSmall")?.withRenderingMode(.alwaysTemplate)
-                            cell.statusIcon.tintColor = UIColor(named: "NabtoColor")
+//                            cell.statusIcon.tintColor = UIColor(named: "NabtoColor")
+                            cell.statusIcon.tintColor = .systemGreen
                         } else {
                             cell.statusIcon.image = UIImage(named: "open")?.withRenderingMode(.alwaysTemplate)
-                            cell.statusIcon.tintColor = UIColor(named: "NabtoColor")
+//                            cell.statusIcon.tintColor = UIColor(named: "NabtoColor")
+                            cell.statusIcon.tintColor = .systemGreen
                         }
                     } else {
                         cell.statusIcon.image = UIImage(named: "alert")?.withRenderingMode(.alwaysTemplate)
