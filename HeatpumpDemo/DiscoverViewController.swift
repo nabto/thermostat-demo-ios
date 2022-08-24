@@ -8,6 +8,8 @@
 
 import UIKit
 import NabtoEdgeClient
+import NabtoEdgeIamUtil
+import NotificationBannerSwift
 
 class DiscoverViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MdnsResultReceiver {
 
@@ -37,14 +39,47 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
         super.didReceiveMemoryWarning()
     }
 
+    func handleError(msg: String) {
+        DispatchQueue.main.async {
+            let errorBanner = GrowingNotificationBanner(title: "Discover error", subtitle: msg, style: .danger)
+            errorBanner.show()
+        }
+    }
+
     func onResultReady(result: MdnsResult) {
         if (result.action == .ADD) {
             let name: String? = result.txtItems["fn"]
             let bookmark = Bookmark(deviceId: result.deviceId, productId: result.productId, name: name)
+            if (!BookmarkManager.shared.exists(bookmark)) {
+                addToViewIfPairingPossible(bookmark: bookmark)
+            } else {
+                print("Not adding device \(bookmark) to discovered device list: Device already bookmarked")
+            }
+        }
+    }
+
+    private func addToViewIfPairingPossible(bookmark: Bookmark) {
+        do {
+            let connection = try EdgeManager.shared.getConnection(bookmark)
+            let modes: [NabtoEdgeIamUtil.PairingMode] = try IamUtil.getAvailablePairingModes(connection: connection)
+            if (modes.count > 0 && !(modes.count == 1 && modes[0] != .PasswordInvite)) {
+                try addToViewIfNotAlreadyPaired(connection: connection, bookmark: bookmark)
+            } else {
+                print("Not adding device \(bookmark) to discovered device list: No supported pairing modes enabled")
+            }
+        } catch {
+            self.handleError(msg: "\(error)")
+        }
+    }
+
+    private func addToViewIfNotAlreadyPaired(connection: Connection, bookmark: Bookmark) throws {
+        if (!(try IamUtil.isCurrentUserPaired(connection: connection))) {
             self.devices.append(DeviceRowModel(bookmark: bookmark))
             DispatchQueue.main.async {
                 self.table.reloadData()
             }
+        } else {
+            print("Not adding device \(bookmark) to discovered device list: Device already paired (... but not bookmarked!)")
         }
     }
 

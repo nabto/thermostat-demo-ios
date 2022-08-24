@@ -503,8 +503,9 @@
                                             <rect key="frame" x="0.0" y="0.0" width="385.33333333333331" height="72"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" image="thermometer.sun.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="3o2-Xq-0JF">
-                                                    <rect key="frame" x="16" y="9.3333333333333321" width="51.333333333333329" height="53.333333333333343"/>
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="thermometer" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="3o2-Xq-0JF">
+                                                    <rect key="frame" x="16" y="11.666666666666661" width="50" height="50.333333333333336"/>
+                                                    <color key="tintColor" systemColor="labelColor"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="RVf-tO-fDO"/>
                                                         <constraint firstAttribute="height" constant="50" id="b9N-uJ-Cmc"/>
@@ -568,8 +569,8 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RFZ-79-RmP">
                                                     <rect key="frame" x="0.0" y="0.0" width="414" height="72"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No devices found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nB5-5E-kQZ">
-                                                            <rect key="frame" x="16" y="3" width="133" height="21"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No new devices found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nB5-5E-kQZ">
+                                                            <rect key="frame" x="16" y="3" width="169" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -2176,7 +2177,6 @@ Through the security settings page of the device, the owner can control who has 
         <image name="settingsSmall" width="20" height="20"/>
         <image name="thermometer" catalog="system" width="81" height="128"/>
         <image name="thermometer.sun" catalog="system" width="103" height="128"/>
-        <image name="thermometer.sun.fill" catalog="system" width="103" height="128"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

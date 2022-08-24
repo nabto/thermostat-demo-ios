@@ -98,8 +98,8 @@ class BookmarkManager {
 //        }
         var bookmarks: [Bookmark] = []
         bookmarks.append(Bookmark(deviceId: "de-xxxxxxxx", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 0), sct: "WzwjoTabnvux", name: "Offline device (top)"))
-        bookmarks.append(Bookmark(deviceId: "de-ijrdq47i", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 1), sct: "WzwjoTabnvux", name: "Remote integration test"))
-        bookmarks.append(Bookmark(deviceId: "de-3cqgxbdm", productId: "pr-cc9i4y7r", creationTime: Date(timeIntervalSince1970: 2), name: "Local heatpump"))
+//        bookmarks.append(Bookmark(deviceId: "de-ijrdq47i", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 1), sct: "WzwjoTabnvux", name: "Remote integration test"))
+//        bookmarks.append(Bookmark(deviceId: "de-3cqgxbdm", productId: "pr-cc9i4y7r", creationTime: Date(timeIntervalSince1970: 2), name: "Local heatpump"))
         bookmarks.append(Bookmark(deviceId: "de-yyyyyyyy", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 3), sct: "WzwjoTabnvux", name: "Offline device (bottom)"))
         self.deviceBookmarks = bookmarks.sorted(by: {
             if ($0.timeAdded != nil && $1.timeAdded != nil) {
@@ -118,7 +118,11 @@ class BookmarkManager {
             try? FileManager.default.removeItem(atPath: url.path)
         }
     }
-    
+
+    func exists(_ bookmark: Bookmark) -> Bool {
+        return self.deviceBookmarks.contains(bookmark)
+    }
+
     func bookmarksFileURL() -> URL {
         let directory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
         return URL(fileURLWithPath: directory).appendingPathComponent("bookmarks.plist")
