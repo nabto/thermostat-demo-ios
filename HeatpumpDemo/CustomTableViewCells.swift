@@ -51,7 +51,7 @@ class DeviceRowModel {
 class DeviceCell: UITableViewCell {
 
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var modelLabel: UILabel!
+    @IBOutlet weak var deviceIdLabel: UILabel!
     @IBOutlet weak var statusIcon: UIImageView!
 
     override func awakeFromNib() {
@@ -64,7 +64,7 @@ class DeviceCell: UITableViewCell {
     
     func configure(device: DeviceRowModel) {
         nameLabel.text = device.bookmark.name ?? device.id
-        modelLabel.text = device.bookmark.modelName ?? "Unknown Model"
+        deviceIdLabel.text = device.id
     }
 }
 
@@ -83,12 +83,12 @@ class NoDevicesCell: UITableViewCell {
     }
     
     func configure(waiting: Bool) {
-        messageView.isHidden = waiting
-        indicator.isHidden = !waiting
+        self.messageView.isHidden = waiting
+        self.indicator.isHidden = !waiting
         if waiting {
-            indicator.startAnimating()
+            self.indicator.startAnimating()
         } else {
-            indicator.stopAnimating()
+            self.indicator.stopAnimating()
         }
     }
 }

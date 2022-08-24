@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Udq-8Y-1jH">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -83,7 +82,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="modelLabel" destination="Xub-TY-7WZ" id="0Zb-BX-XSq"/>
+                                            <outlet property="deviceIdLabel" destination="Xub-TY-7WZ" id="0Zb-BX-XSq"/>
                                             <outlet property="nameLabel" destination="wEN-CE-3Ia" id="9xD-Xc-Kys"/>
                                             <outlet property="statusIcon" destination="Sln-SM-3C8" id="2eg-KY-fEE"/>
                                         </connections>
@@ -554,7 +553,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="modelLabel" destination="Pr7-Uq-ukp" id="EXC-0j-YbC"/>
+                                            <outlet property="deviceIdLabel" destination="Pr7-Uq-ukp" id="EXC-0j-YbC"/>
                                             <outlet property="nameLabel" destination="0RG-n7-UFH" id="4XD-1b-8au"/>
                                             <outlet property="statusIcon" destination="NY9-ju-76O" id="SKW-Xz-D3A"/>
                                         </connections>

@@ -39,10 +39,12 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 
     func onResultReady(result: MdnsResult) {
         if (result.action == .ADD) {
-            // todo: include name from txt item
-            let bookmark = Bookmark(deviceId: result.deviceId, productId: result.productId)
+            let name: String? = result.txtItems["fn"]
+            let bookmark = Bookmark(deviceId: result.deviceId, productId: result.productId, name: name)
             self.devices.append(DeviceRowModel(bookmark: bookmark))
-            self.table.reloadData()
+            DispatchQueue.main.async {
+                self.table.reloadData()
+            }
         }
     }
 
@@ -50,14 +52,14 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
         self.devices = []
         self.waiting = true
         self.table.reloadData()
-        let scanner = EdgeManager.shared.client.createMdnsScanner(/*subType: "heatpump"*/)
+        let scanner = EdgeManager.shared.client.createMdnsScanner(subType: "heatpump")
         scanner.addMdnsResultReceiver(self)
         do {
             try scanner.start()
             DispatchQueue.global().asyncAfter(deadline: .now() + 2.0) {
                 scanner.stop()
-                self.waiting  = false
                 DispatchQueue.main.sync {
+                    self.waiting  = false
                     self.table.reloadData()
                 }
             }
@@ -69,14 +71,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
     //MARK: - Handle device selection
 
     func handleSelection(device: DeviceRowModel) {
-        // TODO
-//        if device.currentUserIsPaired {
-//            handlePaired(device: device)
-//        } else if device.openForPairing {
-//            handleUnpaired(device: device)
-//        } else {
-//            handleClosed(device: device)
-//        }
+        self.handleUnpaired(device: device.bookmark)
     }
     
 //    func handlePaired(device: Bookmark) {
@@ -97,7 +92,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 //        BookmarkManager.shared.add(bookmark: device)
 //    }
     
-    func handleUnpaired(device: NabtoDevice) {
+    func handleUnpaired(device: Bookmark) {
         performSegue(withIdentifier: "toPairing", sender: device)
     }
     
