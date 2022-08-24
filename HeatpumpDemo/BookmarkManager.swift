@@ -83,10 +83,10 @@ class BookmarkManager {
     func loadBookmarks() {
         let url = bookmarksFileURL()
         var bookmarks: [Bookmark] = []
-        bookmarks.append(Bookmark(deviceId: "de-xxxxxxxx", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 0), sct: "WzwjoTabnvux", name: "Offline device (top)"))
+//        bookmarks.append(Bookmark(deviceId: "de-xxxxxxxx", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 0), sct: "WzwjoTabnvux", name: "Offline device (top)"))
 //        bookmarks.append(Bookmark(deviceId: "de-ijrdq47i", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 1), sct: "WzwjoTabnvux", name: "Remote integration test"))
 //        bookmarks.append(Bookmark(deviceId: "de-3cqgxbdm", productId: "pr-cc9i4y7r", creationTime: Date(timeIntervalSince1970: 2), name: "Local heatpump"))
-        bookmarks.append(Bookmark(deviceId: "de-yyyyyyyy", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 3), sct: "WzwjoTabnvux", name: "Offline device (bottom)"))
+//        bookmarks.append(Bookmark(deviceId: "de-yyyyyyyy", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 3), sct: "WzwjoTabnvux", name: "Offline device (bottom)"))
         do {
             let data = try Data(contentsOf: url)
             let result = try PropertyListSerialization.propertyList(from: data, options: [], format: nil)

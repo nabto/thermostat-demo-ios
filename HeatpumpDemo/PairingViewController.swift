@@ -119,6 +119,8 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
             if (self.pairingStringPassword != nil) {
                 self.handleBadPairingStringPassword()
             }
+        } catch IamError.BLOCKED_BY_DEVICE_CONFIGURATION {
+            self.showPairingError("The device's IAM configuration is not valid - it must allow pairing")
         } catch NabtoEdgeClientError.NO_CHANNELS(_, _) {
             self.showPairingError("Could not connect to device for pairing - device offline or invalid id in pairing string")
         } catch {
@@ -157,6 +159,17 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
         if let user = userInput {
             let validUserName = ProfileTools.convertToValidUsername(input: user)
             try IamUtil.pairLocalOpen(connection: connection, desiredUsername: validUserName)
+            self.updateDisplayName(connection: connection, username: validUserName, displayName: user)
+        }
+    }
+
+    private func updateDisplayName(connection: Connection, username: String, displayName: String) {
+        do {
+            try IamUtil.updateUserDisplayName(connection: connection, username: username, displayName: displayName)
+        } catch (IamError.BLOCKED_BY_DEVICE_CONFIGURATION) {
+            print("Device IAM config does not support setting display name (tried setting \(displayName) for user \(username))")
+        } catch {
+            print("Unexpected error when setting display name: \(error)")
         }
     }
 
@@ -164,6 +177,15 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
         guard let device = self.device else { return }
         let connection = try EdgeManager.shared.getConnection(device)
         try IamUtil.pairLocalInitial(connection: connection)
+
+        var userInput: String?
+        DispatchQueue.main.sync {
+            userInput = self.usernameField.text
+        }
+        if let user = userInput {
+            let validUserName = ProfileTools.convertToValidUsername(input: user)
+            self.updateDisplayName(connection: connection, username: validUserName, displayName: user)
+        }
     }
 
     private func pairPasswordOpen() throws {
@@ -189,6 +211,7 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
             let validUserName = ProfileTools.convertToValidUsername(input: user)
             let connection = try EdgeManager.shared.getConnection(device)
             try IamUtil.pairPasswordOpen(connection: connection, desiredUsername: validUserName, password: password)
+            self.updateDisplayName(connection: connection, username: validUserName, displayName: user)
         }
     }
 
