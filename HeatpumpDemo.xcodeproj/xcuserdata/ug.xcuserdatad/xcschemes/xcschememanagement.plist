@@ -4,19 +4,12 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Edge Heat.xcscheme</key>
+		<key>AppMyProduct Heat Control.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<true />
 			<key>orderHint</key>
 			<integer>0</integer>
-		</dict>
-		<key>OtherTests.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false />
-			<key>orderHint</key>
-			<integer>1</integer>
 		</dict>
 		<key>OtherTests.testBookmarkSaving.xcscheme</key>
 		<dict>
@@ -25,12 +18,12 @@
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
-		<key>OtherTests.testParseRealPairingString.xcscheme</key>
+		<key>OtherTests.testParseBadlyFormattedPairingString.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false />
 			<key>orderHint</key>
-			<integer>5</integer>
+			<integer>3</integer>
 		</dict>
 		<key>OtherTests.testParsePairingStringTooShort.xcscheme</key>
 		<dict>
@@ -39,12 +32,19 @@
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
-		<key>OtherTests.testParseBadlyFormattedPairingString.xcscheme</key>
+		<key>OtherTests.testParseRealPairingString.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false />
 			<key>orderHint</key>
-			<integer>3</integer>
+			<integer>5</integer>
+		</dict>
+		<key>OtherTests.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false />
+			<key>orderHint</key>
+			<integer>1</integer>
 		</dict>
 	</dict>
 </dict>

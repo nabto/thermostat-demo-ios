@@ -13,7 +13,7 @@ protocol PairingConfirmedListener {
     func pairingConfirmed()
 }
 
-class PairingConfirmedViewController: ViewControllerWithDevice {
+class PairingConfirmedViewController: ViewControllerWithDevice, UITextFieldDelegate {
     
     @IBOutlet weak var congratulationsLabel: UILabel!
     @IBOutlet weak var saveAndShowDeviceButton: UIButton!
@@ -27,6 +27,21 @@ class PairingConfirmedViewController: ViewControllerWithDevice {
         super.viewDidLoad()
         saveAndShowDeviceButton.layer.cornerRadius  = 6
         saveAndShowDeviceButton.clipsToBounds   = true
+
+        // dismiss keyboard when tapping background or return key
+        let tapGesture = UITapGestureRecognizer(target: self,
+                action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tapGesture)
+        self.nameField.delegate = self
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    @objc private func hideKeyboard() {
+        self.view.endEditing(true)
     }
 
     override func viewDidAppear(_ animated: Bool) {

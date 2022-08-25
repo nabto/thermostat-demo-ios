@@ -10,12 +10,35 @@ import Foundation
 import UIKit
 import NabtoEdgeClient
 
-class AddDeviceViewController: UIViewController {
+class AddDeviceViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var pairingStringButton: UIButton!
     @IBOutlet weak var discoverButton: UIButton!
     @IBOutlet weak var pairingStringField: UITextField!
-    @IBAction func handlePairPairingString(_ sender: Any) {
+    @IBOutlet weak var pairingStringErrorLabel: UILabel!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.pairingStringButton.isEnabled = false
+        self.discoverButton.layer.cornerRadius  = 6
+        self.discoverButton.clipsToBounds   = true
+        self.pairingStringButton.layer.cornerRadius  = 6
+        self.pairingStringButton.clipsToBounds   = true
+
+        // dismiss keyboard when tapping background or return key
+        let tapGesture = UITapGestureRecognizer(target: self,
+                action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tapGesture)
+        self.pairingStringField.delegate = self
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    @objc private func hideKeyboard() {
+        self.view.endEditing(true)
     }
 
     @IBAction func handlePairingStringChanged(_ sender: Any) {
@@ -23,15 +46,15 @@ class AddDeviceViewController: UIViewController {
             do {
                 let _ = try Self.parsePairingString(pairingString: str)
                 self.enablePairingButton()
+                self.pairingStringErrorLabel.isHidden = true
             } catch {
                 self.disablePairingButton()
+                self.pairingStringErrorLabel.isHidden = false
             }
         } else {
             self.disablePairingButton()
+            self.pairingStringErrorLabel.isHidden = false
         }
-    }
-
-    @IBAction func handleDiscover(_ sender: Any) {
     }
 
     func enablePairingButton() {
@@ -76,17 +99,6 @@ class AddDeviceViewController: UIViewController {
         }
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.pairingStringButton.isEnabled = false
-        self.discoverButton.layer.cornerRadius  = 6
-        self.discoverButton.clipsToBounds   = true
-        self.pairingStringButton.layer.cornerRadius  = 6
-        self.pairingStringButton.clipsToBounds   = true
-        self.pairingStringButton.setTitle("Attempt to pair (invalid pairing string)", for: .disabled)
-        self.pairingStringButton.setTitle("Attempt to pair using pairing string", for: .normal)
-    }
-
     struct PairingDetails {
         var productId: String!
         var deviceId: String!
@@ -97,7 +109,7 @@ class AddDeviceViewController: UIViewController {
 
     static internal func parsePairingString(pairingString: String) throws -> PairingDetails {
         var result = PairingDetails()
-        let elements = pairingString.components(separatedBy: ",")
+        let elements = pairingString.components(separatedBy: CharacterSet(charactersIn: ";:,"))
         if (elements.count < 3 || elements.count > 5) {
             throw NabtoEdgeClientError.FAILED_WITH_DETAIL(detail: "Unexpected number of elements in pairing string")
         }

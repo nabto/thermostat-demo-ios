@@ -10,7 +10,7 @@
         <!--Overview-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="OverviewViewController" customModule="Edge_Heat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="OverviewViewController" customModule="AppMyProduct_Heat_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -23,7 +23,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DeviceCell" rowHeight="72" id="9Y7-sh-O29" customClass="DeviceCell" customModule="Edge_Heat" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DeviceCell" rowHeight="72" id="9Y7-sh-O29" customClass="DeviceCell" customModule="AppMyProduct_Heat_Control" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="44.5" width="375" height="72"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9Y7-sh-O29" id="Aoq-SC-ZP9">
@@ -39,24 +39,18 @@
                                                     </constraints>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" weight="light"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Device name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wEN-CE-3Ia">
-                                                    <rect key="frame" x="82" y="15.5" width="99" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Model" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xub-TY-7WZ">
-                                                    <rect key="frame" x="82" y="36.5" width="40" height="17"/>
+                                                    <rect key="frame" x="72" y="36.5" width="40" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="alert" translatesAutoresizingMaskIntoConstraints="NO" id="Sln-SM-3C8">
-                                                    <rect key="frame" x="189" y="16" width="20" height="20"/>
+                                                    <rect key="frame" x="115" y="37" width="18" height="17"/>
                                                     <color key="tintColor" red="0.97647058819999999" green="0.50196078430000002" blue="0.2156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="20" id="kH1-3M-hsM"/>
-                                                        <constraint firstAttribute="width" constant="20" id="lwb-pH-Hhv"/>
+                                                        <constraint firstAttribute="width" constant="18" id="Voi-f8-fFh"/>
+                                                        <constraint firstAttribute="width" secondItem="Sln-SM-3C8" secondAttribute="height" multiplier="18:17" id="sy0-6d-6hb"/>
                                                     </constraints>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y5U-Au-agH">
@@ -66,17 +60,24 @@
                                                         <constraint firstAttribute="height" constant="1" id="J9H-CI-aCp"/>
                                                     </constraints>
                                                 </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Device name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wEN-CE-3Ia">
+                                                    <rect key="frame" x="72" y="15" width="99" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Xub-TY-7WZ" firstAttribute="leading" secondItem="wEN-CE-3Ia" secondAttribute="leading" id="12c-82-j7a"/>
-                                                <constraint firstItem="Xub-TY-7WZ" firstAttribute="top" secondItem="wEN-CE-3Ia" secondAttribute="bottom" id="737-AK-3vc"/>
-                                                <constraint firstItem="Xub-TY-7WZ" firstAttribute="leading" secondItem="GIP-qm-u3P" secondAttribute="trailing" constant="15" id="8wg-ur-1Ba"/>
+                                                <constraint firstItem="wEN-CE-3Ia" firstAttribute="top" secondItem="Aoq-SC-ZP9" secondAttribute="topMargin" constant="4" id="AXC-er-igw"/>
+                                                <constraint firstItem="Sln-SM-3C8" firstAttribute="top" secondItem="wEN-CE-3Ia" secondAttribute="bottom" constant="1" id="Euc-Hq-Zp5"/>
                                                 <constraint firstItem="Y5U-Au-agH" firstAttribute="leading" secondItem="Aoq-SC-ZP9" secondAttribute="leading" constant="16" id="Ktg-yd-WcJ"/>
-                                                <constraint firstItem="Sln-SM-3C8" firstAttribute="leading" secondItem="wEN-CE-3Ia" secondAttribute="trailing" constant="8" id="a2d-Vm-SN2"/>
-                                                <constraint firstItem="wEN-CE-3Ia" firstAttribute="centerY" secondItem="GIP-qm-u3P" secondAttribute="centerY" constant="-10" id="aBW-xR-8fm"/>
+                                                <constraint firstItem="wEN-CE-3Ia" firstAttribute="leading" secondItem="Xub-TY-7WZ" secondAttribute="leading" id="QzV-LZ-6os"/>
+                                                <constraint firstItem="Xub-TY-7WZ" firstAttribute="top" secondItem="wEN-CE-3Ia" secondAttribute="bottom" constant="0.5" id="ZKg-kh-8tJ"/>
                                                 <constraint firstItem="GIP-qm-u3P" firstAttribute="leading" secondItem="Aoq-SC-ZP9" secondAttribute="leading" constant="16" id="aRN-Wg-dXj"/>
+                                                <constraint firstItem="wEN-CE-3Ia" firstAttribute="leading" secondItem="GIP-qm-u3P" secondAttribute="trailing" constant="5" id="cWk-cm-8P9"/>
+                                                <constraint firstItem="Y5U-Au-agH" firstAttribute="top" secondItem="Xub-TY-7WZ" secondAttribute="bottom" constant="17.5" id="eD6-pg-7PC"/>
                                                 <constraint firstItem="GIP-qm-u3P" firstAttribute="centerY" secondItem="Aoq-SC-ZP9" secondAttribute="centerY" id="h8c-E8-4zc"/>
-                                                <constraint firstItem="Sln-SM-3C8" firstAttribute="centerY" secondItem="wEN-CE-3Ia" secondAttribute="centerY" id="sfF-Os-ZQH"/>
+                                                <constraint firstItem="Sln-SM-3C8" firstAttribute="leading" secondItem="Xub-TY-7WZ" secondAttribute="trailing" constant="3" id="sf2-SO-iF7"/>
                                                 <constraint firstAttribute="bottom" secondItem="Y5U-Au-agH" secondAttribute="bottom" id="swG-Y4-nuw"/>
                                                 <constraint firstAttribute="trailing" secondItem="Y5U-Au-agH" secondAttribute="trailing" constant="-17" id="v8y-0N-TzN"/>
                                             </constraints>
@@ -87,7 +88,7 @@
                                             <outlet property="statusIcon" destination="Sln-SM-3C8" id="2eg-KY-fEE"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoDevicesCell" rowHeight="72" id="srd-Ev-xhc" customClass="NoDevicesCell" customModule="Edge_Heat" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoDevicesCell" rowHeight="72" id="srd-Ev-xhc" customClass="NoDevicesCell" customModule="AppMyProduct_Heat_Control" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="116.5" width="375" height="72"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="srd-Ev-xhc" id="Wnl-d7-3dR">
@@ -138,7 +139,7 @@
                                             <outlet property="messageView" destination="MUe-YE-Gn8" id="UR2-ns-pO9"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="OverviewButtonCell" rowHeight="110" id="h4b-gv-r7F" customClass="OverviewButtonCell" customModule="Edge_Heat" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="OverviewButtonCell" rowHeight="110" id="h4b-gv-r7F" customClass="OverviewButtonCell" customModule="AppMyProduct_Heat_Control" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="188.5" width="375" height="110"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="h4b-gv-r7F" id="JAw-lM-dCq">
@@ -240,12 +241,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="926" y="72"/>
+            <point key="canvasLocation" x="925.60000000000002" y="71.514242878560722"/>
         </scene>
         <!--App settings-->
         <scene sceneID="JPM-xi-6e7">
             <objects>
-                <viewController id="Sgg-j7-M8A" customClass="SettingsViewController" customModule="Edge_Heat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Sgg-j7-M8A" customClass="SettingsViewController" customModule="AppMyProduct_Heat_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="GZ1-7I-Lra"/>
                         <viewControllerLayoutGuide type="bottom" id="EEL-gn-L3u"/>
@@ -330,7 +331,7 @@
         <!--Device Settings-->
         <scene sceneID="s8i-Nw-rEz">
             <objects>
-                <viewController storyboardIdentifier="DeviceSettingsViewController" title="Device Settings" id="3bu-dc-GHF" customClass="DeviceSettingsViewController" customModule="Edge_Heat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DeviceSettingsViewController" title="Device Settings" id="3bu-dc-GHF" customClass="DeviceSettingsViewController" customModule="AppMyProduct_Heat_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="F9H-Ru-xCg"/>
                         <viewControllerLayoutGuide type="bottom" id="Ahy-NA-Ygu"/>
@@ -483,7 +484,7 @@
         <!--Discover-->
         <scene sceneID="hVs-th-4RT">
             <objects>
-                <viewController id="iQE-Ou-Jwx" customClass="DiscoverViewController" customModule="Edge_Heat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="iQE-Ou-Jwx" customClass="DiscoverViewController" customModule="AppMyProduct_Heat_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="2wy-se-8MR"/>
                         <viewControllerLayoutGuide type="bottom" id="6nK-d5-SrT"/>
@@ -496,7 +497,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DeviceCell" rowHeight="72" id="YXM-ig-I2l" customClass="DeviceCell" customModule="Edge_Heat" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DeviceCell" rowHeight="72" id="YXM-ig-I2l" customClass="DeviceCell" customModule="AppMyProduct_Heat_Control" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="44.5" width="375" height="72"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YXM-ig-I2l" id="d5K-2d-DLx">
@@ -559,7 +560,7 @@
                                             <outlet property="statusIcon" destination="NY9-ju-76O" id="SKW-Xz-D3A"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoDevicesCell" rowHeight="72" id="4TF-4h-AeV" customClass="NoDevicesCell" customModule="Edge_Heat" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoDevicesCell" rowHeight="72" id="4TF-4h-AeV" customClass="NoDevicesCell" customModule="AppMyProduct_Heat_Control" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="116.5" width="375" height="72"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4TF-4h-AeV" id="LPo-xD-QoN">
@@ -610,7 +611,7 @@
                                             <outlet property="messageView" destination="RFZ-79-RmP" id="BIa-Du-1rt"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DiscoverButtonCell" rowHeight="110" id="5dn-cv-9bi" customClass="DiscoverButtonCell" customModule="Edge_Heat" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DiscoverButtonCell" rowHeight="110" id="5dn-cv-9bi" customClass="DiscoverButtonCell" customModule="AppMyProduct_Heat_Control" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="188.5" width="375" height="110"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5dn-cv-9bi" id="EAt-Eg-zuX">
@@ -681,7 +682,7 @@
         <!--Security settings-->
         <scene sceneID="PyY-wd-5ty">
             <objects>
-                <viewController title="Security settings" id="z7d-SM-bvx" customClass="SecuritySettingsViewController" customModule="Edge_Heat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Security settings" id="z7d-SM-bvx" customClass="SecuritySettingsViewController" customModule="AppMyProduct_Heat_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="hcR-A0-J6F"/>
                         <viewControllerLayoutGuide type="bottom" id="Gt2-RZ-dGc"/>
@@ -694,7 +695,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SecurityUserCell" rowHeight="98" id="keK-4w-FDk" customClass="SecurityUserCell" customModule="Edge_Heat" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SecurityUserCell" rowHeight="98" id="keK-4w-FDk" customClass="SecurityUserCell" customModule="AppMyProduct_Heat_Control" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="44.5" width="375" height="98"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="keK-4w-FDk" id="XYP-wa-o9i">
@@ -749,7 +750,7 @@
                                             <outlet property="nameLabel" destination="adO-MV-RWe" id="LYQ-Db-TXC"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SecurityMainCell" rowHeight="670" id="8PU-lF-niD" customClass="SecurityMainCell" customModule="Edge_Heat" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SecurityMainCell" rowHeight="670" id="8PU-lF-niD" customClass="SecurityMainCell" customModule="AppMyProduct_Heat_Control" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="142.5" width="375" height="670"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8PU-lF-niD" id="ka2-Wu-ymv">
@@ -1024,7 +1025,7 @@
         <!--Keypair creation-->
         <scene sceneID="3H5-TG-g9c">
             <objects>
-                <viewController title="Keypair creation" id="1Pe-es-iU5" customClass="ProfileCreateViewController" customModule="Edge_Heat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Keypair creation" id="1Pe-es-iU5" customClass="ProfileCreateViewController" customModule="AppMyProduct_Heat_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wMy-Me-E6u"/>
                         <viewControllerLayoutGuide type="bottom" id="Rxe-vb-ikD"/>
@@ -1152,7 +1153,7 @@
         <!--ACME Heater-->
         <scene sceneID="Xpn-Dh-Sju">
             <objects>
-                <viewController storyboardIdentifier="ACMEHeaterViewController" title="ACME Heater" id="XEm-96-IUG" customClass="ACMEHeaterViewController" customModule="Edge_Heat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ACMEHeaterViewController" title="ACME Heater" id="XEm-96-IUG" customClass="ACMEHeaterViewController" customModule="AppMyProduct_Heat_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="H8o-od-ao2"/>
                         <viewControllerLayoutGuide type="bottom" id="W6v-6E-quU"/>
@@ -1573,7 +1574,7 @@
         <!--Confirm Pairing-->
         <scene sceneID="tW8-cj-yoe">
             <objects>
-                <viewController title="Pair device" id="OZe-rU-UnQ" userLabel="Confirm Pairing" customClass="PairingViewController" customModule="Edge_Heat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Pair device" id="OZe-rU-UnQ" userLabel="Confirm Pairing" customClass="PairingViewController" customModule="AppMyProduct_Heat_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="T9A-lo-nmK"/>
                         <viewControllerLayoutGuide type="bottom" id="KDU-ru-eBE"/>
@@ -1704,7 +1705,7 @@
         <!--Pairing Confirmed-->
         <scene sceneID="vr4-NH-DZZ">
             <objects>
-                <viewController storyboardIdentifier="PairingConfirmedViewController" id="Ml6-fS-9zq" userLabel="Pairing Confirmed" customClass="PairingConfirmedViewController" customModule="Edge_Heat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PairingConfirmedViewController" id="Ml6-fS-9zq" userLabel="Pairing Confirmed" customClass="PairingConfirmedViewController" customModule="AppMyProduct_Heat_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="0ad-qZ-2Ay"/>
                         <viewControllerLayoutGuide type="bottom" id="b6b-41-WsC"/>
@@ -1782,7 +1783,7 @@
         <!--Add Device-->
         <scene sceneID="FAy-Vz-Rno">
             <objects>
-                <viewController id="5YR-MB-x8z" userLabel="Add Device" customClass="AddDeviceViewController" customModule="Edge_Heat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="5YR-MB-x8z" userLabel="Add Device" customClass="AddDeviceViewController" customModule="AppMyProduct_Heat_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="YGP-cJ-2cp"/>
                         <viewControllerLayoutGuide type="bottom" id="njy-4f-22j"/>
@@ -1812,8 +1813,9 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="p=pr-aaaaaaaa,d=de-bbbbbbbb,pwd=secret,sct=FUmot9E9XCKW" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kmv-lK-hiG">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="p=pr-aaaaaaaa,d=de-bbbbbbbb,pwd=secret,sct=FUmot9E9XCKW" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="kmv-lK-hiG">
                                 <rect key="frame" x="16" y="167" width="343" height="34"/>
+                                <color key="tintColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="alphabet" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                 <connections>
@@ -1825,8 +1827,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="32" id="oxf-nu-wOw"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" systemColor="placeholderTextColor"/>
+                                <fontDescription key="fontDescription" type="italicSystem" pointSize="12"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GRR-OY-CNL">
@@ -1836,11 +1837,10 @@
                                     <constraint firstAttribute="height" constant="46" id="XgZ-fv-eKx"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Attempt to pair using pairing string">
+                                <buttonConfiguration key="configuration" style="plain" title="Pair using pairing string">
                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="handlePairPairingString:" destination="5YR-MB-x8z" eventType="touchUpInside" id="Rzg-bf-Pbt"/>
                                     <segue destination="OZe-rU-UnQ" kind="show" identifier="pairUsingString" id="FD2-AY-kef"/>
                                 </connections>
                             </button>
@@ -1865,10 +1865,15 @@
                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="handleDiscover:" destination="5YR-MB-x8z" eventType="touchUpInside" id="A4t-DZ-vyC"/>
                                     <segue destination="iQE-Ou-Jwx" kind="show" id="4ne-0u-YvL"/>
                                 </connections>
                             </button>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter a valid pairing string" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xXh-h1-asR">
+                                <rect key="frame" x="16" y="298" width="343" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
@@ -1882,11 +1887,13 @@
                             <constraint firstItem="Tac-9g-A6V" firstAttribute="leading" secondItem="N1l-CT-vPk" secondAttribute="leadingMargin" id="DM0-JD-cH4"/>
                             <constraint firstItem="GRR-OY-CNL" firstAttribute="top" secondItem="FX0-P8-kJK" secondAttribute="bottom" constant="8" symbolic="YES" id="Gbo-BY-RwN"/>
                             <constraint firstItem="FX0-P8-kJK" firstAttribute="leading" secondItem="N1l-CT-vPk" secondAttribute="leadingMargin" id="GxN-TI-ksU"/>
+                            <constraint firstItem="xXh-h1-asR" firstAttribute="top" secondItem="GRR-OY-CNL" secondAttribute="bottom" constant="3" id="Iep-Wz-eNh"/>
                             <constraint firstItem="rrW-RL-mkE" firstAttribute="top" secondItem="GRR-OY-CNL" secondAttribute="bottom" constant="42" id="Ohr-gV-jXI"/>
                             <constraint firstItem="trF-bi-eCd" firstAttribute="leading" secondItem="rrW-RL-mkE" secondAttribute="leading" id="SZK-Uz-MKL"/>
                             <constraint firstItem="FX0-P8-kJK" firstAttribute="top" secondItem="kmv-lK-hiG" secondAttribute="bottom" constant="8" id="VG0-nk-fEZ"/>
                             <constraint firstItem="trF-bi-eCd" firstAttribute="trailing" secondItem="rrW-RL-mkE" secondAttribute="trailing" id="XJR-hX-yfM"/>
                             <constraint firstItem="FX0-P8-kJK" firstAttribute="trailing" secondItem="N1l-CT-vPk" secondAttribute="trailingMargin" id="Xb5-2m-mZd"/>
+                            <constraint firstItem="xXh-h1-asR" firstAttribute="trailing" secondItem="N1l-CT-vPk" secondAttribute="trailingMargin" id="aLJ-11-wNa"/>
                             <constraint firstItem="3H0-48-Lbb" firstAttribute="leading" secondItem="N1l-CT-vPk" secondAttribute="leading" id="aZk-VG-yNr"/>
                             <constraint firstItem="GRR-OY-CNL" firstAttribute="leading" secondItem="FX0-P8-kJK" secondAttribute="leading" id="fqA-KL-yd6"/>
                             <constraint firstItem="GRR-OY-CNL" firstAttribute="trailing" secondItem="FX0-P8-kJK" secondAttribute="trailing" id="kw5-zN-3NV"/>
@@ -1894,6 +1901,7 @@
                             <constraint firstItem="kmv-lK-hiG" firstAttribute="trailing" secondItem="N1l-CT-vPk" secondAttribute="trailingMargin" id="pNx-8L-wGb"/>
                             <constraint firstItem="GRR-OY-CNL" firstAttribute="leading" secondItem="rrW-RL-mkE" secondAttribute="leading" id="pgP-Is-7ho"/>
                             <constraint firstItem="y0V-jq-CCk" firstAttribute="trailing" secondItem="Tac-9g-A6V" secondAttribute="trailing" id="ph0-hM-Gtq"/>
+                            <constraint firstItem="xXh-h1-asR" firstAttribute="leading" secondItem="N1l-CT-vPk" secondAttribute="leadingMargin" id="rIh-bM-gWg"/>
                             <constraint firstItem="3H0-48-Lbb" firstAttribute="bottom" secondItem="YGP-cJ-2cp" secondAttribute="bottom" id="wa4-6I-i0F"/>
                             <constraint firstItem="trF-bi-eCd" firstAttribute="top" secondItem="rrW-RL-mkE" secondAttribute="bottom" constant="8" symbolic="YES" id="zBv-mJ-id7"/>
                         </constraints>
@@ -1902,6 +1910,7 @@
                     <connections>
                         <outlet property="discoverButton" destination="trF-bi-eCd" id="hv3-Ky-rgC"/>
                         <outlet property="pairingStringButton" destination="GRR-OY-CNL" id="b6c-do-HSF"/>
+                        <outlet property="pairingStringErrorLabel" destination="xXh-h1-asR" id="dz7-Yv-GLo"/>
                         <outlet property="pairingStringField" destination="kmv-lK-hiG" id="hwh-CD-xao"/>
                     </connections>
                 </viewController>
@@ -1912,7 +1921,7 @@
         <!--Help-->
         <scene sceneID="dw7-5T-PJm">
             <objects>
-                <viewController title="Help" id="hSU-LS-9B3" customClass="HelpViewController" customModule="Edge_Heat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Help" id="hSU-LS-9B3" customClass="HelpViewController" customModule="AppMyProduct_Heat_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="56Z-iv-1TY"/>
                         <viewControllerLayoutGuide type="bottom" id="aUc-Xh-LQn"/>
@@ -2046,7 +2055,7 @@ Through the security settings page of the device, the owner can control who has 
         <!--Edit user-->
         <scene sceneID="S92-4U-Vf0">
             <objects>
-                <viewController title="Edit user" id="dfX-gc-DOG" customClass="EditUserViewController" customModule="Edge_Heat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Edit user" id="dfX-gc-DOG" customClass="EditUserViewController" customModule="AppMyProduct_Heat_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ZzR-sO-9Ed"/>
                         <viewControllerLayoutGuide type="bottom" id="aMw-Vf-2lQ"/>
@@ -2277,7 +2286,7 @@ Through the security settings page of the device, the owner can control who has 
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="5RW-eh-vA1"/>
+        <segue reference="Pzf-OU-J9K"/>
         <segue reference="zUV-pr-k1o"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -2299,9 +2308,6 @@ Through the security settings page of the device, the owner can control who has 
         </systemColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="placeholderTextColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

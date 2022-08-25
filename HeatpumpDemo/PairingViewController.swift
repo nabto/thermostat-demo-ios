@@ -11,7 +11,7 @@ import NabtoEdgeIamUtil
 import NabtoEdgeClient
 import NotificationBannerSwift
 
-class PairingViewController: UIViewController, PairingConfirmedListener {
+class PairingViewController: UIViewController, PairingConfirmedListener, UITextFieldDelegate {
 
     @IBOutlet weak var nameLabel        : UILabel!
     @IBOutlet weak var deviceIdLabel    : UILabel!
@@ -43,6 +43,22 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
         confirmButton.addSubview(confirmSpinner)
         confirmSpinner.leftAnchor.constraint(equalTo: confirmButton.leftAnchor, constant: 20.0).isActive = true
         confirmSpinner.centerYAnchor.constraint(equalTo: confirmButton.centerYAnchor).isActive = true
+
+        // dismiss keyboard when tapping background or return key
+        let tapGesture = UITapGestureRecognizer(target: self,
+                action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tapGesture)
+        self.passwordField.delegate = self
+        self.usernameField.delegate = self
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    @objc private func hideKeyboard() {
+        self.view.endEditing(true)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -190,14 +206,15 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
 
     private func pairPasswordOpen() throws {
         guard let device = self.device else { return }
-        var password: String? = nil
 
-        // if available, try password from pairing string
-        if let pairingStringPassword = self.pairingStringPassword {
-            password = pairingStringPassword
-        } else {
-            // otherwise show password input field
-            DispatchQueue.main.sync {
+        var password: String? = nil
+        var user: String? = nil
+        DispatchQueue.main.sync {
+            // if available, try password from pairing string
+            if let pairingStringPassword = self.pairingStringPassword {
+                password = pairingStringPassword
+            } else {
+                // otherwise show password input field
                 if (self.passwordField.isHidden) {
                     self.confirmLabel.text = self.passwordText
                     self.passwordField.isHidden = false
@@ -206,8 +223,9 @@ class PairingViewController: UIViewController, PairingConfirmedListener {
                     password = userPassword
                 }
             }
+            user = self.usernameField.text
         }
-        if let password = password, let user = self.usernameField.text {
+        if let password = password, let user = user {
             let validUserName = ProfileTools.convertToValidUsername(input: user)
             let connection = try EdgeManager.shared.getConnection(device)
             try IamUtil.pairPasswordOpen(connection: connection, desiredUsername: validUserName, password: password)
