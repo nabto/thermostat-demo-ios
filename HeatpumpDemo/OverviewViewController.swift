@@ -31,6 +31,12 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewDidLoad()
         table.contentInset.top += 16
         self.navigationItem.leftBarButtonItems?.append(UIBarButtonItem(customView: self.buttonBarSpinner))
+        do {
+            try BookmarkManager.shared.loadBookmarks()
+        } catch {
+            let banner = GrowingNotificationBanner(title: "Error", subtitle: "Could not load bookmarks: \(error)", style: .danger)
+            banner.show()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Bookmark : Equatable, Hashable, CustomStringConvertible {
+class Bookmark : Equatable, Hashable, CustomStringConvertible, Codable {
     let deviceId: String
     let productId: String
     var timeAdded: Date?
@@ -52,52 +52,34 @@ class Bookmark : Equatable, Hashable, CustomStringConvertible {
 class BookmarkManager {
 
     static let shared = BookmarkManager()
-    private init() {
-        loadBookmarks()
-    }
-    
+    private var initialized: Bool = false
+
     var deviceBookmarks: [Bookmark] = []
 
-    func add(bookmark: Bookmark) {
+    func add(bookmark: Bookmark) throws {
         let index = self.deviceBookmarks.firstIndex(of: bookmark)
         if let index = index {
             self.deviceBookmarks.remove(at: index)
         }
         bookmark.timeAdded = Date()
-        deviceBookmarks.append(bookmark)
-        saveBookmarks()
+        self.deviceBookmarks.append(bookmark)
+        try self.saveBookmarks()
     }
     
-    func saveBookmarks() {
+    func saveBookmarks() throws {
+        let data = try JSONEncoder().encode(self.deviceBookmarks)
         let url = bookmarksFileURL()
-        let dictionary = deviceBookmarks.map { return ["deviceId" : $0.deviceId, "productId": $0.productId, "name" : $0.name] }
-        do {
-            let data = try PropertyListSerialization.data(fromPropertyList: dictionary,
-                                                          format: .xml, options: 0)
-            try data.write(to: url, options: .atomic)
-        } catch {
-            print("error writing bookmarks file")
-        }
+        try data.write(to: url, options: .atomic)
     }
     
-    func loadBookmarks() {
+    func loadBookmarks() throws {
         let url = bookmarksFileURL()
-        var bookmarks: [Bookmark] = []
-//        bookmarks.append(Bookmark(deviceId: "de-xxxxxxxx", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 0), sct: "WzwjoTabnvux", name: "Offline device (top)"))
-//        bookmarks.append(Bookmark(deviceId: "de-ijrdq47i", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 1), sct: "WzwjoTabnvux", name: "Remote integration test"))
-//        bookmarks.append(Bookmark(deviceId: "de-3cqgxbdm", productId: "pr-cc9i4y7r", creationTime: Date(timeIntervalSince1970: 2), name: "Local heatpump"))
-//        bookmarks.append(Bookmark(deviceId: "de-yyyyyyyy", productId: "pr-fatqcwj9", creationTime: Date(timeIntervalSince1970: 3), sct: "WzwjoTabnvux", name: "Offline device (bottom)"))
-        do {
-            let data = try Data(contentsOf: url)
-            let result = try PropertyListSerialization.propertyList(from: data, options: [], format: nil)
-            if let dict = result as? [[String : String?]] {
-                bookmarks.append(contentsOf: dict.map { return Bookmark(
-                        deviceId: $0["deviceId"]!!, productId: $0["productId"]!!, name: $0["name"]!)
-                })
-            }
-        } catch {
-            print("error reading bookmarks file")
+        let fileManager = FileManager.default
+        guard fileManager.fileExists(atPath: url.path) else {
+            return
         }
+        let data = try Data(contentsOf: url)
+        var bookmarks: [Bookmark] = try JSONDecoder().decode([Bookmark].self, from: data)
         self.deviceBookmarks = bookmarks.sorted(by: {
             if ($0.timeAdded != nil && $1.timeAdded != nil) {
                 return $0.timeAdded! < $1.timeAdded!
@@ -108,9 +90,8 @@ class BookmarkManager {
     }
     
     func clearBookmarks() {
+        self.deviceBookmarks = []
         let url = bookmarksFileURL()
-        deviceBookmarks = []
-        
         if FileManager.default.fileExists(atPath: url.path) {
             try? FileManager.default.removeItem(atPath: url.path)
         }
@@ -122,6 +103,6 @@ class BookmarkManager {
 
     func bookmarksFileURL() -> URL {
         let directory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-        return URL(fileURLWithPath: directory).appendingPathComponent("bookmarks.plist")
+        return URL(fileURLWithPath: directory).appendingPathComponent("bookmarks.json")
     }
 }

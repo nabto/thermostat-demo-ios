@@ -96,11 +96,8 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
         super.viewDidLoad()
 
         refreshButton.clipsToBounds  = true
-        settingsButton.clipsToBounds = true
         refreshButton.layer.cornerRadius  = 6
-        settingsButton.layer.cornerRadius = 6
         refreshButton.imageView?.tintColor = UIColor.black
-        settingsButton.imageView?.tintColor = UIColor.black
         hotIcon.image = hotIcon.image?.withRenderingMode(.alwaysTemplate)
         coldIcon.image = coldIcon.image?.withRenderingMode(.alwaysTemplate)
         

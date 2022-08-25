@@ -1308,27 +1308,9 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DlJ-bH-hGS">
                                 <rect key="frame" x="32" y="276" width="311" height="100"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lX5-lp-x9w">
-                                        <rect key="frame" x="195" y="27" width="116" height="46"/>
-                                        <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="46" id="JWg-C2-fyJ"/>
-                                            <constraint firstAttribute="width" constant="116" id="Sgy-7p-8sV"/>
-                                        </constraints>
-                                        <state key="normal" title="Settings" image="settingsSmall">
-                                            <color key="titleColor" systemColor="darkTextColor"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="settingsTap:" destination="XEm-96-IUG" eventType="touchUpInside" id="ddb-y9-WNX"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rsb-tf-RTi">
-                                        <rect key="frame" x="0.0" y="27" width="116" height="46"/>
+                                        <rect key="frame" x="0.0" y="27" width="311" height="46"/>
                                         <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="46" id="ObT-9s-puy"/>
-                                            <constraint firstAttribute="width" constant="116" id="dCG-AB-vA4"/>
-                                        </constraints>
                                         <state key="normal" title="Refresh" image="refresh">
                                             <color key="titleColor" systemColor="darkTextColor"/>
                                         </state>
@@ -1339,11 +1321,11 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstItem="lX5-lp-x9w" firstAttribute="centerY" secondItem="Rsb-tf-RTi" secondAttribute="centerY" id="1io-jC-s6y"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="60" id="3Cm-XW-ktZ"/>
-                                    <constraint firstAttribute="trailing" secondItem="lX5-lp-x9w" secondAttribute="trailing" id="4WM-5P-Kij"/>
-                                    <constraint firstItem="Rsb-tf-RTi" firstAttribute="centerY" secondItem="DlJ-bH-hGS" secondAttribute="centerY" id="Gbs-aG-PIj"/>
-                                    <constraint firstItem="Rsb-tf-RTi" firstAttribute="leading" secondItem="DlJ-bH-hGS" secondAttribute="leading" id="atZ-lH-Jto"/>
+                                    <constraint firstItem="Rsb-tf-RTi" firstAttribute="leading" secondItem="DlJ-bH-hGS" secondAttribute="leading" id="8oE-9d-4Uq"/>
+                                    <constraint firstItem="Rsb-tf-RTi" firstAttribute="centerY" secondItem="DlJ-bH-hGS" secondAttribute="centerY" id="Ak3-nL-cvS"/>
+                                    <constraint firstItem="Rsb-tf-RTi" firstAttribute="top" secondItem="DlJ-bH-hGS" secondAttribute="top" constant="27" id="BqE-qa-dLJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="Rsb-tf-RTi" secondAttribute="trailing" id="g9L-Vs-IKX"/>
                                     <constraint firstAttribute="height" priority="802" constant="100" id="l8m-50-kwM"/>
                                 </constraints>
                             </view>
@@ -1531,7 +1513,6 @@
                         <outlet property="refreshButton" destination="Rsb-tf-RTi" id="bOj-6l-HKI"/>
                         <outlet property="roleLabel" destination="I6C-uI-fKq" id="23N-Vl-WJP"/>
                         <outlet property="roomTemperatureLabel" destination="VYa-Ld-NhW" id="7as-01-Opi"/>
-                        <outlet property="settingsButton" destination="lX5-lp-x9w" id="MlC-sy-UHs"/>
                         <outlet property="spinner" destination="wTj-Kb-KzJ" id="R3S-BU-QIH"/>
                         <outlet property="temperatureLabel" destination="kqH-7S-SDe" id="fcA-bC-mfc"/>
                         <outlet property="temperatureSlider" destination="fLy-mA-YQl" id="Txg-Rx-iJU"/>
@@ -2288,7 +2269,6 @@ Through the security settings page of the device, the owner can control who has 
         <image name="owner" width="64" height="64"/>
         <image name="refresh" width="20" height="20"/>
         <image name="settings" width="36" height="36"/>
-        <image name="settingsSmall" width="20" height="20"/>
         <image name="thermometer" catalog="system" width="81" height="128"/>
         <image name="thermometer.sun" catalog="system" width="103" height="128"/>
         <systemColor name="darkTextColor">
