@@ -43,5 +43,13 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_nabto._udp</string>
+	</array>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Discover and connect to local Nabto Edge devices to retrieve public device information</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>

@@ -524,14 +524,6 @@
                                                     <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="excla" translatesAutoresizingMaskIntoConstraints="NO" id="NY9-ju-76O">
-                                                    <rect key="frame" x="189" y="16" width="20" height="20"/>
-                                                    <color key="tintColor" red="0.97647058819999999" green="0.50196078430000002" blue="0.2156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="20" id="gsI-aX-3ha"/>
-                                                        <constraint firstAttribute="width" constant="20" id="zR4-U7-KFq"/>
-                                                    </constraints>
-                                                </imageView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RDZ-EA-roe">
                                                     <rect key="frame" x="16" y="71" width="351.5" height="1"/>
                                                     <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -542,12 +534,10 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="Pr7-Uq-ukp" firstAttribute="leading" secondItem="3o2-Xq-0JF" secondAttribute="trailing" constant="16" id="26s-vT-v6D"/>
-                                                <constraint firstItem="NY9-ju-76O" firstAttribute="centerY" secondItem="0RG-n7-UFH" secondAttribute="centerY" id="76F-6L-9aT"/>
                                                 <constraint firstItem="Pr7-Uq-ukp" firstAttribute="top" secondItem="0RG-n7-UFH" secondAttribute="bottom" id="8J1-Va-OnM"/>
                                                 <constraint firstAttribute="trailing" secondItem="RDZ-EA-roe" secondAttribute="trailing" constant="-17" id="CDR-2R-ngM"/>
                                                 <constraint firstItem="Pr7-Uq-ukp" firstAttribute="leading" secondItem="0RG-n7-UFH" secondAttribute="leading" id="OBD-Wb-WjQ"/>
                                                 <constraint firstAttribute="bottom" secondItem="RDZ-EA-roe" secondAttribute="bottom" id="VqG-wm-78E"/>
-                                                <constraint firstItem="NY9-ju-76O" firstAttribute="leading" secondItem="0RG-n7-UFH" secondAttribute="trailing" constant="8" id="dgr-Jf-zWS"/>
                                                 <constraint firstItem="0RG-n7-UFH" firstAttribute="centerY" secondItem="3o2-Xq-0JF" secondAttribute="centerY" constant="-10" id="gOr-by-lTi"/>
                                                 <constraint firstItem="RDZ-EA-roe" firstAttribute="leading" secondItem="d5K-2d-DLx" secondAttribute="leading" constant="16" id="kmu-ER-oyV"/>
                                                 <constraint firstItem="3o2-Xq-0JF" firstAttribute="centerY" secondItem="d5K-2d-DLx" secondAttribute="centerY" id="qfo-Ht-9K6"/>
@@ -557,7 +547,6 @@
                                         <connections>
                                             <outlet property="deviceIdLabel" destination="Pr7-Uq-ukp" id="EXC-0j-YbC"/>
                                             <outlet property="nameLabel" destination="0RG-n7-UFH" id="4XD-1b-8au"/>
-                                            <outlet property="statusIcon" destination="NY9-ju-76O" id="SKW-Xz-D3A"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoDevicesCell" rowHeight="72" id="4TF-4h-AeV" customClass="NoDevicesCell" customModule="AppMyProduct_Heat_Control" customModuleProvider="target">
@@ -2293,7 +2282,6 @@ Through the security settings page of the device, the owner can control who has 
     <resources>
         <image name="alert" width="64" height="64"/>
         <image name="cold" width="64" height="64"/>
-        <image name="excla" width="128" height="128"/>
         <image name="help" width="22" height="22"/>
         <image name="home" width="36" height="36"/>
         <image name="hot" width="64" height="64"/>
