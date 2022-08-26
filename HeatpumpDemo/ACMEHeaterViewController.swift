@@ -162,7 +162,9 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
             } catch {
                 NSLog("Error when refreshing: \(error)")
                 self.refreshTimer?.invalidate()
-                self.showDeviceError("\(error)")
+                if (!EdgeManager.shared.isStopped()) {
+                    self.showDeviceError("\(error)")
+                }
             }
         }
     }

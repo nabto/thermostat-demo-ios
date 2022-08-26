@@ -49,6 +49,12 @@ class EdgeManager {
         }
     }
 
+    func isStopped() -> Bool {
+        self.clientQueue.sync {
+            return self.client_ == nil
+        }
+    }
+
     func stop() {
         self.cacheQueue.sync {
             self.cache = [:]
