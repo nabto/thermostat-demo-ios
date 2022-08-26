@@ -66,15 +66,15 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     @IBOutlet weak var displayNameLabel      : UILabel!
     @IBOutlet weak var roleLabel             : UILabel!
     
-    let maxTemp         = 30
-    let minTemp         = 16
+    let maxTemp         = 30.0
+    let minTemp         = 16.0
     var offline         = false
     
-    var roomTemperature = -1 {
-        didSet { roomTemperatureLabel.text = "\(roomTemperature)ºC in room" }
+    var roomTemperature = -1.0 {
+        didSet { roomTemperatureLabel.text = "\(pretty(roomTemperature))ºC in room" }
     }
-    var temperature = -1 {
-        didSet { temperatureLabel.text = "\(temperature)ºC" }
+    var temperature = -1.0 {
+        didSet { temperatureLabel.text = "\(pretty(temperature))ºC" }
     }
     var mode : DeviceMode? {
         didSet { modeField.text = mode?.rawValue }
@@ -103,7 +103,7 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
         
         temperatureSlider.minimumValue = Float(minTemp)
         temperatureSlider.maximumValue = Float(maxTemp)
-        temperatureSlider.value = Float(maxTemp - minTemp) / 2.0
+        temperatureSlider.value = Float((maxTemp - minTemp) / 2.0)
         
         configurePicker()
         
@@ -146,6 +146,10 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
             }
         }
     }
+    
+    func pretty(_ value: Double) -> Double {
+        return round(value * 10.0) / 10.0
+    }
 
     private func refreshThermostatInfo(connection: Connection) throws {
         let request = try connection.createCoapRequest(method: "GET", path: "/heat-pump")
@@ -184,8 +188,8 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
         self.activeSwitch.isOn = details.Power
         self.mode = DeviceMode(rawValue: details.Mode)
         self.temperatureSlider.value = Float(details.Target)
-        self.temperature = Int(details.Target)
-        self.roomTemperature = Int(details.Temperature)
+        self.temperature = details.Target
+        self.roomTemperature = details.Temperature
         markNotOffline()
     }
     
@@ -194,7 +198,7 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
         showErrorLabel(show: !(activeSwitch.isOn), message: "Device powered off")
     }
 
-    func applyTemperature(temperature: Int) {
+    func applyTemperature(temperature: Double) {
         self.busy = true
         DispatchQueue.global().async {
             defer {
@@ -206,7 +210,7 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
                 let connection = try EdgeManager.shared.getConnection(self.device)
                 let coap = try connection.createCoapRequest(method: "POST", path: "/heat-pump/target")
                 let encoder = CBOREncoder()
-                let cbor = try encoder.encode(Float(self.temperature))
+                let cbor = try encoder.encode(self.temperature)
                 try coap.setRequestPayload(contentFormat: ContentFormat.APPLICATION_CBOR.rawValue, data: cbor)
                 let response = try coap.execute()
                 if (response.status == 204) {
@@ -302,23 +306,23 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     //MARK:- IBActions
     
     @IBAction func sliderChanged(_ sender: UISlider) {
-        temperature = Int(sender.value)
+        temperature = Double(sender.value)
     }
     
     @IBAction func sliderReleased(_ sender: UISlider) {
-        temperature = Int(sender.value)
+        temperature = Double(sender.value)
         applyTemperature(temperature: temperature)
     }
     
     @IBAction func incrementTemperature(_ sender: Any) {
         guard temperature < maxTemp else { return }
-        temperature += 1
+        temperature += 1.0
         applyTemperature(temperature: temperature)
     }
     
     @IBAction func decrementTemperature(_ sender: Any) {
         guard temperature > minTemp else { return }
-        temperature -= 1
+        temperature -= 1.0
         applyTemperature(temperature: temperature)
     }
     
