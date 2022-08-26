@@ -35,6 +35,7 @@ public struct HeatpumpDetails: Codable, CustomStringConvertible {
         do {
             return try decoder.decode(HeatpumpDetails.self, from: cbor)
         } catch {
+            NSLog("Error when decoding response: \(error)")
             throw NabtoEdgeClientError.FAILED_WITH_DETAIL(detail: "Could not decode heatpump response: \(error)")
         }
     }
@@ -69,7 +70,7 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     let maxTemp         = 30.0
     let minTemp         = 16.0
     var offline         = false
-    
+
     var roomTemperature = -1.0 {
         didSet { roomTemperatureLabel.text = "\(pretty(roomTemperature))ºC in room" }
     }
@@ -83,13 +84,14 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     var busy = false {
         didSet {
             if busy {
-                perform(#selector(showSpinner), with: nil, afterDelay: 1)
+                perform(#selector(showSpinner), with: nil, afterDelay: 800)
             } else {
                 hideSpinner()
             }
         }
     }
-    
+
+    var refreshTimer: Timer?
     var starting = true
     
     override func viewDidLoad() {
@@ -107,7 +109,8 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
         
         configurePicker()
         
-        refresh()
+        refresh(updateTarget: true)
+        self.scheduleRefresh()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -118,6 +121,19 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
             starting = false
         }
     }
+
+    func scheduleRefresh() {
+        DispatchQueue.main.async {
+            self.refreshTimer?.invalidate()
+            self.refreshTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.refresh), userInfo: nil, repeats: false)
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.refreshTimer?.invalidate()
+    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -133,15 +149,19 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
         }
     }
 
-    @objc func refresh() {
+    @objc func refresh(updateTarget: Bool=false) {
         self.busy = true
         DispatchQueue.global().async {
             do {
                 let connection = try EdgeManager.shared.getConnection(self.device)
-                try self.refreshThermostatInfo(connection: connection)
+                try self.refreshThermostatInfo(connection: connection, updateTarget: updateTarget)
                 try self.refreshDeviceDetails(connection: connection)
                 try self.refreshUserInfo(connection: connection)
+                self.scheduleRefresh()
+                self.busy = false
             } catch {
+                NSLog("Error when refreshing: \(error)")
+                self.refreshTimer?.invalidate()
                 self.showDeviceError("\(error)")
             }
         }
@@ -151,14 +171,13 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
         return round(value * 10.0) / 10.0
     }
 
-    private func refreshThermostatInfo(connection: Connection) throws {
+    private func refreshThermostatInfo(connection: Connection, updateTarget: Bool) throws {
         let request = try connection.createCoapRequest(method: "GET", path: "/heat-pump")
         let response = try request.execute()
         if (response.status == 205) {
             let details = try HeatpumpDetails.decode(cbor: response.payload)
             DispatchQueue.main.sync {
-                self.busy = false
-                self.refreshThermostatState(details)
+                self.refreshThermostatState(details, updateTarget: updateTarget)
             }
         } else {
             self.showDeviceError("Could not get heatpump details, device returned status \(response.status)")
@@ -168,7 +187,6 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     private func refreshDeviceDetails(connection: Connection) throws {
         let details = try IamUtil.getDeviceDetails(connection: connection)
         DispatchQueue.main.sync {
-            self.busy = false
             self.deviceIdLabel.text = "\(details.ProductId).\(details.DeviceId)"
             self.appNameAndVersionLabel.text = "\(details.AppName ?? "n/a") (\(details.AppVersion ?? "n/a"))"
         }
@@ -177,19 +195,20 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     private func refreshUserInfo(connection: Connection) throws {
         let user = try IamUtil.getCurrentUser(connection: connection)
         DispatchQueue.main.sync {
-            self.busy = false
             self.usernameLabel.text = user.Username
             self.displayNameLabel.text = user.DisplayName ?? "n/a"
             self.roleLabel.text = user.Role ?? "n/a"
         }
     }
 
-    func refreshThermostatState(_ details: HeatpumpDetails) {
+    func refreshThermostatState(_ details: HeatpumpDetails, updateTarget: Bool) {
         self.activeSwitch.isOn = details.Power
         self.mode = DeviceMode(rawValue: details.Mode)
-        self.temperatureSlider.value = Float(details.Target)
-        self.temperature = details.Target
         self.roomTemperature = details.Temperature
+        if (updateTarget) {
+            self.temperatureSlider.value = Float(details.Target)
+            self.temperature = details.Target
+        }
         markNotOffline()
     }
     
@@ -219,6 +238,7 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
                     self.showDeviceError("Could not set heatpump temperature, device returned status \(response.status)")
                 }
             } catch {
+                NSLog("Error when applying temperature: \(error)")
                 self.showDeviceError("\(error)")
             }
         }
@@ -245,6 +265,7 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
                     self.showDeviceError("Could not set heatpump power status, device returned status \(response.status)")
                 }
             } catch {
+                NSLog("Error when activating: \(error)")
                 self.showDeviceError("\(error)")
             }
         }
@@ -272,6 +293,7 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
                     self.showDeviceError("Could not set heatpump mode, device returned status \(response.status)")
                 }
             } catch {
+                NSLog("Error when setting mode: \(error)")
                 self.showDeviceError("\(error)")
             }
         }
@@ -280,29 +302,21 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     //will be called after a small delay
     //if the app is still waiting response, will show the spinner
     @objc func showSpinner() {
-        if busy {
-            connectingView.isHidden = false
-            spinner.startAnimating()
+        DispatchQueue.main.async {
+            if (self.busy) {
+                self.connectingView.isHidden = false
+                self.spinner.startAnimating()
+            }
         }
     }
     
     func hideSpinner() {
-        connectingView.isHidden = true
-        spinner.stopAnimating()
-    }
-    
-    func noAccessNotice() {
-        let title = "Access denied"
-        let message = "You no longer have permission to access this device. Please try pairing with it again."
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "Ok", style: .default) { action in
-            alert.dismiss(animated: true, completion: nil)
-            _ = self.navigationController?.popToRootViewController(animated: true)
+        DispatchQueue.main.async {
+            self.connectingView.isHidden = true
+            self.spinner.stopAnimating()
         }
-        alert.addAction(okAction)
-        present(alert, animated: true, completion: nil)
     }
-    
+
     //MARK:- IBActions
     
     @IBAction func sliderChanged(_ sender: UISlider) {
@@ -331,7 +345,8 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     }
     
     @IBAction func refreshTap(_ sender: Any) {
-        refresh()
+        self.refresh(updateTarget: true)
+        self.scheduleRefresh()
     }
 
     //MARK: - PickerView

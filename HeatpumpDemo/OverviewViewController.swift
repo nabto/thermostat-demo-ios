@@ -143,12 +143,12 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     }
 
     @IBAction func refresh(_ sender: Any) {
+        EdgeManager.shared.stop()
+        self.errorBanner?.dismiss()
         self.doRefresh()
     }
 
     func doRefresh() {
-        EdgeManager.shared.stop()
-        self.errorBanner?.dismiss()
         self.devices = []
         self.table.reloadData()
         self.populateDeviceOverview()
