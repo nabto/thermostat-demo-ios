@@ -6,7 +6,23 @@
 import UIKit
 import NabtoEdgeClient
 
-class EdgeManager : ConnectionEventReceiver {
+class EdgeConnectionWrapper : ConnectionEventReceiver {
+    var isClosed: Bool = false
+    let connection: Connection
+
+    func onEvent(event: NabtoEdgeClientConnectionEvent) {
+        if (event == NabtoEdgeClientConnectionEvent.CLOSED) {
+            self.isClosed = true
+        }
+    }
+
+    init(connection: Connection) throws {
+        self.connection = connection
+        try connection.addConnectionEventsReceiver(cb: self)
+    }
+}
+
+class EdgeManager {
 
     // coap test app
     // let appSpecificApiKey = "sk-5f3ab4bea7cc2585091539fb950084ce"
@@ -15,7 +31,7 @@ class EdgeManager : ConnectionEventReceiver {
     let appSpecificApiKey = "sk-9c826d2ebb4343a789b280fe22b98305"
 
     internal static let shared = EdgeManager()
-    private var cache: [Bookmark:Connection] = [:]
+    private var cache: [Bookmark:EdgeConnectionWrapper] = [:]
     private var client_: NabtoEdgeClient.Client! = nil
     private let cacheQueue = DispatchQueue(label: "cacheQueue")
     private let clientQueue = DispatchQueue(label: "clientQueue")
@@ -43,27 +59,19 @@ class EdgeManager : ConnectionEventReceiver {
         }
     }
 
-    func onEvent(event: NabtoEdgeClientConnectionEvent) {
-        if (event == NabtoEdgeClientConnectionEvent.CLOSED) {
-            // flush entire cache on any connection close (error or controller) ... a proper finegrained cleanup requires a connection wrapper
-            //self.cache = [:]
-        }
-    }
-
     func getConnection(_ target: Bookmark) throws -> Connection {
-        var cached: Connection?
+        var cached: EdgeConnectionWrapper?
         cacheQueue.sync {
             cached = cache[target]
         }
-        if (cached == nil) {
+        if (cached == nil || cached!.isClosed) {
             let newConnection = try doConnect(target)
-            try newConnection.addConnectionEventsReceiver(cb: self)
-            cacheQueue.sync {
-                cache[target] = newConnection
+            try cacheQueue.sync {
+                cache[target] = try EdgeConnectionWrapper(connection: newConnection)
             }
             return newConnection
         } else {
-            return cached!
+            return cached!.connection
         }
     }
 
@@ -83,10 +91,4 @@ class EdgeManager : ConnectionEventReceiver {
         return connection
     }
 
-    func clearConnectionCacheEntry(_ target: Bookmark) throws {
-        if let connection = self.cache[target] {
-            try connection.close()
-            self.cache.removeValue(forKey: target)
-        }
-    }
 }

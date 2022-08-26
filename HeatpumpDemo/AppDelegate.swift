@@ -24,6 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
+        print(" *** stop")
         EdgeManager.shared.stop()
     }
 

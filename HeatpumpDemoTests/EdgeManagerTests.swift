@@ -84,7 +84,7 @@ class EdgeManagerTest: XCTestCase {
         let connection2 = try self.sut.getConnection(bookmark)
         XCTAssertEqual(Unmanaged.passUnretained(connection).toOpaque(), Unmanaged.passUnretained(connection2).toOpaque())
 
-        try self.sut.clearConnectionCacheEntry(bookmark)
+        try connection.close()
 
         let connection3 = try self.sut.getConnection(bookmark)
         XCTAssertNotEqual(Unmanaged.passUnretained(connection).toOpaque(), Unmanaged.passUnretained(connection3).toOpaque())
