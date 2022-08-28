@@ -152,19 +152,28 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     @objc func refresh(updateTarget: Bool=false) {
         self.busy = true
         DispatchQueue.global().async {
+            var errorMessage: String?
+            defer {
+                self.busy = false
+            }
             do {
                 let connection = try EdgeManager.shared.getConnection(self.device)
                 try self.refreshThermostatInfo(connection: connection, updateTarget: updateTarget)
                 try self.refreshDeviceDetails(connection: connection)
                 try self.refreshUserInfo(connection: connection)
-                self.scheduleRefresh()
-                self.busy = false
+            } catch (NabtoEdgeClientError.FAILED_WITH_DETAIL(let detail)) {
+                errorMessage = detail
             } catch {
+                errorMessage = "\(error)"
+            }
+            if let error = errorMessage {
                 NSLog("Error when refreshing: \(error)")
                 self.refreshTimer?.invalidate()
                 if (!EdgeManager.shared.isStopped()) {
-                    self.showDeviceError("\(error)")
+                    self.showDeviceError(error)
                 }
+            } else {
+                self.scheduleRefresh()
             }
         }
     }
@@ -182,7 +191,7 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
                 self.refreshThermostatState(details, updateTarget: updateTarget)
             }
         } else {
-            self.showDeviceError("Could not get heatpump details, device returned status \(response.status)")
+            throw NabtoEdgeClientError.FAILED_WITH_DETAIL(detail: "Could not get heatpump details, device returned status \(response.status)")
         }
     }
 
