@@ -21,7 +21,7 @@ class PairingConfirmedViewController: ViewControllerWithDevice, UITextFieldDeleg
     @IBOutlet weak var nameField: UITextField!
     var pairingConfirmedDelegate: PairingConfirmedListener?
 
-    var appName: String = "My Heatpump"
+    var appName: String = "My Thermostat"
     let text = "Congratulations! You are successfully paired with device '%@.%@' in role '%@'."
 
     override func viewDidLoad() {

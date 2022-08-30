@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  HeatpumpDemo
+//  ThermostatDemo
 //
 //  Created by Nabto on 30/01/2022.
 //  Copyright © 2022 Nabto. All rights reserved.
@@ -36,6 +36,24 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         } catch {
             let banner = GrowingNotificationBanner(title: "Error", subtitle: "Could not load bookmarks: \(error)", style: .danger)
             banner.show()
+        }
+
+        NotificationCenter.default
+                .addObserver(self,
+                        selector: #selector(connectionClosed),
+                        name: NSNotification.Name (EdgeManager.connectionClosedEventName),
+                        object: nil)
+    }
+
+    deinit {
+        NotificationCenter.default
+                .removeObserver(self, name: NSNotification.Name(EdgeManager.connectionClosedEventName), object: nil)
+    }
+
+
+    @objc func connectionClosed(_ notification: Notification) {
+        if let bookmark = notification.object as? Bookmark {
+            print(" *** TODO: flag as offline in model and reload: \(bookmark)")
         }
     }
 

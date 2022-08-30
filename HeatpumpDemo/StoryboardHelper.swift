@@ -1,6 +1,6 @@
 //
 //  StoryboardHelper.swift
-//  HeatpumpDemo
+//  ThermostatDemo
 //
 //  Created by Nabto on 03/02/2022.
 //  Copyright © 2022 Nabto. All rights reserved.
@@ -23,7 +23,7 @@ class StoryboardHelper {
 
     class func viewControllerFor(device: Bookmark) -> DeviceDetailsViewController? {
         //Add custom device screens here
-        let demoProductType = "ACME 9002 Heatpump"
+        let demoProductType = "ACME 9002 Thermostat"
         if device.modelName != demoProductType {
             NSLog("Warning: Target device is of type \(device.modelName ?? "(n/a)"), this app only supports \(demoProductType)")
         }

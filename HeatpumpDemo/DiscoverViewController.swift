@@ -1,6 +1,6 @@
 //
 //  DiscoverViewController.swift
-//  HeatpumpDemo
+//  ThermostatDemo
 //
 //  Created by Nabto on 31/01/2022.
 //  Copyright © 2022 Nabto. All rights reserved.
@@ -43,7 +43,8 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
         self.devices = []
         self.waiting = true
         self.table.reloadData()
-        let scanner = EdgeManager.shared.client.createMdnsScanner(subType: "heatpump")
+        let scanner = EdgeManager.shared.client.createMdnsScanner()
+        //let scanner = EdgeManager.shared.client.createMdnsScanner(subType: "thermostat")
         scanner.addMdnsResultReceiver(self)
         do {
             try scanner.start()
@@ -83,6 +84,9 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
             } else {
                 print("Not adding device \(bookmark) to discovered device list: No supported pairing modes enabled")
             }
+        } catch (NabtoEdgeIamUtil.IamError.IAM_NOT_SUPPORTED) {
+            // silently ignore
+            NSLog("Nabto Edge device discovered that do not support IAM: \(bookmark.productId).\(bookmark.deviceId)")
         } catch {
             self.handleError(msg: "\(error)")
         }
@@ -90,6 +94,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 
     func handleError(msg: String) {
         DispatchQueue.main.async {
+            NSLog("Discover error: \(msg)")
             let errorBanner = GrowingNotificationBanner(title: "Discover error", subtitle: msg, style: .danger)
             errorBanner.show()
         }

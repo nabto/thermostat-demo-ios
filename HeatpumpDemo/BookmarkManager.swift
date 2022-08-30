@@ -1,6 +1,6 @@
 //
 //  BookmarkManager.swift
-//  HeatpumpDemo
+//  ThermostatDemo
 //
 //  Created by Nabto on 03/02/2022.
 //  Copyright © 2022 Nabto. All rights reserved.
@@ -13,7 +13,7 @@ class Bookmark : Equatable, Hashable, CustomStringConvertible, Codable {
     let productId: String
     var timeAdded: Date?
     var sct: String?
-    var name : String = "Anonymous Heatpump"
+    var name : String = "Anonymous Thermostat"
     var modelName: String?
     var role: String?
 

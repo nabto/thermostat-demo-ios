@@ -1,6 +1,6 @@
 //
 //  ProfileViewController.swift
-//  HeatpumpDemo
+//  ThermostatDemo
 //
 //  Created by Nabto on 31/01/2022.
 //  Copyright © 2022 Nabto. All rights reserved.

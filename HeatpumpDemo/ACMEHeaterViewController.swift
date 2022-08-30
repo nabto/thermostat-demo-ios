@@ -1,6 +1,6 @@
 //
 //  ACMEHeaterViewController.swift
-//  HeatpumpDemo
+//  ThermostatDemo
 //
 //  Created by Nabto on 03/02/2022.
 //  Copyright © 2022 Nabto. All rights reserved.
@@ -17,7 +17,7 @@ enum DeviceMode: String {
     static let all = [COOL, HEAT, FAN, DRY]
 }
 
-public struct HeatpumpDetails: Codable, CustomStringConvertible {
+public struct ThermostatDetails: Codable, CustomStringConvertible {
     public let Mode: String
     public let Target: Double
     public let Power: Bool
@@ -30,18 +30,18 @@ public struct HeatpumpDetails: Codable, CustomStringConvertible {
         self.Temperature = Temperature
     }
 
-    public static func decode(cbor: Data) throws -> HeatpumpDetails {
+    public static func decode(cbor: Data) throws -> ThermostatDetails {
         let decoder = CBORDecoder()
         do {
-            return try decoder.decode(HeatpumpDetails.self, from: cbor)
+            return try decoder.decode(ThermostatDetails.self, from: cbor)
         } catch {
             NSLog("Error when decoding response: \(error)")
-            throw NabtoEdgeClientError.FAILED_WITH_DETAIL(detail: "Could not decode heatpump response: \(error)")
+            throw NabtoEdgeClientError.FAILED_WITH_DETAIL(detail: "Could not decode thermostat response: \(error)")
         }
     }
 
     public var description: String {
-        "HeatpumpDetails(Mode: \(Mode), Target: \(Target), Power: \(Power), Temperature: \(Temperature))"
+        "ThermostatDetails(Mode: \(Mode), Target: \(Target), Power: \(Power), Temperature: \(Temperature))"
     }
 }
 
@@ -83,7 +83,9 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     
     var busy = false {
         didSet {
+            print("*** busy set: \(busy)")
             if busy {
+                print("    *** performing selector: \(busy)")
                 perform(#selector(showSpinner), with: nil, afterDelay: 800)
             } else {
                 hideSpinner()
@@ -91,7 +93,9 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
         }
     }
 
+    var showReconnectedMessage: Bool = false
     var refreshTimer: Timer?
+    var banner: GrowingNotificationBanner? = nil
     var starting = true
     
     override func viewDidLoad() {
@@ -106,11 +110,32 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
         temperatureSlider.minimumValue = Float(minTemp)
         temperatureSlider.maximumValue = Float(maxTemp)
         temperatureSlider.value = Float((maxTemp - minTemp) / 2.0)
-        
+
+        NotificationCenter.default
+                .addObserver(self,
+                        selector: #selector(connectionClosed),
+                        name: NSNotification.Name (EdgeManager.connectionClosedEventName),
+                        object: nil)
+
         configurePicker()
         
         refresh(updateTarget: true)
         self.scheduleRefresh()
+    }
+
+    deinit {
+        NotificationCenter.default
+                .removeObserver(self, name: NSNotification.Name(EdgeManager.connectionClosedEventName), object: nil)
+    }
+
+    @objc func connectionClosed(_ notification: Notification) {
+        if let bookmark = notification.object as? Bookmark {
+            DispatchQueue.main.async {
+                self.refreshTimer?.invalidate()
+                self.showDeviceErrorMsg("Connection closed - refresh to try to reconnect")
+                self.showReconnectedMessage = true
+            }
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -124,8 +149,8 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
 
     func scheduleRefresh() {
         DispatchQueue.main.async {
-            self.refreshTimer?.invalidate()
-            self.refreshTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.refresh), userInfo: nil, repeats: false)
+//            self.refreshTimer?.invalidate()
+//            self.refreshTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.refresh), userInfo: nil, repeats: false)
         }
     }
 
@@ -141,10 +166,34 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     
     //MARK:- Device
 
-    func showDeviceError(_ msg: String) {
+    func handleDeviceError(_ error: Error) {
+        EdgeManager.shared.removeConnection(self.device)
+        if let error = error as? NabtoEdgeClientError {
+            switch error {
+            case .NO_CHANNELS:
+                self.showDeviceErrorMsg("Device offline - please make sure you and the target device both have a work working network connection")
+                break
+            case .TIMEOUT:
+                self.showDeviceErrorMsg("The operation timed out - was the connection lost?")
+                break
+            case .STOPPED:
+                // ignore - connection/client will be restarted at next connect attempt
+                break
+            default:
+                self.showDeviceErrorMsg("An error occurred: \(error)")
+            }
+        } else if let error = error as? IamError {
+            self.showDeviceErrorMsg("Pairing error - did the administrator remove your access to the device?")
+        } else {
+            self.showDeviceErrorMsg("\(error)")
+        }
+    }
+
+    func showDeviceErrorMsg(_ msg: String) {
         DispatchQueue.main.async {
-            let banner = GrowingNotificationBanner(title: "Communication Error", subtitle: msg, style: .danger)
-            banner.show()
+            self.banner?.dismiss()
+            self.banner = GrowingNotificationBanner(title: "Communication Error", subtitle: msg, style: .danger)
+            self.banner!.show()
             self.busy = false
         }
     }
@@ -161,37 +210,49 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
                 try self.refreshThermostatInfo(connection: connection, updateTarget: updateTarget)
                 try self.refreshDeviceDetails(connection: connection)
                 try self.refreshUserInfo(connection: connection)
+                self.showConnectSuccessIfNecessary()
+                self.scheduleRefresh()
             } catch (NabtoEdgeClientError.FAILED_WITH_DETAIL(let detail)) {
-                errorMessage = detail
-            } catch {
-                errorMessage = "\(error)"
-            }
-            if let error = errorMessage {
-                NSLog("Error when refreshing: \(error)")
+                NSLog("Error when refreshing: \(detail)")
                 self.refreshTimer?.invalidate()
                 if (!EdgeManager.shared.isStopped()) {
-                    self.showDeviceError(error)
+                    self.showDeviceErrorMsg(detail)
                 }
-            } else {
-                self.scheduleRefresh()
+            } catch {
+                NSLog("Error when refreshing: \(error)")
+                self.refreshTimer?.invalidate()
+                if (updateTarget) {
+                    self.handleDeviceError(error)
+                }
             }
         }
     }
-    
+
+    private func showConnectSuccessIfNecessary() {
+        if (self.showReconnectedMessage) {
+            DispatchQueue.main.async {
+                self.banner?.dismiss()
+                self.banner = GrowingNotificationBanner(title: "Connected", subtitle: "Connection re-established!", style: .success)
+                self.banner!.show()
+                self.showReconnectedMessage = false
+            }
+        }
+    }
+
     func pretty(_ value: Double) -> Double {
         return round(value * 10.0) / 10.0
     }
 
     private func refreshThermostatInfo(connection: Connection, updateTarget: Bool) throws {
-        let request = try connection.createCoapRequest(method: "GET", path: "/heat-pump")
+        let request = try connection.createCoapRequest(method: "GET", path: "/thermostat")
         let response = try request.execute()
         if (response.status == 205) {
-            let details = try HeatpumpDetails.decode(cbor: response.payload)
+            let details = try ThermostatDetails.decode(cbor: response.payload)
             DispatchQueue.main.sync {
                 self.refreshThermostatState(details, updateTarget: updateTarget)
             }
         } else {
-            throw NabtoEdgeClientError.FAILED_WITH_DETAIL(detail: "Could not get heatpump details, device returned status \(response.status)")
+            throw NabtoEdgeClientError.FAILED_WITH_DETAIL(detail: "Could not get thermostat details, device returned status \(response.status)")
         }
     }
 
@@ -212,7 +273,7 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
         }
     }
 
-    func refreshThermostatState(_ details: HeatpumpDetails, updateTarget: Bool) {
+    func refreshThermostatState(_ details: ThermostatDetails, updateTarget: Bool) {
         self.activeSwitch.isOn = details.Power
         self.mode = DeviceMode(rawValue: details.Mode)
         self.roomTemperature = details.Temperature
@@ -236,9 +297,10 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
                     self.busy = false
                 }
             }
+            var connection: Connection! = nil
             do {
-                let connection = try EdgeManager.shared.getConnection(self.device)
-                let coap = try connection.createCoapRequest(method: "POST", path: "/heat-pump/target")
+                connection = try EdgeManager.shared.getConnection(self.device)
+                let coap: CoapRequest = try connection.createCoapRequest(method: "POST", path: "/thermostat/target")
                 let encoder = CBOREncoder()
                 let cbor = try encoder.encode(self.temperature)
                 try coap.setRequestPayload(contentFormat: ContentFormat.APPLICATION_CBOR.rawValue, data: cbor)
@@ -246,11 +308,11 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
                 if (response.status == 204) {
                     self.refresh()
                 } else {
-                    self.showDeviceError("Could not set heatpump temperature, device returned status \(response.status)")
+                    self.showDeviceErrorMsg("Could not set thermostat temperature, device returned status \(response.status)")
                 }
             } catch {
                 NSLog("Error when applying temperature: \(error)")
-                self.showDeviceError("\(error)")
+                self.handleDeviceError(error)
             }
         }
     }
@@ -265,7 +327,7 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
             }
             do {
                 let connection = try EdgeManager.shared.getConnection(self.device)
-                let coap = try connection.createCoapRequest(method: "POST", path: "/heat-pump/power")
+                let coap = try connection.createCoapRequest(method: "POST", path: "/thermostat/power")
                 let encoder = CBOREncoder()
                 let cbor = try encoder.encode(activated)
                 try coap.setRequestPayload(contentFormat: ContentFormat.APPLICATION_CBOR.rawValue, data: cbor)
@@ -273,11 +335,11 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
                 if (response.status == 204) {
                     self.refresh()
                 } else {
-                    self.showDeviceError("Could not set heatpump power status, device returned status \(response.status)")
+                    self.showDeviceErrorMsg("Could not set thermostat power status, device returned status \(response.status)")
                 }
             } catch {
                 NSLog("Error when activating: \(error)")
-                self.showDeviceError("\(error)")
+                self.handleDeviceError(error)
             }
         }
     }
@@ -293,7 +355,7 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
             }
             do {
                 let connection = try EdgeManager.shared.getConnection(self.device)
-                let coap = try connection.createCoapRequest(method: "POST", path: "/heat-pump/mode")
+                let coap = try connection.createCoapRequest(method: "POST", path: "/thermostat/mode")
                 let encoder = CBOREncoder()
                 let cbor = try encoder.encode(mode.rawValue)
                 try coap.setRequestPayload(contentFormat: ContentFormat.APPLICATION_CBOR.rawValue, data: cbor)
@@ -301,11 +363,11 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
                 if (response.status == 204) {
                     self.refresh()
                 } else {
-                    self.showDeviceError("Could not set heatpump mode, device returned status \(response.status)")
+                    self.showDeviceErrorMsg("Could not set thermostat mode, device returned status \(response.status)")
                 }
             } catch {
                 NSLog("Error when setting mode: \(error)")
-                self.showDeviceError("\(error)")
+                self.handleDeviceError(error)
             }
         }
     }
@@ -313,6 +375,7 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     //will be called after a small delay
     //if the app is still waiting response, will show the spinner
     @objc func showSpinner() {
+        print(" *** showing spinner")
         DispatchQueue.main.async {
             if (self.busy) {
                 self.connectingView.isHidden = false
@@ -322,6 +385,7 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     }
     
     func hideSpinner() {
+        print(" *** hiding spinner")
         DispatchQueue.main.async {
             self.connectingView.isHidden = true
             self.spinner.stopAnimating()
@@ -356,6 +420,7 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     }
     
     @IBAction func refreshTap(_ sender: Any) {
+        EdgeManager.shared.stop()
         self.refresh(updateTarget: true)
         self.scheduleRefresh()
     }
