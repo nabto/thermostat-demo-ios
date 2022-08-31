@@ -50,10 +50,17 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
                 .removeObserver(self, name: NSNotification.Name(EdgeManager.connectionClosedEventName), object: nil)
     }
 
-
     @objc func connectionClosed(_ notification: Notification) {
         if let bookmark = notification.object as? Bookmark {
-            print(" *** TODO: flag as offline in model and reload: \(bookmark)")
+            for d in self.devices {
+                if (d.bookmark == bookmark) {
+                    d.isOnline = false
+                    DispatchQueue.main.async {
+                        self.table.reloadData()
+                    }
+                    return
+                }
+            }
         }
     }
 
