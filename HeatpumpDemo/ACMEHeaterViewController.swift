@@ -83,10 +83,8 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     
     var busy = false {
         didSet {
-            print("*** busy set: \(busy)")
             if busy {
-                print("    *** performing selector: \(busy)")
-                perform(#selector(showSpinner), with: nil, afterDelay: 800)
+                perform(#selector(showSpinner), with: nil, afterDelay: 0.8)
             } else {
                 hideSpinner()
             }
@@ -149,8 +147,8 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
 
     func scheduleRefresh() {
         DispatchQueue.main.async {
-//            self.refreshTimer?.invalidate()
-//            self.refreshTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.refresh), userInfo: nil, repeats: false)
+            self.refreshTimer?.invalidate()
+            self.refreshTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.refresh), userInfo: nil, repeats: false)
         }
     }
 
@@ -183,6 +181,7 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
                 self.showDeviceErrorMsg("An error occurred: \(error)")
             }
         } else if let error = error as? IamError {
+            NSLog("Pairing error, really? \(error)")
             self.showDeviceErrorMsg("Pairing error - did the administrator remove your access to the device?")
         } else {
             self.showDeviceErrorMsg("\(error)")
@@ -375,7 +374,6 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     //will be called after a small delay
     //if the app is still waiting response, will show the spinner
     @objc func showSpinner() {
-        print(" *** showing spinner")
         DispatchQueue.main.async {
             if (self.busy) {
                 self.connectingView.isHidden = false
@@ -385,7 +383,6 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     }
     
     func hideSpinner() {
-        print(" *** hiding spinner")
         DispatchQueue.main.async {
             self.connectingView.isHidden = true
             self.spinner.stopAnimating()

@@ -53,11 +53,20 @@ class EdgeManager {
             self.clientQueue.sync {
                 if (self.client_ == nil) {
                     self.client_ = NabtoEdgeClient.Client()
+                    self.client_.setLogCallBack(cb: EdgeManager.traceOnlyApiCalls)
 //                    self.client_.enableNsLogLogging()
-//                    try! self.client_.setLogLevel(level: "trace")
+                    try! self.client_.setLogLevel(level: "trace")
                 }
                 return self.client_
             }
+        }
+    }
+
+    private static func traceOnlyApiCalls(msg: NabtoEdgeClientLogMessage) {
+        if (msg.severity < 3 ||
+                msg.message.range(of: "#[0-9]{1,6} called|ended",
+                        options: .regularExpression, range: nil, locale: nil) != nil) {
+            NSLog("Nabto log: \(msg.file):\(msg.line) [\(msg.severity)/\(msg.severityString)]: \(msg.message)")
         }
     }
 
