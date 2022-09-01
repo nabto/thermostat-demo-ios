@@ -37,7 +37,10 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             let banner = GrowingNotificationBanner(title: "Error", subtitle: "Could not load bookmarks: \(error)", style: .danger)
             banner.show()
         }
+    }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         NotificationCenter.default
                 .addObserver(self,
                         selector: #selector(connectionClosed),
@@ -55,7 +58,8 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
                         object: nil)
     }
 
-    deinit {
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         NotificationCenter.default
                 .removeObserver(self, name: NSNotification.Name(EdgeConnectionManager.eventNameConnectionClosed), object: nil)
         NotificationCenter.default

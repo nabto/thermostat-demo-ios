@@ -53,6 +53,13 @@ class EdgeConnectionManager {
     // password-open test app
     private let appSpecificApiKey = "sk-9c826d2ebb4343a789b280fe22b98305"
 
+    private init() {
+        self.monitor.pathUpdateHandler = { [weak self] path in
+            self?.handleNetworkPathUpdated(path)
+        }
+        self.monitor.start(queue: self.monitorQueue)
+    }
+
     internal var client: NabtoEdgeClient.Client {
         get {
             self.clientQueue.sync {
@@ -61,11 +68,6 @@ class EdgeConnectionManager {
                     self.client_.setLogCallBack(cb: EdgeConnectionManager.traceOnlyApiCalls)
 //                    self.client_.enableNsLogLogging()
                     try! self.client_.setLogLevel(level: "trace")
-//                    self.monitor.cancel()
-                    monitor.pathUpdateHandler = { [weak self] path in
-                        self?.handleNetworkPathUpdated(path)
-                    }
-                    self.monitor.start(queue: self.monitorQueue)
                 }
                 return self.client_
             }
@@ -102,6 +104,10 @@ class EdgeConnectionManager {
         }
     }
 
+    func start() {
+        // nop
+    }
+    
     func stop() {
         self.cacheQueue.sync {
             for (key, value) in self.cache {

@@ -113,12 +113,6 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
         temperatureSlider.maximumValue = Float(maxTemp)
         temperatureSlider.value = Float((maxTemp - minTemp) / 2.0)
 
-        NotificationCenter.default
-                .addObserver(self,
-                        selector: #selector(connectionClosed),
-                        name: NSNotification.Name (EdgeConnectionManager.eventNameConnectionClosed),
-                        object: nil)
-
         configurePicker()
         
         refresh(userInitiated: true)
@@ -126,8 +120,6 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     }
 
     deinit {
-        NotificationCenter.default
-                .removeObserver(self, name: NSNotification.Name(EdgeConnectionManager.eventNameConnectionClosed), object: nil)
     }
 
     @objc func connectionClosed(_ notification: Notification) {
@@ -140,6 +132,23 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
         }
     }
 
+    @objc func networkLost(_ notification: Notification) {
+        DispatchQueue.main.async {
+            self.refreshTimer?.invalidate()
+            let banner = GrowingNotificationBanner(title: "Network connection lost", subtitle: "Please try again later", style: .warning)
+            banner.show()
+        }
+    }
+
+    @objc func networkAvailable(_ notification: Notification) {
+        DispatchQueue.main.async {
+            self.refresh()
+            let banner = GrowingNotificationBanner(title: "Network up again!", style: .success)
+            banner.show()
+        }
+    }
+
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if !starting {
@@ -148,6 +157,27 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
             starting = false
         }
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        NotificationCenter.default
+                .addObserver(self,
+                        selector: #selector(connectionClosed),
+                        name: NSNotification.Name (EdgeConnectionManager.eventNameConnectionClosed),
+                        object: nil)
+        NotificationCenter.default
+                .addObserver(self,
+                        selector: #selector(networkLost),
+                        name: NSNotification.Name (EdgeConnectionManager.eventNameNoNetwork),
+                        object: nil)
+        NotificationCenter.default
+                .addObserver(self,
+                        selector: #selector(networkAvailable),
+                        name: NSNotification.Name (EdgeConnectionManager.eventNameNetworkAvailable),
+                        object: nil)
+    }
+
+
 
     func scheduleRefresh() {
         DispatchQueue.main.async {
@@ -159,6 +189,13 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.refreshTimer?.invalidate()
+        NotificationCenter.default
+                .removeObserver(self, name: NSNotification.Name(EdgeConnectionManager.eventNameConnectionClosed), object: nil)
+        NotificationCenter.default
+                .removeObserver(self, name: NSNotification.Name(EdgeConnectionManager.eventNameNoNetwork), object: nil)
+        NotificationCenter.default
+                .removeObserver(self, name: NSNotification.Name(EdgeConnectionManager.eventNameNetworkAvailable), object: nil)
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -186,7 +223,7 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     private func handleApiError(error: NabtoEdgeClientError) {
         switch error {
         case .NO_CHANNELS:
-            self.showDeviceErrorMsg("Device offline - please make sure you and the target device both have a work working network connection")
+            self.showDeviceErrorMsg("Device offline - please make sure you and the target device both have a working network connection")
             break
         case .TIMEOUT:
             self.showDeviceErrorMsg("The operation timed out - was the connection lost?")
@@ -209,7 +246,9 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     }
 
     @objc func refresh(userInitiated: Bool=false) {
-        self.busy = true
+        if (userInitiated) {
+            self.busy = true
+        }
         DispatchQueue.global(qos: .userInitiated).async {
             var errorMessage: String?
             defer {
@@ -426,7 +465,6 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     @IBAction func refreshTap(_ sender: Any) {
         EdgeConnectionManager.shared.stop()
         self.refresh(userInitiated: true)
-        self.scheduleRefresh()
     }
 
     //MARK: - PickerView
