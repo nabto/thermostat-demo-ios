@@ -54,11 +54,11 @@ class EdgeManagerTest: XCTestCase {
                 name: "Test Device")
     }
 
-    var sut: EdgeManager!
+    var sut: EdgeConnectionManager!
 
     override func setUpWithError() throws {
         self.continueAfterFailure = false
-        self.sut = EdgeManager()
+        self.sut = EdgeConnectionManager()
         let key = try self.sut.client.createPrivateKey()
         let username = "edgemanager-test-user"
         let displayName = "EdgeManager Test User"

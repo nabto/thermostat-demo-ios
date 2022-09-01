@@ -26,7 +26,7 @@ class DeviceRowModel {
 
     internal func populateWithDetails() throws {
         do {
-            let connection = try EdgeManager.shared.getConnection(self.bookmark)
+            let connection = try EdgeConnectionManager.shared.getConnection(self.bookmark)
             self.isOnline = true
             let user = try NabtoEdgeIamUtil.IamUtil.getCurrentUser(connection: connection)
             if let role = user.Role {

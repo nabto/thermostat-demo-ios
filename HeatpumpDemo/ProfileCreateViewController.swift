@@ -47,7 +47,7 @@ class ProfileCreateViewController: UIViewController, UITextFieldDelegate {
         guard let username = textField.text, username.count > 2 else { return }
         let simplifiedUsername = ProfileTools.convertToValidUsername(input: username)
         do {
-            let key = try EdgeManager.shared.client.createPrivateKey()
+            let key = try EdgeConnectionManager.shared.client.createPrivateKey()
             ProfileTools.saveProfile(username: simplifiedUsername, privateKey: key, displayName: username)
             self.profileCreatedDelegate?.profileCreated()
             self.dismiss(animated: true, completion: nil)

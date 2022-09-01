@@ -53,9 +53,9 @@
 		E929836D13B9C3988BDD586E /* DeviceDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1DE1E40F973005B6CAD /* DeviceDetailsViewController.swift */; };
 		E929A104DC701DA1AE31ED84 /* AddDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9272A38B76AF9CE5C3FE8CF /* AddDeviceViewController.swift */; };
 		E92A38C0D6987C838BE90500 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1D31E40F823005B6CAD /* HelpViewController.swift */; };
-		E92B3EED654E44CDD80E089D /* EdgeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9223BABCA33CFC89FFAB851 /* EdgeManager.swift */; };
+		E92B3EED654E44CDD80E089D /* EdgeConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9223BABCA33CFC89FFAB851 /* EdgeConnectionManager.swift */; };
 		E92CE696B6751331756AD57C /* ACMEHeaterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D423F671E45107500DFC8B9 /* ACMEHeaterViewController.swift */; };
-		E92DFA06F9E1E0BBD1692EC9 /* EdgeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9223BABCA33CFC89FFAB851 /* EdgeManager.swift */; };
+		E92DFA06F9E1E0BBD1692EC9 /* EdgeConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9223BABCA33CFC89FFAB851 /* EdgeConnectionManager.swift */; };
 		E92F044E847046F46F7DF721 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1D51E40F845005B6CAD /* SettingsViewController.swift */; };
 		E92F8E68FE8BD10428C6095C /* EditUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1E21E40FBF5005B6CAD /* EditUserViewController.swift */; };
 		E92F9082DBA9B75261176A39 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04A6DC1E3F4C4800DD9F70 /* OverviewViewController.swift */; };
@@ -116,7 +116,7 @@
 		6DC4A1F31E42633F005B6CAD /* CustomTableViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTableViewCells.swift; sourceTree = "<group>"; };
 		71942C3051274190DD6AADFE /* Pods_HeatpumpDemoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HeatpumpDemoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D455B17B28A51AA90011FD72 /* PairingConfirmedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingConfirmedViewController.swift; sourceTree = "<group>"; };
-		E9223BABCA33CFC89FFAB851 /* EdgeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeManager.swift; sourceTree = "<group>"; };
+		E9223BABCA33CFC89FFAB851 /* EdgeConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeConnectionManager.swift; sourceTree = "<group>"; };
 		E9272A38B76AF9CE5C3FE8CF /* AddDeviceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDeviceViewController.swift; sourceTree = "<group>"; };
 		E92ABEF8BBC6C0A9BC56081D /* EdgeManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeManagerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -267,7 +267,7 @@
 				6D55F38A1E437F7700C88276 /* ProfileTools.swift */,
 				6DC4A1E91E410449005B6CAD /* NabtoDevice.swift */,
 				6DC4A1E71E410420005B6CAD /* UserInfo.swift */,
-				E9223BABCA33CFC89FFAB851 /* EdgeManager.swift */,
+				E9223BABCA33CFC89FFAB851 /* EdgeConnectionManager.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -519,7 +519,7 @@
 				6DC4A1D41E40F823005B6CAD /* HelpViewController.swift in Sources */,
 				6DC4A1E81E410420005B6CAD /* UserInfo.swift in Sources */,
 				6DC4A1D61E40F845005B6CAD /* SettingsViewController.swift in Sources */,
-				E92DFA06F9E1E0BBD1692EC9 /* EdgeManager.swift in Sources */,
+				E92DFA06F9E1E0BBD1692EC9 /* EdgeConnectionManager.swift in Sources */,
 				E92FC3EBBDC9264942C1A7FB /* AddDeviceViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -536,7 +536,7 @@
 				6D04A6F01E3F4C4800DD9F70 /* OtherTests.swift in Sources */,
 				6D95FF271E49FC3800FB070F /* ProfileTools.swift in Sources */,
 				E92590D603F5D8FABBE76426 /* EdgeManagerTests.swift in Sources */,
-				E92B3EED654E44CDD80E089D /* EdgeManager.swift in Sources */,
+				E92B3EED654E44CDD80E089D /* EdgeConnectionManager.swift in Sources */,
 				E929A104DC701DA1AE31ED84 /* AddDeviceViewController.swift in Sources */,
 				E924551915F078D5573D2794 /* PairingViewController.swift in Sources */,
 				E92782D3FB6D223AADA0A009 /* ProfileCreateViewController.swift in Sources */,

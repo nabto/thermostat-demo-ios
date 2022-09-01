@@ -43,7 +43,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
         self.devices = []
         self.waiting = true
         self.table.reloadData()
-        let scanner = EdgeManager.shared.client.createMdnsScanner()
+        let scanner = EdgeConnectionManager.shared.client.createMdnsScanner()
         //let scanner = EdgeManager.shared.client.createMdnsScanner(subType: "thermostat")
         scanner.addMdnsResultReceiver(self)
         do {
@@ -74,7 +74,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 
     private func addToViewIfPairingPossible(bookmark: Bookmark) {
         do {
-            let connection = try EdgeManager.shared.getConnection(bookmark)
+            let connection = try EdgeConnectionManager.shared.getConnection(bookmark)
             let modes: [NabtoEdgeIamUtil.PairingMode] = try IamUtil.getAvailablePairingModes(connection: connection)
             if (modes.count > 0 && !(modes.count == 1 && modes[0] != .PasswordInvite)) {
                 self.devices.append(DeviceRowModel(bookmark: bookmark))

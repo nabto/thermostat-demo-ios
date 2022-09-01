@@ -83,8 +83,11 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     
     var busy = false {
         didSet {
+            self.busyTimer?.invalidate()
             if busy {
-                perform(#selector(showSpinner), with: nil, afterDelay: 0.8)
+                DispatchQueue.main.async {
+                    self.busyTimer = Timer.scheduledTimer(timeInterval: 0.8, target: self, selector: #selector(self.showSpinner), userInfo: nil, repeats: false)
+                }
             } else {
                 hideSpinner()
             }
@@ -93,6 +96,7 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
 
     var showReconnectedMessage: Bool = false
     var refreshTimer: Timer?
+    var busyTimer: Timer?
     var banner: GrowingNotificationBanner? = nil
     var starting = true
     
@@ -112,18 +116,18 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
         NotificationCenter.default
                 .addObserver(self,
                         selector: #selector(connectionClosed),
-                        name: NSNotification.Name (EdgeManager.connectionClosedEventName),
+                        name: NSNotification.Name (EdgeConnectionManager.eventNameConnectionClosed),
                         object: nil)
 
         configurePicker()
         
-        refresh(updateTarget: true)
+        refresh(userInitiated: true)
         self.scheduleRefresh()
     }
 
     deinit {
         NotificationCenter.default
-                .removeObserver(self, name: NSNotification.Name(EdgeManager.connectionClosedEventName), object: nil)
+                .removeObserver(self, name: NSNotification.Name(EdgeConnectionManager.eventNameConnectionClosed), object: nil)
     }
 
     @objc func connectionClosed(_ notification: Notification) {
@@ -165,26 +169,33 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     //MARK:- Device
 
     func handleDeviceError(_ error: Error) {
-        EdgeManager.shared.removeConnection(self.device)
+        EdgeConnectionManager.shared.removeConnection(self.device)
         if let error = error as? NabtoEdgeClientError {
-            switch error {
-            case .NO_CHANNELS:
-                self.showDeviceErrorMsg("Device offline - please make sure you and the target device both have a work working network connection")
-                break
-            case .TIMEOUT:
-                self.showDeviceErrorMsg("The operation timed out - was the connection lost?")
-                break
-            case .STOPPED:
-                // ignore - connection/client will be restarted at next connect attempt
-                break
-            default:
-                self.showDeviceErrorMsg("An error occurred: \(error)")
-            }
+            handleApiError(error: error)
         } else if let error = error as? IamError {
-            NSLog("Pairing error, really? \(error)")
-            self.showDeviceErrorMsg("Pairing error - did the administrator remove your access to the device?")
+            if case .API_ERROR(let cause) = error {
+                handleApiError(error: cause)
+            } else {
+                NSLog("Pairing error, really? \(error)")
+            }
         } else {
             self.showDeviceErrorMsg("\(error)")
+        }
+    }
+
+    private func handleApiError(error: NabtoEdgeClientError) {
+        switch error {
+        case .NO_CHANNELS:
+            self.showDeviceErrorMsg("Device offline - please make sure you and the target device both have a work working network connection")
+            break
+        case .TIMEOUT:
+            self.showDeviceErrorMsg("The operation timed out - was the connection lost?")
+            break
+        case .STOPPED:
+            // ignore - connection/client will be restarted at next connect attempt
+            break
+        default:
+            self.showDeviceErrorMsg("An error occurred: \(error)")
         }
     }
 
@@ -197,30 +208,32 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
         }
     }
 
-    @objc func refresh(updateTarget: Bool=false) {
+    @objc func refresh(userInitiated: Bool=false) {
         self.busy = true
-        DispatchQueue.global().async {
+        DispatchQueue.global(qos: .userInitiated).async {
             var errorMessage: String?
             defer {
                 self.busy = false
             }
             do {
-                let connection = try EdgeManager.shared.getConnection(self.device)
-                try self.refreshThermostatInfo(connection: connection, updateTarget: updateTarget)
-                try self.refreshDeviceDetails(connection: connection)
-                try self.refreshUserInfo(connection: connection)
+                let connection = try EdgeConnectionManager.shared.getConnection(self.device)
+                try self.refreshThermostatInfo(connection: connection, updateTarget: userInitiated)
+                if (userInitiated) {
+                    try self.refreshDeviceDetails(connection: connection)
+                    try self.refreshUserInfo(connection: connection)
+                }
                 self.showConnectSuccessIfNecessary()
                 self.scheduleRefresh()
             } catch (NabtoEdgeClientError.FAILED_WITH_DETAIL(let detail)) {
                 NSLog("Error when refreshing: \(detail)")
                 self.refreshTimer?.invalidate()
-                if (!EdgeManager.shared.isStopped()) {
+                if (!EdgeConnectionManager.shared.isStopped()) {
                     self.showDeviceErrorMsg(detail)
                 }
             } catch {
                 NSLog("Error when refreshing: \(error)")
                 self.refreshTimer?.invalidate()
-                if (updateTarget) {
+                if (userInitiated) {
                     self.handleDeviceError(error)
                 }
             }
@@ -290,15 +303,13 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
 
     func applyTemperature(temperature: Double) {
         self.busy = true
-        DispatchQueue.global().async {
+        DispatchQueue.global(qos: .userInitiated).async {
             defer {
-                DispatchQueue.main.sync {
-                    self.busy = false
-                }
+                self.busy = false
             }
             var connection: Connection! = nil
             do {
-                connection = try EdgeManager.shared.getConnection(self.device)
+                connection = try EdgeConnectionManager.shared.getConnection(self.device)
                 let coap: CoapRequest = try connection.createCoapRequest(method: "POST", path: "/thermostat/target")
                 let encoder = CBOREncoder()
                 let cbor = try encoder.encode(self.temperature)
@@ -318,14 +329,12 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     
     func applyActivate(activated: Bool) {
         self.busy = true
-        DispatchQueue.global().async {
+        DispatchQueue.global(qos: .userInitiated).async {
             defer {
-                DispatchQueue.main.sync {
-                    self.busy = false
-                }
+                self.busy = false
             }
             do {
-                let connection = try EdgeManager.shared.getConnection(self.device)
+                let connection = try EdgeConnectionManager.shared.getConnection(self.device)
                 let coap = try connection.createCoapRequest(method: "POST", path: "/thermostat/power")
                 let encoder = CBOREncoder()
                 let cbor = try encoder.encode(activated)
@@ -344,16 +353,14 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     }
     
     func applyMode(mode: DeviceMode) {
-        self.mode = mode
         self.busy = true
-        DispatchQueue.global().async {
+        self.mode = mode
+        DispatchQueue.global(qos: .userInitiated).async {
             defer {
-                DispatchQueue.main.sync {
-                    self.busy = false
-                }
+                self.busy = false
             }
             do {
-                let connection = try EdgeManager.shared.getConnection(self.device)
+                let connection = try EdgeConnectionManager.shared.getConnection(self.device)
                 let coap = try connection.createCoapRequest(method: "POST", path: "/thermostat/mode")
                 let encoder = CBOREncoder()
                 let cbor = try encoder.encode(mode.rawValue)
@@ -417,8 +424,8 @@ class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegat
     }
     
     @IBAction func refreshTap(_ sender: Any) {
-        EdgeManager.shared.stop()
-        self.refresh(updateTarget: true)
+        EdgeConnectionManager.shared.stop()
+        self.refresh(userInitiated: true)
         self.scheduleRefresh()
     }
 

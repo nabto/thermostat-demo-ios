@@ -4,6 +4,7 @@
 //
 
 import UIKit
+import Network
 import NabtoEdgeClient
 
 class EdgeConnectionWrapper : ConnectionEventReceiver {
@@ -16,7 +17,7 @@ class EdgeConnectionWrapper : ConnectionEventReceiver {
             self.isClosed = true
             NSLog("Connection to \(target) closed, notifying listeners")
             NotificationCenter.default.post(
-                    name: NSNotification.Name(EdgeManager.connectionClosedEventName),
+                    name: NSNotification.Name(EdgeConnectionManager.eventNameConnectionClosed),
                     object: target)
         }
     }
@@ -33,39 +34,64 @@ class EdgeConnectionWrapper : ConnectionEventReceiver {
     }
 }
 
-class EdgeManager {
+class EdgeConnectionManager {
+    internal static let eventNameConnectionClosed = "EDGE_CONNECTION_CLOSED"
+    internal static let eventNameNoNetwork        = "EDGE_NO_NETWORK"
+    internal static let eventNameNetworkAvailable = "EDGE_NETWORK_AVAILABLE"
+    internal static let shared = EdgeConnectionManager()
 
-    // coap test app
-    // let appSpecificApiKey = "sk-5f3ab4bea7cc2585091539fb950084ce"
-
-    // password-open test app
-    let appSpecificApiKey = "sk-9c826d2ebb4343a789b280fe22b98305"
-    internal static let connectionClosedEventName = "EDGE_CONNECTION_CLOSED"
-
-    internal static let shared = EdgeManager()
     private var cache: [Bookmark:EdgeConnectionWrapper] = [:]
     private var client_: NabtoEdgeClient.Client! = nil
+    private let monitor = NWPathMonitor()
     private let cacheQueue = DispatchQueue(label: "cacheQueue")
     private let clientQueue = DispatchQueue(label: "clientQueue")
+    private let monitorQueue = DispatchQueue.global()
+    private var networkAvailable = true
+
+    // coap test app
+    // private let appSpecificApiKey = "sk-5f3ab4bea7cc2585091539fb950084ce"
+    // password-open test app
+    private let appSpecificApiKey = "sk-9c826d2ebb4343a789b280fe22b98305"
 
     internal var client: NabtoEdgeClient.Client {
         get {
             self.clientQueue.sync {
                 if (self.client_ == nil) {
                     self.client_ = NabtoEdgeClient.Client()
-                    self.client_.setLogCallBack(cb: EdgeManager.traceOnlyApiCalls)
+                    self.client_.setLogCallBack(cb: EdgeConnectionManager.traceOnlyApiCalls)
 //                    self.client_.enableNsLogLogging()
                     try! self.client_.setLogLevel(level: "trace")
+//                    self.monitor.cancel()
+                    monitor.pathUpdateHandler = { [weak self] path in
+                        self?.handleNetworkPathUpdated(path)
+                    }
+                    self.monitor.start(queue: self.monitorQueue)
                 }
                 return self.client_
             }
         }
     }
 
+    private func handleNetworkPathUpdated(_ path: NWPath) {
+        if (path.status == .satisfied) {
+            if (!self.networkAvailable) {
+                self.networkAvailable = true
+                NotificationCenter.default.post(
+                        name: NSNotification.Name(EdgeConnectionManager.eventNameNetworkAvailable),
+                        object: nil)
+            }
+        } else {
+            self.networkAvailable = false
+            NotificationCenter.default.post(
+                    name: NSNotification.Name(EdgeConnectionManager.eventNameNoNetwork),
+                    object: nil)
+        }
+    }
+
     private static func traceOnlyApiCalls(msg: NabtoEdgeClientLogMessage) {
-        if (msg.severity < 3 ||
-                msg.message.range(of: "#[0-9]{1,6} called|ended",
-                        options: .regularExpression, range: nil, locale: nil) != nil) {
+        if (msg.severity < 3 || msg.message.range(of: "coap_exec|connection_connect",
+        //if (msg.severity < 3 || msg.message.range(of: "#[0-9]{1,6} called|ended",
+                options: .regularExpression, range: nil, locale: nil) != nil) {
             NSLog("Nabto log: \(msg.file):\(msg.line) [\(msg.severity)/\(msg.severityString)]: \(msg.message)")
         }
     }
@@ -84,6 +110,7 @@ class EdgeManager {
             self.cache = [:]
         }
         self.clientQueue.sync {
+            self.monitor.cancel()
             self.client_?.stop()
             self.client_ = nil
         }

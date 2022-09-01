@@ -107,7 +107,7 @@ class PairingViewController: UIViewController, PairingConfirmedListener, UITextF
 
     private func performPairing(device: Bookmark) {
         do {
-            let modes = try IamUtil.getAvailablePairingModes(connection: EdgeManager.shared.getConnection(device))
+            let modes = try IamUtil.getAvailablePairingModes(connection: EdgeConnectionManager.shared.getConnection(device))
             if (modes.count == 0) {
                 self.showPairingError("Device is not open for pairing - please contact the owner. If you are the owner, you can factory reset it to get access again.")
             } else {
@@ -120,7 +120,7 @@ class PairingViewController: UIViewController, PairingConfirmedListener, UITextF
                 } else {
                     self.showPairingError("This app only supports initial and open pairing modes - please reconfigure target device")
                 }
-                if (try IamUtil.isCurrentUserPaired(connection: EdgeManager.shared.getConnection(device))) {
+                if (try IamUtil.isCurrentUserPaired(connection: EdgeConnectionManager.shared.getConnection(device))) {
                     try self.updateBookmarkWithDeviceInfo(device)
                     self.showConfirmation()
                 }
@@ -156,10 +156,10 @@ class PairingViewController: UIViewController, PairingConfirmedListener, UITextF
     }
 
     private func updateBookmarkWithDeviceInfo(_ device: Bookmark) throws {
-        let user = try IamUtil.getCurrentUser(connection: EdgeManager.shared.getConnection(device))
+        let user = try IamUtil.getCurrentUser(connection: EdgeConnectionManager.shared.getConnection(device))
         device.role = user.Role
         device.sct = user.Sct
-        let details = try IamUtil.getDeviceDetails(connection: EdgeManager.shared.getConnection(device))
+        let details = try IamUtil.getDeviceDetails(connection: EdgeConnectionManager.shared.getConnection(device))
         if let appname = details.AppName {
             device.name = appname
         }
@@ -167,7 +167,7 @@ class PairingViewController: UIViewController, PairingConfirmedListener, UITextF
 
     private func pairLocalOpen() throws {
         guard let device = self.device else { return }
-        let connection = try EdgeManager.shared.getConnection(device)
+        let connection = try EdgeConnectionManager.shared.getConnection(device)
         var userInput: String?
         DispatchQueue.main.sync {
             userInput = self.usernameField.text
@@ -191,7 +191,7 @@ class PairingViewController: UIViewController, PairingConfirmedListener, UITextF
 
     private func pairLocalInitial() throws {
         guard let device = self.device else { return }
-        let connection = try EdgeManager.shared.getConnection(device)
+        let connection = try EdgeConnectionManager.shared.getConnection(device)
         try IamUtil.pairLocalInitial(connection: connection)
 
         var userInput: String?
@@ -227,7 +227,7 @@ class PairingViewController: UIViewController, PairingConfirmedListener, UITextF
         }
         if let password = password, let user = user {
             let validUserName = ProfileTools.convertToValidUsername(input: user)
-            let connection = try EdgeManager.shared.getConnection(device)
+            let connection = try EdgeConnectionManager.shared.getConnection(device)
             try IamUtil.pairPasswordOpen(connection: connection, desiredUsername: validUserName, password: password)
             self.updateDisplayName(connection: connection, username: validUserName, displayName: user)
         }

@@ -41,13 +41,27 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
         NotificationCenter.default
                 .addObserver(self,
                         selector: #selector(connectionClosed),
-                        name: NSNotification.Name (EdgeManager.connectionClosedEventName),
+                        name: NSNotification.Name (EdgeConnectionManager.eventNameConnectionClosed),
+                        object: nil)
+        NotificationCenter.default
+                .addObserver(self,
+                        selector: #selector(networkLost),
+                        name: NSNotification.Name (EdgeConnectionManager.eventNameNoNetwork),
+                        object: nil)
+        NotificationCenter.default
+                .addObserver(self,
+                        selector: #selector(networkAvailable),
+                        name: NSNotification.Name (EdgeConnectionManager.eventNameNetworkAvailable),
                         object: nil)
     }
 
     deinit {
         NotificationCenter.default
-                .removeObserver(self, name: NSNotification.Name(EdgeManager.connectionClosedEventName), object: nil)
+                .removeObserver(self, name: NSNotification.Name(EdgeConnectionManager.eventNameConnectionClosed), object: nil)
+        NotificationCenter.default
+                .removeObserver(self, name: NSNotification.Name(EdgeConnectionManager.eventNameNoNetwork), object: nil)
+        NotificationCenter.default
+                .removeObserver(self, name: NSNotification.Name(EdgeConnectionManager.eventNameNetworkAvailable), object: nil)
     }
 
     @objc func connectionClosed(_ notification: Notification) {
@@ -61,6 +75,25 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
                     return
                 }
             }
+        }
+    }
+
+    @objc func networkLost(_ notification: Notification) {
+        for d in self.devices {
+            d.isOnline = false
+        }
+        DispatchQueue.main.async {
+            self.table.reloadData()
+            let banner = GrowingNotificationBanner(title: "Network connection lost", subtitle: "Please try again later", style: .warning)
+            banner.show()
+        }
+    }
+
+    @objc func networkAvailable(_ notification: Notification) {
+        DispatchQueue.main.async {
+            let banner = GrowingNotificationBanner(title: "Network up again!", style: .success)
+            banner.show()
+            self.doRefresh()
         }
     }
 
@@ -80,7 +113,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
 
     func createProfile() {
         do {
-            let key = try EdgeManager.shared.client.createPrivateKey()
+            let key = try EdgeConnectionManager.shared.client.createPrivateKey()
             let username = UIDevice.current.name
             let simplifiedUsername = ProfileTools.convertToValidUsername(input: username)
             ProfileTools.saveProfile(username: simplifiedUsername, privateKey: key, displayName: username)
@@ -148,7 +181,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
 
     private func populateWithDetails(_ device: DeviceRowModel) throws {
         do {
-            let connection = try EdgeManager.shared.getConnection(device.bookmark)
+            let connection = try EdgeConnectionManager.shared.getConnection(device.bookmark)
             device.isOnline = true
             let user = try NabtoEdgeIamUtil.IamUtil.getCurrentUser(connection: connection)
             if let role = user.Role {
@@ -168,7 +201,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     }
 
     @IBAction func refresh(_ sender: Any) {
-        EdgeManager.shared.stop()
+        EdgeConnectionManager.shared.stop()
         self.errorBanner?.dismiss()
         self.doRefresh()
     }
