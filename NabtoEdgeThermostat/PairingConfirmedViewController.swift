@@ -1,6 +1,6 @@
 //
 //  PairingConfirmedViewController.swift
-//  Edge Heat
+//  Nabto Edge Thermostat
 //
 //  Created by Ulrik Gammelby on 11/08/2022.
 //  Copyright © 2022 Nabto. All rights reserved.

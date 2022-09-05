@@ -15,10 +15,10 @@ def common
   pod 'NotificationBannerSwift', '~> 3.0.0'
 end
 
-target 'Edge Heat' do
+target 'Nabto Edge Thermostat' do
   common
 end
 
-target 'HeatpumpDemoTests' do
+target 'NabtoEdgeThermostatTests' do
   common
 end

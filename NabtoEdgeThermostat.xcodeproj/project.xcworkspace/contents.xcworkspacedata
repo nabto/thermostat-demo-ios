@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:HeatpumpDemo.xcodeproj">
+      location = "self:NabtoEdgeThermostat.xcodeproj">
    </FileRef>
 </Workspace>

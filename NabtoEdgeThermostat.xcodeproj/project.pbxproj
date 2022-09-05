@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		53401452E29E0707885AAD4F /* Pods_HeatpumpDemoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71942C3051274190DD6AADFE /* Pods_HeatpumpDemoTests.framework */; };
 		6D04A6DB1E3F4C4800DD9F70 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04A6DA1E3F4C4800DD9F70 /* AppDelegate.swift */; };
 		6D04A6DD1E3F4C4800DD9F70 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04A6DC1E3F4C4800DD9F70 /* OverviewViewController.swift */; };
 		6D04A6E01E3F4C4800DD9F70 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6D04A6DE1E3F4C4800DD9F70 /* Main.storyboard */; };
@@ -21,7 +20,7 @@
 		6D16D89C1E49421D0093B4B1 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1E71E410420005B6CAD /* UserInfo.swift */; };
 		6D16D89D1E4944F90093B4B1 /* BookmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D423F651E44D7F500DFC8B9 /* BookmarkManager.swift */; };
 		6D423F661E44D7F600DFC8B9 /* BookmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D423F651E44D7F500DFC8B9 /* BookmarkManager.swift */; };
-		6D423F681E45107500DFC8B9 /* ACMEHeaterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D423F671E45107500DFC8B9 /* ACMEHeaterViewController.swift */; };
+		6D423F681E45107500DFC8B9 /* EdgeThermostatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D423F671E45107500DFC8B9 /* EdgeThermostatViewController.swift */; };
 		6D423F6A1E4510DF00DFC8B9 /* StoryboardHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D423F691E4510DF00DFC8B9 /* StoryboardHelper.swift */; };
 		6D55F38B1E437F7700C88276 /* ProfileTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D55F38A1E437F7700C88276 /* ProfileTools.swift */; };
 		6D55F38D1E4405EE00C88276 /* unabto_queries.xml in Resources */ = {isa = PBXBuildFile; fileRef = 6D55F38C1E4405ED00C88276 /* unabto_queries.xml */; };
@@ -40,6 +39,8 @@
 		6DC4A1E81E410420005B6CAD /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1E71E410420005B6CAD /* UserInfo.swift */; };
 		6DC4A1EA1E410449005B6CAD /* NabtoDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1E91E410449005B6CAD /* NabtoDevice.swift */; };
 		6DC4A1F41E42633F005B6CAD /* CustomTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1F31E42633F005B6CAD /* CustomTableViewCells.swift */; };
+		6F328C0716F0266C51790EBC /* Pods_Nabto_Edge_Thermostat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E6D6D3AD50316EEC98D7703 /* Pods_Nabto_Edge_Thermostat.framework */; };
+		8DEE6F45E07F2E76004412B1 /* Pods_NabtoEdgeThermostatTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CA16AADA6F490878CA2799D /* Pods_NabtoEdgeThermostatTests.framework */; };
 		D455B17C28A51AA90011FD72 /* PairingConfirmedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D455B17B28A51AA90011FD72 /* PairingConfirmedViewController.swift */; };
 		E920766EB32AAE28F1B3CEDB /* SecuritySettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1DB1E40F945005B6CAD /* SecuritySettingsViewController.swift */; };
 		E920D288C89CD29330CB4CD9 /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1D91E40F8CB005B6CAD /* DiscoverViewController.swift */; };
@@ -54,13 +55,12 @@
 		E929A104DC701DA1AE31ED84 /* AddDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9272A38B76AF9CE5C3FE8CF /* AddDeviceViewController.swift */; };
 		E92A38C0D6987C838BE90500 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1D31E40F823005B6CAD /* HelpViewController.swift */; };
 		E92B3EED654E44CDD80E089D /* EdgeConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9223BABCA33CFC89FFAB851 /* EdgeConnectionManager.swift */; };
-		E92CE696B6751331756AD57C /* ACMEHeaterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D423F671E45107500DFC8B9 /* ACMEHeaterViewController.swift */; };
+		E92CE696B6751331756AD57C /* EdgeThermostatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D423F671E45107500DFC8B9 /* EdgeThermostatViewController.swift */; };
 		E92DFA06F9E1E0BBD1692EC9 /* EdgeConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9223BABCA33CFC89FFAB851 /* EdgeConnectionManager.swift */; };
 		E92F044E847046F46F7DF721 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1D51E40F845005B6CAD /* SettingsViewController.swift */; };
 		E92F8E68FE8BD10428C6095C /* EditUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC4A1E21E40FBF5005B6CAD /* EditUserViewController.swift */; };
 		E92F9082DBA9B75261176A39 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D04A6DC1E3F4C4800DD9F70 /* OverviewViewController.swift */; };
 		E92FC3EBBDC9264942C1A7FB /* AddDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9272A38B76AF9CE5C3FE8CF /* AddDeviceViewController.swift */; };
-		FEEC29FBA4ABB0416CB21F61 /* Pods_Edge_Heat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45A7FF98A5AF6A3FAEF62B9A /* Pods_Edge_Heat.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,35 +69,31 @@
 			containerPortal = 6D04A6CF1E3F4C4800DD9F70 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 6D04A6D61E3F4C4800DD9F70;
-			remoteInfo = HeatpumpDemo;
+			remoteInfo = NabtoEdgeThermostat;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1D8F378E0CC7F1234E129717 /* Pods-Edge Heat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Edge Heat.debug.xcconfig"; path = "Target Support Files/Pods-Edge Heat/Pods-Edge Heat.debug.xcconfig"; sourceTree = "<group>"; };
-		45A7FF98A5AF6A3FAEF62B9A /* Pods_Edge_Heat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Edge_Heat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		48CE95E52E178656EACDA2AE /* Pods-HeatpumpDemoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HeatpumpDemoTests.release.xcconfig"; path = "Target Support Files/Pods-HeatpumpDemoTests/Pods-HeatpumpDemoTests.release.xcconfig"; sourceTree = "<group>"; };
-		5438601D40AE9C1EC62A6863 /* Pods-HeatpumpDemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HeatpumpDemoTests.debug.xcconfig"; path = "Target Support Files/Pods-HeatpumpDemoTests/Pods-HeatpumpDemoTests.debug.xcconfig"; sourceTree = "<group>"; };
-		675F55F8F06A8750DFA2453C /* Pods-Edge Heat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Edge Heat.release.xcconfig"; path = "Target Support Files/Pods-Edge Heat/Pods-Edge Heat.release.xcconfig"; sourceTree = "<group>"; };
-		6D04A6D71E3F4C4800DD9F70 /* AppMyProduct Heat Control.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppMyProduct Heat Control.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6D04A6D71E3F4C4800DD9F70 /* Nabto Edge Thermostat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nabto Edge Thermostat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D04A6DA1E3F4C4800DD9F70 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6D04A6DC1E3F4C4800DD9F70 /* OverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewController.swift; sourceTree = "<group>"; };
 		6D04A6DF1E3F4C4800DD9F70 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6D04A6E11E3F4C4800DD9F70 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6D04A6E41E3F4C4800DD9F70 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6D04A6E61E3F4C4800DD9F70 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6D04A6EB1E3F4C4800DD9F70 /* HeatpumpDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HeatpumpDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6D04A6EB1E3F4C4800DD9F70 /* NabtoEdgeThermostatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NabtoEdgeThermostatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D04A6EF1E3F4C4800DD9F70 /* OtherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherTests.swift; sourceTree = "<group>"; };
 		6D04A6F11E3F4C4800DD9F70 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6D04A70B1E3F53C900DD9F70 /* HeatpumpDemo-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HeatpumpDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		6D04A70B1E3F53C900DD9F70 /* NabtoEdgeThermostat-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NabtoEdgeThermostat-Bridging-Header.h"; sourceTree = "<group>"; };
 		6D04A7471E3F57E900DD9F70 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6D04A7531E3F59BF00DD9F70 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		6D04A7541E3F59BF00DD9F70 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		6D16D8D71E4963C90093B4B1 /* libnabto_client_api_static.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libnabto_client_api_static.a; path = Libs/nabto/ios/lib/libnabto_client_api_static.a; sourceTree = "<group>"; };
 		6D16D8D81E4963C90093B4B1 /* libnabto_static_external.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libnabto_static_external.a; path = Libs/nabto/ios/lib/libnabto_static_external.a; sourceTree = "<group>"; };
 		6D423F651E44D7F500DFC8B9 /* BookmarkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkManager.swift; sourceTree = "<group>"; };
-		6D423F671E45107500DFC8B9 /* ACMEHeaterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACMEHeaterViewController.swift; sourceTree = "<group>"; };
+		6D423F671E45107500DFC8B9 /* EdgeThermostatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeThermostatViewController.swift; sourceTree = "<group>"; };
 		6D423F691E4510DF00DFC8B9 /* StoryboardHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardHelper.swift; sourceTree = "<group>"; };
+		6D4A70B205DC38FCF310C42B /* Pods-Nabto Edge Thermostat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nabto Edge Thermostat.release.xcconfig"; path = "Target Support Files/Pods-Nabto Edge Thermostat/Pods-Nabto Edge Thermostat.release.xcconfig"; sourceTree = "<group>"; };
 		6D55F38A1E437F7700C88276 /* ProfileTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTools.swift; sourceTree = "<group>"; };
 		6D55F38C1E4405ED00C88276 /* unabto_queries.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = unabto_queries.xml; sourceTree = "<group>"; };
 		6D95FF231E49F37E00FB070F /* FrameworkIntegrationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrameworkIntegrationTests.swift; sourceTree = "<group>"; };
@@ -114,11 +110,15 @@
 		6DC4A1E71E410420005B6CAD /* UserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		6DC4A1E91E410449005B6CAD /* NabtoDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NabtoDevice.swift; sourceTree = "<group>"; };
 		6DC4A1F31E42633F005B6CAD /* CustomTableViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTableViewCells.swift; sourceTree = "<group>"; };
-		71942C3051274190DD6AADFE /* Pods_HeatpumpDemoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HeatpumpDemoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		838A1E4147C7D2BE437766D2 /* Pods-NabtoEdgeThermostatTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NabtoEdgeThermostatTests.debug.xcconfig"; path = "Target Support Files/Pods-NabtoEdgeThermostatTests/Pods-NabtoEdgeThermostatTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8CA16AADA6F490878CA2799D /* Pods_NabtoEdgeThermostatTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NabtoEdgeThermostatTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E6D6D3AD50316EEC98D7703 /* Pods_Nabto_Edge_Thermostat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Nabto_Edge_Thermostat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D455B17B28A51AA90011FD72 /* PairingConfirmedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingConfirmedViewController.swift; sourceTree = "<group>"; };
+		D92CAACD2C0780E34FCC36E6 /* Pods-NabtoEdgeThermostatTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NabtoEdgeThermostatTests.release.xcconfig"; path = "Target Support Files/Pods-NabtoEdgeThermostatTests/Pods-NabtoEdgeThermostatTests.release.xcconfig"; sourceTree = "<group>"; };
 		E9223BABCA33CFC89FFAB851 /* EdgeConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeConnectionManager.swift; sourceTree = "<group>"; };
 		E9272A38B76AF9CE5C3FE8CF /* AddDeviceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDeviceViewController.swift; sourceTree = "<group>"; };
 		E92ABEF8BBC6C0A9BC56081D /* EdgeManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeManagerTests.swift; sourceTree = "<group>"; };
+		ED871FBED8ECCCC43207D0B6 /* Pods-Nabto Edge Thermostat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nabto Edge Thermostat.debug.xcconfig"; path = "Target Support Files/Pods-Nabto Edge Thermostat/Pods-Nabto Edge Thermostat.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,7 +129,7 @@
 				6D04A7551E3F59BF00DD9F70 /* QuartzCore.framework in Frameworks */,
 				6D04A7561E3F59BF00DD9F70 /* UIKit.framework in Frameworks */,
 				6D04A7481E3F57E900DD9F70 /* Foundation.framework in Frameworks */,
-				FEEC29FBA4ABB0416CB21F61 /* Pods_Edge_Heat.framework in Frameworks */,
+				6F328C0716F0266C51790EBC /* Pods_Nabto_Edge_Thermostat.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,7 +137,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				53401452E29E0707885AAD4F /* Pods_HeatpumpDemoTests.framework in Frameworks */,
+				8DEE6F45E07F2E76004412B1 /* Pods_NabtoEdgeThermostatTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,8 +147,8 @@
 		6D04A6CE1E3F4C4800DD9F70 = {
 			isa = PBXGroup;
 			children = (
-				6D04A6D91E3F4C4800DD9F70 /* HeatpumpDemo */,
-				6D04A6EE1E3F4C4800DD9F70 /* HeatpumpDemoTests */,
+				6D04A6D91E3F4C4800DD9F70 /* NabtoEdgeThermostat */,
+				6D04A6EE1E3F4C4800DD9F70 /* NabtoEdgeThermostatTests */,
 				6D04A6D81E3F4C4800DD9F70 /* Products */,
 				6D04A6FA1E3F50F700DD9F70 /* Frameworks */,
 				AA0321A961738372158382D1 /* Pods */,
@@ -158,13 +158,13 @@
 		6D04A6D81E3F4C4800DD9F70 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6D04A6D71E3F4C4800DD9F70 /* AppMyProduct Heat Control.app */,
-				6D04A6EB1E3F4C4800DD9F70 /* HeatpumpDemoTests.xctest */,
+				6D04A6D71E3F4C4800DD9F70 /* Nabto Edge Thermostat.app */,
+				6D04A6EB1E3F4C4800DD9F70 /* NabtoEdgeThermostatTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		6D04A6D91E3F4C4800DD9F70 /* HeatpumpDemo */ = {
+		6D04A6D91E3F4C4800DD9F70 /* NabtoEdgeThermostat */ = {
 			isa = PBXGroup;
 			children = (
 				6DC4A1CF1E40F766005B6CAD /* Main */,
@@ -176,10 +176,10 @@
 				6D04A70C1E3F561400DD9F70 /* Resources */,
 				6D04A7051E3F51EB00DD9F70 /* Supporting files */,
 			);
-			path = HeatpumpDemo;
+			path = NabtoEdgeThermostat;
 			sourceTree = "<group>";
 		};
-		6D04A6EE1E3F4C4800DD9F70 /* HeatpumpDemoTests */ = {
+		6D04A6EE1E3F4C4800DD9F70 /* NabtoEdgeThermostatTests */ = {
 			isa = PBXGroup;
 			children = (
 				6D95FF231E49F37E00FB070F /* FrameworkIntegrationTests.swift */,
@@ -188,7 +188,7 @@
 				6D04A6F11E3F4C4800DD9F70 /* Info.plist */,
 				E92ABEF8BBC6C0A9BC56081D /* EdgeManagerTests.swift */,
 			);
-			path = HeatpumpDemoTests;
+			path = NabtoEdgeThermostatTests;
 			sourceTree = "<group>";
 		};
 		6D04A6FA1E3F50F700DD9F70 /* Frameworks */ = {
@@ -199,8 +199,8 @@
 				6D04A7531E3F59BF00DD9F70 /* QuartzCore.framework */,
 				6D04A7541E3F59BF00DD9F70 /* UIKit.framework */,
 				6D04A7471E3F57E900DD9F70 /* Foundation.framework */,
-				45A7FF98A5AF6A3FAEF62B9A /* Pods_Edge_Heat.framework */,
-				71942C3051274190DD6AADFE /* Pods_HeatpumpDemoTests.framework */,
+				8E6D6D3AD50316EEC98D7703 /* Pods_Nabto_Edge_Thermostat.framework */,
+				8CA16AADA6F490878CA2799D /* Pods_NabtoEdgeThermostatTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -210,7 +210,7 @@
 			children = (
 				6D04A6E11E3F4C4800DD9F70 /* Assets.xcassets */,
 				6D04A6E31E3F4C4800DD9F70 /* LaunchScreen.storyboard */,
-				6D04A70B1E3F53C900DD9F70 /* HeatpumpDemo-Bridging-Header.h */,
+				6D04A70B1E3F53C900DD9F70 /* NabtoEdgeThermostat-Bridging-Header.h */,
 				6D04A6E61E3F4C4800DD9F70 /* Info.plist */,
 			);
 			name = "Supporting files";
@@ -255,7 +255,7 @@
 			children = (
 				6DC4A1DE1E40F973005B6CAD /* DeviceDetailsViewController.swift */,
 				6D423F691E4510DF00DFC8B9 /* StoryboardHelper.swift */,
-				6D423F671E45107500DFC8B9 /* ACMEHeaterViewController.swift */,
+				6D423F671E45107500DFC8B9 /* EdgeThermostatViewController.swift */,
 			);
 			name = Devices;
 			sourceTree = "<group>";
@@ -275,10 +275,10 @@
 		AA0321A961738372158382D1 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				1D8F378E0CC7F1234E129717 /* Pods-Edge Heat.debug.xcconfig */,
-				675F55F8F06A8750DFA2453C /* Pods-Edge Heat.release.xcconfig */,
-				5438601D40AE9C1EC62A6863 /* Pods-HeatpumpDemoTests.debug.xcconfig */,
-				48CE95E52E178656EACDA2AE /* Pods-HeatpumpDemoTests.release.xcconfig */,
+				ED871FBED8ECCCC43207D0B6 /* Pods-Nabto Edge Thermostat.debug.xcconfig */,
+				6D4A70B205DC38FCF310C42B /* Pods-Nabto Edge Thermostat.release.xcconfig */,
+				838A1E4147C7D2BE437766D2 /* Pods-NabtoEdgeThermostatTests.debug.xcconfig */,
+				D92CAACD2C0780E34FCC36E6 /* Pods-NabtoEdgeThermostatTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -286,43 +286,43 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6D04A6D61E3F4C4800DD9F70 /* AppMyProduct Heat Control */ = {
+		6D04A6D61E3F4C4800DD9F70 /* Nabto Edge Thermostat */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6D04A6F41E3F4C4800DD9F70 /* Build configuration list for PBXNativeTarget "AppMyProduct Heat Control" */;
+			buildConfigurationList = 6D04A6F41E3F4C4800DD9F70 /* Build configuration list for PBXNativeTarget "Nabto Edge Thermostat" */;
 			buildPhases = (
-				ADEC25839E38A6E087590B3C /* [CP] Check Pods Manifest.lock */,
+				A24CBFF16965FAE1449823DC /* [CP] Check Pods Manifest.lock */,
 				6D04A6D31E3F4C4800DD9F70 /* Sources */,
 				6D04A6D41E3F4C4800DD9F70 /* Frameworks */,
 				6D04A6D51E3F4C4800DD9F70 /* Resources */,
-				4FAE34C7072FD3D013FF141F /* [CP] Embed Pods Frameworks */,
+				FE3FCDBC6D7D6136DD80510A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = "AppMyProduct Heat Control";
-			productName = HeatpumpDemo;
-			productReference = 6D04A6D71E3F4C4800DD9F70 /* AppMyProduct Heat Control.app */;
+			name = "Nabto Edge Thermostat";
+			productName = NabtoEdgeThermostat;
+			productReference = 6D04A6D71E3F4C4800DD9F70 /* Nabto Edge Thermostat.app */;
 			productType = "com.apple.product-type.application";
 		};
-		6D04A6EA1E3F4C4800DD9F70 /* HeatpumpDemoTests */ = {
+		6D04A6EA1E3F4C4800DD9F70 /* NabtoEdgeThermostatTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6D04A6F71E3F4C4800DD9F70 /* Build configuration list for PBXNativeTarget "HeatpumpDemoTests" */;
+			buildConfigurationList = 6D04A6F71E3F4C4800DD9F70 /* Build configuration list for PBXNativeTarget "NabtoEdgeThermostatTests" */;
 			buildPhases = (
-				66B95CCFE10428A457AC08D4 /* [CP] Check Pods Manifest.lock */,
+				F079587CC37B286788DF8046 /* [CP] Check Pods Manifest.lock */,
 				6D04A6E71E3F4C4800DD9F70 /* Sources */,
 				6D04A6E81E3F4C4800DD9F70 /* Frameworks */,
 				6D04A6E91E3F4C4800DD9F70 /* Resources */,
-				E2B52A0B78D64FD516EB8AFA /* [CP] Embed Pods Frameworks */,
+				621A9C14AB34EB134275A0F8 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				6D04A6ED1E3F4C4800DD9F70 /* PBXTargetDependency */,
 			);
-			name = HeatpumpDemoTests;
-			productName = HeatpumpDemoTests;
-			productReference = 6D04A6EB1E3F4C4800DD9F70 /* HeatpumpDemoTests.xctest */;
+			name = NabtoEdgeThermostatTests;
+			productName = NabtoEdgeThermostatTests;
+			productReference = 6D04A6EB1E3F4C4800DD9F70 /* NabtoEdgeThermostatTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -347,7 +347,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 6D04A6D21E3F4C4800DD9F70 /* Build configuration list for PBXProject "HeatpumpDemo" */;
+			buildConfigurationList = 6D04A6D21E3F4C4800DD9F70 /* Build configuration list for PBXProject "NabtoEdgeThermostat" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -361,8 +361,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6D04A6D61E3F4C4800DD9F70 /* AppMyProduct Heat Control */,
-				6D04A6EA1E3F4C4800DD9F70 /* HeatpumpDemoTests */,
+				6D04A6D61E3F4C4800DD9F70 /* Nabto Edge Thermostat */,
+				6D04A6EA1E3F4C4800DD9F70 /* NabtoEdgeThermostatTests */,
 			);
 		};
 /* End PBXProject section */
@@ -389,13 +389,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4FAE34C7072FD3D013FF141F /* [CP] Embed Pods Frameworks */ = {
+		621A9C14AB34EB134275A0F8 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Edge Heat/Pods-Edge Heat-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-NabtoEdgeThermostatTests/Pods-NabtoEdgeThermostatTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/CBORCoding/CBORCoding.framework",
 				"${BUILT_PRODUCTS_DIR}/Half/Half.framework",
 				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
@@ -416,10 +416,10 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Edge Heat/Pods-Edge Heat-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NabtoEdgeThermostatTests/Pods-NabtoEdgeThermostatTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		66B95CCFE10428A457AC08D4 /* [CP] Check Pods Manifest.lock */ = {
+		A24CBFF16965FAE1449823DC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -434,14 +434,14 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-HeatpumpDemoTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Nabto Edge Thermostat-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		ADEC25839E38A6E087590B3C /* [CP] Check Pods Manifest.lock */ = {
+		F079587CC37B286788DF8046 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -456,20 +456,20 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Edge Heat-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-NabtoEdgeThermostatTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E2B52A0B78D64FD516EB8AFA /* [CP] Embed Pods Frameworks */ = {
+		FE3FCDBC6D7D6136DD80510A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HeatpumpDemoTests/Pods-HeatpumpDemoTests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Nabto Edge Thermostat/Pods-Nabto Edge Thermostat-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/CBORCoding/CBORCoding.framework",
 				"${BUILT_PRODUCTS_DIR}/Half/Half.framework",
 				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
@@ -490,7 +490,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HeatpumpDemoTests/Pods-HeatpumpDemoTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Nabto Edge Thermostat/Pods-Nabto Edge Thermostat-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -508,7 +508,7 @@
 				6DC4A1F41E42633F005B6CAD /* CustomTableViewCells.swift in Sources */,
 				6D04A6DD1E3F4C4800DD9F70 /* OverviewViewController.swift in Sources */,
 				6DC4A1E31E40FBF5005B6CAD /* EditUserViewController.swift in Sources */,
-				6D423F681E45107500DFC8B9 /* ACMEHeaterViewController.swift in Sources */,
+				6D423F681E45107500DFC8B9 /* EdgeThermostatViewController.swift in Sources */,
 				6D55F38B1E437F7700C88276 /* ProfileTools.swift in Sources */,
 				6DC4A1E11E40F9F1005B6CAD /* PairingViewController.swift in Sources */,
 				6DC4A1D21E40F812005B6CAD /* ProfileCreateViewController.swift in Sources */,
@@ -547,7 +547,7 @@
 				E92A38C0D6987C838BE90500 /* HelpViewController.swift in Sources */,
 				E923340B1E1D4C1BB1619DAC /* StoryboardHelper.swift in Sources */,
 				E929836D13B9C3988BDD586E /* DeviceDetailsViewController.swift in Sources */,
-				E92CE696B6751331756AD57C /* ACMEHeaterViewController.swift in Sources */,
+				E92CE696B6751331756AD57C /* EdgeThermostatViewController.swift in Sources */,
 				E92F044E847046F46F7DF721 /* SettingsViewController.swift in Sources */,
 				E92F8E68FE8BD10428C6095C /* EditUserViewController.swift in Sources */,
 				E920766EB32AAE28F1B3CEDB /* SecuritySettingsViewController.swift in Sources */,
@@ -560,7 +560,7 @@
 /* Begin PBXTargetDependency section */
 		6D04A6ED1E3F4C4800DD9F70 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 6D04A6D61E3F4C4800DD9F70 /* AppMyProduct Heat Control */;
+			target = 6D04A6D61E3F4C4800DD9F70 /* Nabto Edge Thermostat */;
 			targetProxy = 6D04A6EC1E3F4C4800DD9F70 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -684,16 +684,15 @@
 		};
 		6D04A6F51E3F4C4800DD9F70 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1D8F378E0CC7F1234E129717 /* Pods-Edge Heat.debug.xcconfig */;
+			baseConfigurationReference = ED871FBED8ECCCC43207D0B6 /* Pods-Nabto Edge Thermostat.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = E55K8RCV2E;
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = HeatpumpDemo/Info.plist;
+				INFOPLIST_FILE = NabtoEdgeThermostat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -701,9 +700,9 @@
 					"$(SRCROOT)/Libs/**",
 					"$(PROJECT_DIR)/Libs/nabto/ios/lib",
 				);
-				MARKETING_VERSION = 3.0.0;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.appmyproduct.heat;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nabto.edge.thermostat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/$(PROJECT_NAME)/$(PROJECT_NAME)-Bridging-Header.h";
@@ -713,16 +712,15 @@
 		};
 		6D04A6F61E3F4C4800DD9F70 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 675F55F8F06A8750DFA2453C /* Pods-Edge Heat.release.xcconfig */;
+			baseConfigurationReference = 6D4A70B205DC38FCF310C42B /* Pods-Nabto Edge Thermostat.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = E55K8RCV2E;
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = HeatpumpDemo/Info.plist;
+				INFOPLIST_FILE = NabtoEdgeThermostat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -730,9 +728,9 @@
 					"$(SRCROOT)/Libs/**",
 					"$(PROJECT_DIR)/Libs/nabto/ios/lib",
 				);
-				MARKETING_VERSION = 3.0.0;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.appmyproduct.heat;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nabto.edge.thermostat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/$(PROJECT_NAME)/$(PROJECT_NAME)-Bridging-Header.h";
@@ -742,48 +740,48 @@
 		};
 		6D04A6F81E3F4C4800DD9F70 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5438601D40AE9C1EC62A6863 /* Pods-HeatpumpDemoTests.debug.xcconfig */;
+			baseConfigurationReference = 838A1E4147C7D2BE437766D2 /* Pods-NabtoEdgeThermostatTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = HeatpumpDemoTests/Info.plist;
+				INFOPLIST_FILE = NabtoEdgeThermostatTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nabto.edge.HeatpumpDemoTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nabto.edge.NabtoEdgeThermostatTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/$(PROJECT_NAME)/$(PROJECT_NAME)-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Edge Heat.app/Edge Heat";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Nabto Edge Thermostat.app/Nabto Edge Thermostat";
 			};
 			name = Debug;
 		};
 		6D04A6F91E3F4C4800DD9F70 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 48CE95E52E178656EACDA2AE /* Pods-HeatpumpDemoTests.release.xcconfig */;
+			baseConfigurationReference = D92CAACD2C0780E34FCC36E6 /* Pods-NabtoEdgeThermostatTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = HeatpumpDemoTests/Info.plist;
+				INFOPLIST_FILE = NabtoEdgeThermostatTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.nabto.edge.HeatpumpDemoTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nabto.edge.NabtoEdgeThermostatTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/$(PROJECT_NAME)/$(PROJECT_NAME)-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Edge Heat.app/Edge Heat";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Nabto Edge Thermostat.app/Nabto Edge Thermostat";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6D04A6D21E3F4C4800DD9F70 /* Build configuration list for PBXProject "HeatpumpDemo" */ = {
+		6D04A6D21E3F4C4800DD9F70 /* Build configuration list for PBXProject "NabtoEdgeThermostat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6D04A6F21E3F4C4800DD9F70 /* Debug */,
@@ -792,7 +790,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6D04A6F41E3F4C4800DD9F70 /* Build configuration list for PBXNativeTarget "AppMyProduct Heat Control" */ = {
+		6D04A6F41E3F4C4800DD9F70 /* Build configuration list for PBXNativeTarget "Nabto Edge Thermostat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6D04A6F51E3F4C4800DD9F70 /* Debug */,
@@ -801,7 +799,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6D04A6F71E3F4C4800DD9F70 /* Build configuration list for PBXNativeTarget "HeatpumpDemoTests" */ = {
+		6D04A6F71E3F4C4800DD9F70 /* Build configuration list for PBXNativeTarget "NabtoEdgeThermostatTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6D04A6F81E3F4C4800DD9F70 /* Debug */,

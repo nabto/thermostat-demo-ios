@@ -1,5 +1,5 @@
 //
-//  ACMEHeaterViewController.swift
+//  EdgeThermostatViewController.swift
 //  ThermostatDemo
 //
 //  Created by Nabto on 03/02/2022.
@@ -46,7 +46,7 @@ public struct ThermostatDetails: Codable, CustomStringConvertible {
 }
 
 
-class ACMEHeaterViewController: DeviceDetailsViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
     @IBOutlet weak var temperatureLabel     : UILabel!
     @IBOutlet weak var roomTemperatureLabel: UILabel!
