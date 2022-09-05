@@ -1,0 +1,42 @@
+PODS:
+  - CBORCoding (1.3.2):
+    - Half (~> 1.3)
+  - Half (1.3.1)
+  - MarqueeLabel (4.0.5)
+  - NabtoEdgeClientSwift (3.0.1)
+  - NabtoEdgeIamUtil (1.0.0):
+    - CBORCoding (~> 1.3.2)
+    - Half (~> 1.3.1)
+    - NabtoEdgeClientSwift (~> 3.0.0)
+  - NotificationBannerSwift (3.0.6):
+    - MarqueeLabel (~> 4.0.5)
+    - SnapKit (~> 5.0.1)
+  - SnapKit (5.0.1)
+
+DEPENDENCIES:
+  - NabtoEdgeClientSwift
+  - NabtoEdgeIamUtil
+  - NotificationBannerSwift (~> 3.0.0)
+
+SPEC REPOS:
+  trunk:
+    - CBORCoding
+    - Half
+    - MarqueeLabel
+    - NabtoEdgeClientSwift
+    - NabtoEdgeIamUtil
+    - NotificationBannerSwift
+    - SnapKit
+
+SPEC CHECKSUMS:
+  CBORCoding: bc4b677abf83b603535f6af7158b88b86ac07744
+  Half: 53808d877fd489901434883eb5ca91d6be65f0b3
+  MarqueeLabel: 00cc0bcd087111dca575878b3531af980559707d
+  NabtoEdgeClientSwift: 8dc45e3383969bae767836a5228cb3c6fdc3b90f
+  NabtoEdgeIamUtil: 58bae7b4366df7fc5933a00d65c17c656331d8e9
+  NotificationBannerSwift: 7021be2338f8f29cf424b0aca43da462bf9e2a1a
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+
+PODFILE CHECKSUM: 93ba2311aba712171e4a4891505723ca9b5f2744
+
+COCOAPODS: 1.11.3
