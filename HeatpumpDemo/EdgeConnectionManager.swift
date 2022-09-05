@@ -7,7 +7,7 @@ import UIKit
 import Network
 import NabtoEdgeClient
 
-class EdgeConnectionWrapper : ConnectionEventReceiver {
+fileprivate class EdgeConnectionWrapper : ConnectionEventReceiver {
     var isClosed: Bool = false
     let target: Bookmark
     let connection: Connection
@@ -65,9 +65,9 @@ class EdgeConnectionManager {
             self.clientQueue.sync {
                 if (self.client_ == nil) {
                     self.client_ = NabtoEdgeClient.Client()
-                    self.client_.setLogCallBack(cb: EdgeConnectionManager.traceOnlyApiCalls)
-//                    self.client_.enableNsLogLogging()
-                    try! self.client_.setLogLevel(level: "trace")
+//                    self.client_.setLogCallBack(cb: EdgeConnectionManager.traceOnlyApiCalls)
+                    self.client_.enableNsLogLogging()
+//                    try! self.client_.setLogLevel(level: "trace")
                 }
                 return self.client_
             }
@@ -91,8 +91,8 @@ class EdgeConnectionManager {
     }
 
     private static func traceOnlyApiCalls(msg: NabtoEdgeClientLogMessage) {
-        if (msg.severity < 3 || msg.message.range(of: "coap_exec|connection_connect",
-        //if (msg.severity < 3 || msg.message.range(of: "#[0-9]{1,6} called|ended",
+        //if (msg.severity < 3 || msg.message.range(of: "coap_exec|connection_connect",
+        if (msg.severity < 3 || msg.message.range(of: "#[0-9]{1,6} called|ended",
                 options: .regularExpression, range: nil, locale: nil) != nil) {
             NSLog("Nabto log: \(msg.file):\(msg.line) [\(msg.severity)/\(msg.severityString)]: \(msg.message)")
         }

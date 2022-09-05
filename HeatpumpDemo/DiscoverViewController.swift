@@ -16,7 +16,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var table: UITableView!
 
     var devices: [DeviceRowModel] = []
-    var waiting  = true
+    var busy = true
     var starting = true
 
     override func viewDidLoad() {
@@ -41,17 +41,16 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 
     func findDevices() {
         self.devices = []
-        self.waiting = true
+        self.busy = true
         self.table.reloadData()
-        let scanner = EdgeConnectionManager.shared.client.createMdnsScanner()
-        //let scanner = EdgeManager.shared.client.createMdnsScanner(subType: "thermostat")
+        let scanner = EdgeConnectionManager.shared.client.createMdnsScanner(subType: "thermostat")
         scanner.addMdnsResultReceiver(self)
         do {
             try scanner.start()
             DispatchQueue.global().asyncAfter(deadline: .now() + 2.0) {
                 scanner.stop()
-                DispatchQueue.main.sync {
-                    self.waiting  = false
+                DispatchQueue.main.async {
+                    self.busy  = false
                     self.table.reloadData()
                 }
             }
@@ -93,10 +92,14 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
     }
 
     func handleError(msg: String) {
+        DispatchQueue.global().async() {
+            EdgeConnectionManager.shared.stop()
+        }
         DispatchQueue.main.async {
             NSLog("Discover error: \(msg)")
             let errorBanner = GrowingNotificationBanner(title: "Discover error", subtitle: msg, style: .danger)
             errorBanner.show()
+
         }
     }
 
@@ -129,11 +132,12 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "NoDevicesCell", for: indexPath) as! NoDevicesCell
-                cell.configure(waiting: waiting)
+                cell.configure(waiting: busy)
                 return cell
             }
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverButtonCell", for: indexPath) as! DiscoverButtonCell
+            cell.refreshButton.isEnabled = !self.busy
             return cell
         }
     }
