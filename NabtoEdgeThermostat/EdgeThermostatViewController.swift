@@ -12,9 +12,11 @@ import CBORCoding
 import NabtoEdgeClient
 import NabtoEdgeIamUtil
 
-// MARK:- EdgeThermostatViewController class
+// MARK: - EdgeThermostatViewController class
 
 class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+
+    private let cborEncoder: CBOREncoder = CBOREncoder()
 
     // MARK: IBOutlet fields
 
@@ -22,7 +24,7 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
     @IBOutlet weak var roomTemperatureLabel : UILabel!
     @IBOutlet weak var temperatureSlider    : UISlider!
     @IBOutlet weak var activeSwitch         : UISwitch!
-    @IBOutlet weak var errorLabel           : UILabel!
+    @IBOutlet weak var inactiveLabel         : UILabel!
     @IBOutlet weak var modeField            : UITextField!
     @IBOutlet weak var coldIcon             : UIImageView!
     @IBOutlet weak var hotIcon              : UIImageView!
@@ -68,7 +70,7 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
                     self.busyTimer = Timer.scheduledTimer(timeInterval: 0.8, target: self, selector: #selector(self.showSpinner), userInfo: nil, repeats: false)
                 }
             } else {
-                hideSpinner()
+                self.hideSpinner()
             }
         }
     }
@@ -78,7 +80,7 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
         static let all = [COOL, HEAT, FAN, DRY]
     }
 
-    // MARK:- CoAP invocations
+    // MARK: - CoAP invocations
 
     private func coapGetThermostatInfo(connection: Connection, updateTarget: Bool) throws -> ThermostatDetails {
         let request = try connection.createCoapRequest(method: "GET", path: "/thermostat")
@@ -99,25 +101,28 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
     }
 
     func coapUpdateTemperature(connection: Connection, temperature: Double) throws -> Bool {
-        let coap: CoapRequest = try connection.createCoapRequest(method: "POST", path: "/thermostat/target")
-        let encoder = CBOREncoder()
-        let cbor = try encoder.encode(self.temperature)
-        try coap.setRequestPayload(contentFormat: ContentFormat.APPLICATION_CBOR.rawValue, data: cbor)
-        let response = try coap.execute()
-        return response.status == 204
+        let cbor = try self.cborEncoder.encode(self.temperature)
+        return try invokeCoapUpdate(connection: connection, path: "/thermostat/target", data: cbor)
     }
 
     func coapUpdatePower(connection: Connection, activated: Bool) throws -> Bool {
-        let coap = try connection.createCoapRequest(method: "POST", path: "/thermostat/power")
-        let encoder = CBOREncoder()
-        let cbor = try encoder.encode(activated)
-        try coap.setRequestPayload(contentFormat: ContentFormat.APPLICATION_CBOR.rawValue, data: cbor)
+        let cbor = try self.cborEncoder.encode(activated)
+        return try invokeCoapUpdate(connection: connection, path: "/thermostat/power", data: cbor)
+    }
+
+    func coapUpdateMode(connection: Connection, mode: DeviceMode) throws -> Bool {
+        let cbor = try self.cborEncoder.encode(mode.rawValue)
+        return try invokeCoapUpdate(connection: connection, path: "/thermostat/mode", data: cbor)
+    }
+
+    func invokeCoapUpdate(connection: Connection, path: String, data: Data) throws -> Bool {
+        let coap = try connection.createCoapRequest(method: "POST", path: path)
+        try coap.setRequestPayload(contentFormat: ContentFormat.APPLICATION_CBOR.rawValue, data: data)
         let response = try coap.execute()
         return response.status == 204
     }
 
-
-    func invokeCoapUpdateAndShowError(action: String, closure: @escaping (Connection) throws -> Bool) {
+    func invokeUpdateClosureAndRefreshUi(action: String, closure: @escaping (Connection) throws -> Bool) {
         self.busy = true
         DispatchQueue.global(qos: .userInitiated).async {
             defer {
@@ -128,7 +133,7 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
                 connection = try EdgeConnectionManager.shared.getConnection(self.device)
                 let ok = try closure(connection)
                 if (ok) {
-                    self.refreshView()
+                    self.refreshView(userInitiated: true)
                 } else {
                     self.showDeviceErrorMsg("Could not \(action), device service invoked ok but it returned an error status")
                 }
@@ -139,33 +144,7 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
         }
     }
 
-    func coapUpdateMode(mode: DeviceMode) {
-        self.busy = true
-        self.mode = mode
-        DispatchQueue.global(qos: .userInitiated).async {
-            defer {
-                self.busy = false
-            }
-            do {
-                let connection = try EdgeConnectionManager.shared.getConnection(self.device)
-                let coap = try connection.createCoapRequest(method: "POST", path: "/thermostat/mode")
-                let encoder = CBOREncoder()
-                let cbor = try encoder.encode(mode.rawValue)
-                try coap.setRequestPayload(contentFormat: ContentFormat.APPLICATION_CBOR.rawValue, data: cbor)
-                let response = try coap.execute()
-                if (response.status == 204) {
-                    self.refreshView()
-                } else {
-                    self.showDeviceErrorMsg("Could not set thermostat mode, device returned status \(response.status)")
-                }
-            } catch {
-                NSLog("Error when setting mode: \(error)")
-                self.handleDeviceError(error)
-            }
-        }
-    }
-
-    // MARK:- UI refresh
+    // MARK: - UI refresh
 
     private func scheduleRefresh() {
         DispatchQueue.main.async {
@@ -178,19 +157,18 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
         if (userInitiated) {
             self.busy = true
         }
-        DispatchQueue.global(qos: .userInitiated).async {
+        DispatchQueue.global(qos: userInitiated ? .userInitiated : .default).async {
             defer {
                 self.busy = false
             }
             do {
                 let connection = try EdgeConnectionManager.shared.getConnection(self.device)
                 try self.refreshThermostatInfo(connection: connection, updateTarget: userInitiated)
+                self.showConnectSuccessIfNecessary()
                 if (userInitiated) {
                     try self.refreshDeviceDetails(connection: connection)
                     try self.refreshUserInfo(connection: connection)
                 }
-                self.showConnectSuccessIfNecessary()
-                self.markNotOffline()
                 self.scheduleRefresh()
             } catch (NabtoEdgeClientError.FAILED_WITH_DETAIL(let detail)) {
                 NSLog("Error when refreshing: \(detail)")
@@ -212,6 +190,7 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
         let details = try self.coapGetThermostatInfo(connection: connection, updateTarget: updateTarget)
         DispatchQueue.main.sync {
             self.activeSwitch.isOn = details.Power
+            self.updateActivateState(isActive: details.Power)
             self.mode = DeviceMode(rawValue: details.Mode)
             self.roomTemperature = details.Temperature
             if (updateTarget) {
@@ -238,7 +217,7 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
         }
     }
 
-    // MARK:- UI helpers
+    // MARK: - UI helpers
 
     private func showConnectSuccessIfNecessary() {
         if (self.showReconnectedMessage) {
@@ -295,11 +274,6 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
         return round(value * 10.0) / 10.0
     }
 
-    func markNotOffline() {
-        offline = false
-        showErrorLabel(show: !(activeSwitch.isOn), message: "Device powered off")
-    }
-
     @objc func showSpinner() {
         DispatchQueue.main.async {
             if (self.busy) {
@@ -337,19 +311,21 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let selected = DeviceMode.all[row]
-        coapUpdateMode(mode: selected)
+        let mode = DeviceMode.all[row]
+        self.invokeUpdateClosureAndRefreshUi(action: "set thermostat mode") { connection in
+            return try self.coapUpdateMode(connection: connection, mode: mode)
+        }
         modeField.resignFirstResponder()
     }
     
-    func showErrorLabel(show: Bool, message: String) {
-        errorLabel.text = message
-        errorLabel.isHidden = !show
-        temperatureLabel.isHidden = show
-        roomTemperatureLabel.isHidden = show
+    func updateActivateState(isActive: Bool) {
+        self.inactiveLabel.isHidden = isActive
+        self.temperatureLabel.isHidden = !isActive
+        self.roomTemperatureLabel.isHidden = !isActive
+        self.temperatureSlider.isEnabled = isActive
     }
 
-    //MARK:- IBActions
+    //MARK: - IBActions
 
     @IBAction func sliderChanged(_ sender: UISlider) {
         self.temperature = Double(sender.value)
@@ -373,14 +349,15 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
     }
 
     func updateTemperature() {
-        self.invokeCoapUpdateAndShowError(action: "set thermostat temperature") { connection in
+        self.invokeUpdateClosureAndRefreshUi(action: "set thermostat temperature") { connection in
             return try self.coapUpdateTemperature(connection: connection, temperature: self.temperature)
         }
     }
 
     @IBAction func switchChanged(_ sender: UISwitch) {
         let isOn = self.activeSwitch.isOn
-        self.invokeCoapUpdateAndShowError(action: "set thermostat power status") { connection in
+        self.updateActivateState(isActive: isOn)
+        self.invokeUpdateClosureAndRefreshUi(action: "set thermostat power status") { connection in
             return try self.coapUpdatePower(connection: connection, activated: isOn)
         }
     }
@@ -390,7 +367,7 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
         self.refreshView(userInitiated: true)
     }
 
-    // MARK:- View life cycle
+    // MARK: - View life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -408,6 +385,7 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
         configurePicker()
 
         refreshView(userInitiated: true)
+
         self.scheduleRefresh()
     }
 
@@ -447,7 +425,7 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
                         object: nil)
     }
 
-    // MARK:- Reachability callbacks
+    // MARK: - Reachability callbacks
 
     @objc func connectionClosed(_ notification: Notification) {
         if notification.object is Bookmark {
@@ -477,7 +455,7 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
 
 }
 
-// MARK:- ThermostatDetails struct
+// MARK: - ThermostatDetails struct
 
 /*
  * Data received from device's GET /thermostat CoAP endpoint.

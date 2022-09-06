@@ -1166,7 +1166,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Device powered off" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fwm-OO-gyh">
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Device not activated" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fwm-OO-gyh">
                                         <rect key="frame" x="0.0" y="0.0" width="311" height="54"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <color key="textColor" systemColor="darkTextColor"/>
@@ -1507,8 +1507,8 @@
                         <outlet property="connectingView" destination="SEn-d0-Gzg" id="2sF-Mx-oOm"/>
                         <outlet property="deviceIdLabel" destination="Ybb-GG-5zK" id="3P6-DN-J2K"/>
                         <outlet property="displayNameLabel" destination="80V-ih-MQ6" id="lkh-H8-DAz"/>
-                        <outlet property="errorLabel" destination="Fwm-OO-gyh" id="PqY-gO-3ka"/>
                         <outlet property="hotIcon" destination="k7Y-Q5-8mX" id="Zmt-vM-fCa"/>
+                        <outlet property="inactiveLabel" destination="Fwm-OO-gyh" id="PqY-gO-3ka"/>
                         <outlet property="modeField" destination="ebS-ua-IPU" id="TXS-ik-RBX"/>
                         <outlet property="refreshButton" destination="Rsb-tf-RTi" id="bOj-6l-HKI"/>
                         <outlet property="roleLabel" destination="I6C-uI-fKq" id="23N-Vl-WJP"/>
