@@ -36,6 +36,8 @@ class PairingViewController: UIViewController, PairingConfirmedListener, UITextF
         return spinner
     }()
 
+    // MARK: - View life cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         confirmButton.clipsToBounds     = true
@@ -51,14 +53,6 @@ class PairingViewController: UIViewController, PairingConfirmedListener, UITextF
         self.view.addGestureRecognizer(tapGesture)
         self.passwordField.delegate = self
         self.usernameField.delegate = self
-    }
-
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    @objc private func hideKeyboard() {
-        self.view.endEditing(true)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -83,16 +77,14 @@ class PairingViewController: UIViewController, PairingConfirmedListener, UITextF
         super.didReceiveMemoryWarning()
     }
 
-    func showPairingError(_ msg: String) {
-        DispatchQueue.main.async {
-            let banner = GrowingNotificationBanner(title: "Pairing Error", subtitle: msg, style: .danger)
-            banner.show()
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let device = sender as? Bookmark else { return }
+        if let destination = segue.destination as? DeviceDetailsViewController {
+            destination.device = device
         }
     }
 
-    func pairingConfirmed() {
-        self.navigationController?.popToRootViewController(animated: true)
-    }
+    // MARK: - IB actions
 
     @IBAction func confirmPairing(_ sender: Any) {
         guard let device = device else { return }
@@ -102,6 +94,42 @@ class PairingViewController: UIViewController, PairingConfirmedListener, UITextF
             DispatchQueue.main.async {
                 self.confirmSpinner.stopAnimating()
             }
+        }
+    }
+
+    @IBAction func goToHome(_ sender: Any) {
+        _ = navigationController?.popToRootViewController(animated: true)
+    }
+
+    // MARK: - Keyboard input
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    @objc private func hideKeyboard() {
+        self.view.endEditing(true)
+    }
+
+    // MARK: - Implementation
+
+    func pairingConfirmed() {
+        self.navigationController?.popToRootViewController(animated: true)
+    }
+
+    private func showPairingError(_ msg: String) {
+        DispatchQueue.main.async {
+            let banner = GrowingNotificationBanner(title: "Pairing Error", subtitle: msg, style: .danger)
+            banner.show()
+        }
+    }
+
+    private func showConfirmation() {
+        DispatchQueue.main.sync {
+            let controller = StoryboardHelper.getViewController(id: "PairingConfirmedViewController") as! PairingConfirmedViewController
+            controller.device = self.device
+            controller.pairingConfirmedDelegate = self
+            navigationController?.pushViewController(controller, animated: true)
         }
     }
 
@@ -155,13 +183,18 @@ class PairingViewController: UIViewController, PairingConfirmedListener, UITextF
         }
     }
 
-    private func updateBookmarkWithDeviceInfo(_ device: Bookmark) throws {
-        let user = try IamUtil.getCurrentUser(connection: EdgeConnectionManager.shared.getConnection(device))
-        device.role = user.Role
-        device.sct = user.Sct
-        let details = try IamUtil.getDeviceDetails(connection: EdgeConnectionManager.shared.getConnection(device))
-        if let appname = details.AppName {
-            device.name = appname
+    private func pairLocalInitial() throws {
+        guard let device = self.device else { return }
+        let connection = try EdgeConnectionManager.shared.getConnection(device)
+        try IamUtil.pairLocalInitial(connection: connection)
+
+        var userInput: String?
+        DispatchQueue.main.sync {
+            userInput = self.usernameField.text
+        }
+        if let user = userInput {
+            let validUserName = ProfileTools.convertToValidUsername(input: user)
+            self.updateDisplayName(connection: connection, username: validUserName, displayName: user)
         }
     }
 
@@ -175,31 +208,6 @@ class PairingViewController: UIViewController, PairingConfirmedListener, UITextF
         if let user = userInput {
             let validUserName = ProfileTools.convertToValidUsername(input: user)
             try IamUtil.pairLocalOpen(connection: connection, desiredUsername: validUserName)
-            self.updateDisplayName(connection: connection, username: validUserName, displayName: user)
-        }
-    }
-
-    private func updateDisplayName(connection: Connection, username: String, displayName: String) {
-        do {
-            try IamUtil.updateUserDisplayName(connection: connection, username: username, displayName: displayName)
-        } catch (IamError.BLOCKED_BY_DEVICE_CONFIGURATION) {
-            print("Device IAM config does not support setting display name (tried setting \(displayName) for user \(username))")
-        } catch {
-            print("Unexpected error when setting display name: \(error)")
-        }
-    }
-
-    private func pairLocalInitial() throws {
-        guard let device = self.device else { return }
-        let connection = try EdgeConnectionManager.shared.getConnection(device)
-        try IamUtil.pairLocalInitial(connection: connection)
-
-        var userInput: String?
-        DispatchQueue.main.sync {
-            userInput = self.usernameField.text
-        }
-        if let user = userInput {
-            let validUserName = ProfileTools.convertToValidUsername(input: user)
             self.updateDisplayName(connection: connection, username: validUserName, displayName: user)
         }
     }
@@ -233,26 +241,24 @@ class PairingViewController: UIViewController, PairingConfirmedListener, UITextF
         }
     }
 
-    func showConfirmation() {
-        DispatchQueue.main.sync {
-            let controller = StoryboardHelper.getViewController(id: "PairingConfirmedViewController") as! PairingConfirmedViewController
-            controller.device = self.device
-            controller.pairingConfirmedDelegate = self
-            navigationController?.pushViewController(controller, animated: true)
+    private func updateBookmarkWithDeviceInfo(_ device: Bookmark) throws {
+        let user = try IamUtil.getCurrentUser(connection: EdgeConnectionManager.shared.getConnection(device))
+        device.role = user.Role
+        device.sct = user.Sct
+        let details = try IamUtil.getDeviceDetails(connection: EdgeConnectionManager.shared.getConnection(device))
+        if let appname = details.AppName {
+            device.name = appname
         }
     }
-    
-    @IBAction func goToHome(_ sender: Any) {
-        _ = navigationController?.popToRootViewController(animated: true)
-    }
-    
-    // MARK: - Navigation
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let device = sender as? Bookmark else { return }
-        if let destination = segue.destination as? DeviceDetailsViewController {
-            destination.device = device
+
+    private func updateDisplayName(connection: Connection, username: String, displayName: String) {
+        do {
+            try IamUtil.updateUserDisplayName(connection: connection, username: username, displayName: displayName)
+        } catch (IamError.BLOCKED_BY_DEVICE_CONFIGURATION) {
+            print("Device IAM config does not support setting display name (tried setting \(displayName) for user \(username))")
+        } catch {
+            print("Unexpected error when setting display name: \(error)")
         }
     }
-    
+
 }
