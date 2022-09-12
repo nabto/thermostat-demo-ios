@@ -42,6 +42,7 @@ class EdgeConnectionManager {
 
     private var cache: [Bookmark:EdgeConnectionWrapper] = [:]
     private var client_: NabtoEdgeClient.Client! = nil
+    private let logLevel = "info"
     private let monitor = NWPathMonitor()
     private let cacheQueue = DispatchQueue(label: "cacheQueue")
     private let clientQueue = DispatchQueue(label: "clientQueue")
@@ -67,7 +68,7 @@ class EdgeConnectionManager {
                     self.client_ = NabtoEdgeClient.Client()
 //                    self.client_.setLogCallBack(cb: EdgeConnectionManager.traceOnlyApiCalls)
                     self.client_.enableNsLogLogging()
-//                    try! self.client_.setLogLevel(level: "trace")
+                    try! self.client_.setLogLevel(level: self.logLevel)
                 }
                 return self.client_
             }

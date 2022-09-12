@@ -148,6 +148,7 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
 
     private func scheduleRefresh() {
         DispatchQueue.main.async {
+            self.refreshButton.isEnabled = false
             self.refreshTimer?.invalidate()
             self.refreshTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.refreshView), userInfo: nil, repeats: false)
         }
@@ -172,13 +173,13 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
                 self.scheduleRefresh()
             } catch (NabtoEdgeClientError.FAILED_WITH_DETAIL(let detail)) {
                 NSLog("Error when refreshing: \(detail)")
-                self.refreshTimer?.invalidate()
+                self.disableAutoRefresh()
                 if (!EdgeConnectionManager.shared.isStopped()) {
                     self.showDeviceErrorMsg(detail)
                 }
             } catch {
                 NSLog("Error when refreshing: \(error)")
-                self.refreshTimer?.invalidate()
+                self.disableAutoRefresh()
                 if (userInitiated) {
                     self.handleDeviceError(error)
                 }
@@ -372,20 +373,23 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        refreshButton.clipsToBounds  = true
-        refreshButton.layer.cornerRadius  = 6
-        refreshButton.imageView?.tintColor = UIColor.black
-        hotIcon.image = hotIcon.image?.withRenderingMode(.alwaysTemplate)
-        coldIcon.image = coldIcon.image?.withRenderingMode(.alwaysTemplate)
+        self.refreshButton.clipsToBounds  = true
+        self.refreshButton.layer.cornerRadius  = 6
+        self.refreshButton.imageView?.tintColor = UIColor.black
+        self.hotIcon.image = hotIcon.image?.withRenderingMode(.alwaysTemplate)
+        self.coldIcon.image = coldIcon.image?.withRenderingMode(.alwaysTemplate)
+       
+        self.temperatureSlider.minimumValue = Float(minTemp)
+        self.temperatureSlider.maximumValue = Float(maxTemp)
+        self.temperatureSlider.value = Float((maxTemp - minTemp) / 2.0)
 
-        temperatureSlider.minimumValue = Float(minTemp)
-        temperatureSlider.maximumValue = Float(maxTemp)
-        temperatureSlider.value = Float((maxTemp - minTemp) / 2.0)
 
-        configurePicker()
+        self.configurePicker()
 
-        refreshView(userInitiated: true)
+        self.refreshView(userInitiated: true)
 
+        self.refreshButton.setTitle("(auto-refreshing)", for: .disabled)
+        self.refreshButton.setTitle("Refresh", for: .normal)
         self.scheduleRefresh()
     }
 
@@ -396,7 +400,7 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.refreshTimer?.invalidate()
+        self.disableAutoRefresh()
         NotificationCenter.default
                 .removeObserver(self, name: NSNotification.Name(EdgeConnectionManager.eventNameConnectionClosed), object: nil)
         NotificationCenter.default
@@ -430,16 +434,21 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
     @objc func connectionClosed(_ notification: Notification) {
         if notification.object is Bookmark {
             DispatchQueue.main.async {
-                self.refreshTimer?.invalidate()
+                self.disableAutoRefresh()
                 self.showDeviceErrorMsg("Connection closed - refresh to try to reconnect")
                 self.showReconnectedMessage = true
             }
         }
     }
 
+    func disableAutoRefresh() {
+        self.refreshTimer?.invalidate()
+        self.refreshButton.isEnabled = true
+    }
+
     @objc func networkLost(_ notification: Notification) {
         DispatchQueue.main.async {
-            self.refreshTimer?.invalidate()
+            self.disableAutoRefresh()
             let banner = GrowingNotificationBanner(title: "Network connection lost", subtitle: "Please try again later", style: .warning)
             banner.show()
         }
