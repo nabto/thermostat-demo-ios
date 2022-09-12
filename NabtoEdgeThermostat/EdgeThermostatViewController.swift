@@ -232,6 +232,7 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
     }
 
     func handleDeviceError(_ error: Error) {
+        self.disableAutoRefresh()
         EdgeConnectionManager.shared.removeConnection(self.device)
         if let error = error as? NabtoEdgeClientError {
             handleApiError(error: error)
@@ -443,7 +444,9 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
 
     func disableAutoRefresh() {
         self.refreshTimer?.invalidate()
-        self.refreshButton.isEnabled = true
+        DispatchQueue.main.async {
+            self.refreshButton.isEnabled = true
+        }
     }
 
     @objc func networkLost(_ notification: Notification) {
