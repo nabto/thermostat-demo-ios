@@ -12,10 +12,14 @@ import NabtoEdgeClient
 
 class AddDeviceViewController: UIViewController, UITextFieldDelegate {
 
+    // MARK: - IBOutlet fields
+
     @IBOutlet weak var pairingStringButton: UIButton!
     @IBOutlet weak var discoverButton: UIButton!
     @IBOutlet weak var pairingStringField: UITextField!
     @IBOutlet weak var pairingStringErrorLabel: UILabel!
+
+    // MARK: - View lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,38 +35,6 @@ class AddDeviceViewController: UIViewController, UITextFieldDelegate {
         tapGesture.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tapGesture)
         self.pairingStringField.delegate = self
-    }
-
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    @objc private func hideKeyboard() {
-        self.view.endEditing(true)
-    }
-
-    @IBAction func handlePairingStringChanged(_ sender: Any) {
-        if let str = pairingStringField.text {
-            do {
-                let _ = try Self.parsePairingString(pairingString: str)
-                self.enablePairingButton()
-                self.pairingStringErrorLabel.isHidden = true
-            } catch {
-                self.disablePairingButton()
-                self.pairingStringErrorLabel.isHidden = false
-            }
-        } else {
-            self.disablePairingButton()
-            self.pairingStringErrorLabel.isHidden = false
-        }
-    }
-
-    func enablePairingButton() {
-        self.pairingStringButton.isEnabled = true
-    }
-
-    func disablePairingButton() {
-        self.pairingStringButton.isEnabled = false
     }
 
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
@@ -96,6 +68,33 @@ class AddDeviceViewController: UIViewController, UITextFieldDelegate {
                 print("Never here: Pairing string empty")
                 return
             }
+        }
+    }
+
+    // MARK: - Keyboard input
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+
+    @objc private func hideKeyboard() {
+        self.view.endEditing(true)
+    }
+
+    @IBAction func handlePairingStringChanged(_ sender: Any) {
+        if let str = pairingStringField.text {
+            do {
+                let _ = try Self.parsePairingString(pairingString: str)
+                self.pairingStringButton.isEnabled = true
+                self.pairingStringErrorLabel.isHidden = true
+            } catch {
+                self.pairingStringButton.isEnabled = false
+                self.pairingStringErrorLabel.isHidden = false
+            }
+        } else {
+            self.pairingStringButton.isEnabled = false
+            self.pairingStringErrorLabel.isHidden = false
         }
     }
 

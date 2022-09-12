@@ -18,13 +18,13 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
 
     private let cborEncoder: CBOREncoder = CBOREncoder()
 
-    // MARK: IBOutlet fields
+    // MARK: - IBOutlet fields
 
     @IBOutlet weak var temperatureLabel     : UILabel!
     @IBOutlet weak var roomTemperatureLabel : UILabel!
     @IBOutlet weak var temperatureSlider    : UISlider!
     @IBOutlet weak var activeSwitch         : UISwitch!
-    @IBOutlet weak var inactiveLabel         : UILabel!
+    @IBOutlet weak var inactiveLabel        : UILabel!
     @IBOutlet weak var modeField            : UITextField!
     @IBOutlet weak var coldIcon             : UIImageView!
     @IBOutlet weak var hotIcon              : UIImageView!

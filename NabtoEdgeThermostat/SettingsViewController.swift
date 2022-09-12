@@ -33,12 +33,7 @@ class SettingsViewController: UIViewController {
     func resetKeypair() {
         ProfileTools.clearProfile() //remove from saved data
     }
-    
-    func getFormattedFingerprint() -> String? {
-        guard let string = ProfileTools.getSavedPrivateKey() else { return nil }
-        return UserInfo.format(fingerprint: string)
-    }
-    
+
     //MARK: - IBActions
     
     @IBAction func goToHome(_ sender: Any) {

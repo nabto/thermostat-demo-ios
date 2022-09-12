@@ -33,12 +33,4 @@ class DeviceDetailsViewController: ViewControllerWithDevice {
     @IBAction func goToHome(_ sender: Any) {
         _ = navigationController?.popToRootViewController(animated: true)
     }
-    
-    @IBAction func settingsTap(_ sender: Any) {
-        let storyboard =  UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "DeviceSettingsViewController") as! DeviceSettingsViewController
-        controller.device = device
-        navigationController?.pushViewController(controller, animated: true)
-    }
-
 }
