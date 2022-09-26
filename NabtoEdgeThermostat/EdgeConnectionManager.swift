@@ -49,11 +49,6 @@ class EdgeConnectionManager {
     private let monitorQueue = DispatchQueue.global()
     private var networkAvailable = true
 
-    // coap test app
-    // private let appSpecificApiKey = "sk-5f3ab4bea7cc2585091539fb950084ce"
-    // password-open test app
-    private let appSpecificApiKey = "sk-9c826d2ebb4343a789b280fe22b98305"
-
     private init() {
         self.monitor.pathUpdateHandler = { [weak self] path in
             self?.handleNetworkPathUpdated(path)
@@ -146,7 +141,6 @@ class EdgeConnectionManager {
         let connection = try self.client.createConnection()
         try connection.setProductId(id: target.productId)
         try connection.setDeviceId(id: target.deviceId)
-        try connection.setServerKey(key: self.appSpecificApiKey)
         guard let key = ProfileTools.getSavedPrivateKey() else {
             throw NabtoEdgeClientError.FAILED_WITH_DETAIL(detail: "Private key not set")
         }
