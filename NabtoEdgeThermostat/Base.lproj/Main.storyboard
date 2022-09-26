@@ -235,7 +235,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="table" destination="f21-WV-vLG" id="FaZ-Y3-gkO"/>
-                        <segue destination="1Pe-es-iU5" kind="presentation" identifier="toProfile" id="zUV-pr-k1o"/>
                         <segue destination="OZe-rU-UnQ" kind="show" identifier="toPairing" id="Pzf-OU-J9K"/>
                     </connections>
                 </viewController>
@@ -331,7 +330,6 @@
                         <outlet property="clearButton" destination="734-dP-NHJ" id="WeE-fI-U6Z"/>
                         <outlet property="keypairButton" destination="a8n-7K-J4M" id="mBe-6U-q3r"/>
                         <outlet property="versionLabel" destination="G4H-UM-XIM" id="7kN-ay-cTw"/>
-                        <segue destination="1Pe-es-iU5" kind="presentation" identifier="toProfile" id="6cz-9P-FD7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f39-Hg-n3T" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -675,134 +673,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gp3-IK-GGZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1680.8" y="107.49625187406298"/>
-        </scene>
-        <!--Keypair creation-->
-        <scene sceneID="3H5-TG-g9c">
-            <objects>
-                <viewController title="Keypair creation" id="1Pe-es-iU5" customClass="ProfileCreateViewController" customModule="Nabto_Edge_Thermostat" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="wMy-Me-E6u"/>
-                        <viewControllerLayoutGuide type="bottom" id="Rxe-vb-ikD"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="pSL-RF-1Jf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LDz-A9-LF7">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
-                                <items>
-                                    <navigationItem title="Create profile" id="fqo-oB-j5K"/>
-                                </items>
-                            </navigationBar>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter the name to identify this iOS device when communicating with other devices." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eLO-BP-SJg">
-                                <rect key="frame" x="16" y="88" width="343" height="38.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="900" text="Name to associate with profile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zt6-dg-RBX">
-                                <rect key="frame" x="32" y="156.5" width="311" height="17"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Name" placeholder="Enter a name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="C4q-Ow-a3Z">
-                                <rect key="frame" x="32" y="173.5" width="311" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="PAu-oj-9Ec"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
-                                <connections>
-                                    <outlet property="delegate" destination="1Pe-es-iU5" id="A4F-MB-K2H"/>
-                                </connections>
-                            </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5ni-3e-GP4">
-                                <rect key="frame" x="16" y="297.5" width="343" height="46"/>
-                                <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="46" id="q3V-A3-Mxd"/>
-                                </constraints>
-                                <state key="normal" title="Clear">
-                                    <color key="titleColor" systemColor="darkTextColor"/>
-                                </state>
-                                <connections>
-                                    <action selector="clear:" destination="1Pe-es-iU5" eventType="touchUpInside" id="wpE-GT-JRa"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LBA-eJ-vJB">
-                                <rect key="frame" x="16" y="247.5" width="343" height="46"/>
-                                <color key="backgroundColor" red="0.97647058819999999" green="0.50196078430000002" blue="0.2156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="46" id="BOT-vf-zel"/>
-                                </constraints>
-                                <state key="normal" title="Continue">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="createProfile:" destination="1Pe-es-iU5" eventType="touchUpInside" id="Wbj-fe-dES"/>
-                                    <action selector="refresh:" destination="iQE-Ou-Jwx" eventType="touchUpInside" id="esa-e5-0Y3"/>
-                                </connections>
-                            </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mhF-hE-nKw">
-                                <rect key="frame" x="32" y="217.5" width="311" height="1"/>
-                                <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="1" id="ZWs-8W-Nt0"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BsM-YJ-RkM">
-                                <rect key="frame" x="32" y="147.5" width="311" height="1"/>
-                                <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="1" id="Q3a-oe-GfU"/>
-                                </constraints>
-                            </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="thermometer.sun" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Qc8-8F-4oY">
-                                <rect key="frame" x="73" y="444" width="122" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="zt6-dg-RBX" firstAttribute="centerX" secondItem="pSL-RF-1Jf" secondAttribute="centerX" id="2ui-Pm-416"/>
-                            <constraint firstItem="Rxe-vb-ikD" firstAttribute="top" relation="greaterThanOrEqual" secondItem="5ni-3e-GP4" secondAttribute="bottom" priority="900" constant="8" id="5kw-iR-nuj"/>
-                            <constraint firstItem="LBA-eJ-vJB" firstAttribute="top" secondItem="C4q-Ow-a3Z" secondAttribute="bottom" constant="30" id="7zj-pK-bGZ"/>
-                            <constraint firstItem="5ni-3e-GP4" firstAttribute="centerX" secondItem="pSL-RF-1Jf" secondAttribute="centerX" id="CKK-1V-wnm"/>
-                            <constraint firstItem="5ni-3e-GP4" firstAttribute="leading" secondItem="LBA-eJ-vJB" secondAttribute="leading" id="Ee8-ZX-mYD"/>
-                            <constraint firstItem="LBA-eJ-vJB" firstAttribute="centerX" secondItem="pSL-RF-1Jf" secondAttribute="centerX" id="EqT-Yy-Vs5"/>
-                            <constraint firstItem="mhF-hE-nKw" firstAttribute="leading" secondItem="C4q-Ow-a3Z" secondAttribute="leading" id="FvZ-Md-D0Q"/>
-                            <constraint firstItem="eLO-BP-SJg" firstAttribute="top" secondItem="LDz-A9-LF7" secondAttribute="bottom" priority="800" constant="32" id="G63-Ur-CJL"/>
-                            <constraint firstItem="LDz-A9-LF7" firstAttribute="top" secondItem="wMy-Me-E6u" secondAttribute="bottom" id="GW8-lq-cQF"/>
-                            <constraint firstItem="C4q-Ow-a3Z" firstAttribute="top" secondItem="zt6-dg-RBX" secondAttribute="bottom" id="I3R-Qv-E2w"/>
-                            <constraint firstItem="zt6-dg-RBX" firstAttribute="leading" secondItem="eLO-BP-SJg" secondAttribute="leading" constant="16" id="QZW-wx-6FH"/>
-                            <constraint firstItem="C4q-Ow-a3Z" firstAttribute="centerX" secondItem="pSL-RF-1Jf" secondAttribute="centerX" id="RcW-hd-df4"/>
-                            <constraint firstItem="zt6-dg-RBX" firstAttribute="top" secondItem="eLO-BP-SJg" secondAttribute="bottom" constant="30" id="Y2K-Vn-bHh"/>
-                            <constraint firstItem="mhF-hE-nKw" firstAttribute="top" secondItem="C4q-Ow-a3Z" secondAttribute="bottom" id="YHg-yR-4Qj"/>
-                            <constraint firstItem="zt6-dg-RBX" firstAttribute="leading" secondItem="C4q-Ow-a3Z" secondAttribute="leading" id="ZoD-mS-vxh"/>
-                            <constraint firstItem="BsM-YJ-RkM" firstAttribute="leading" secondItem="mhF-hE-nKw" secondAttribute="leading" id="f2F-yy-j66"/>
-                            <constraint firstAttribute="trailing" secondItem="LDz-A9-LF7" secondAttribute="trailing" id="fJf-p7-0wB"/>
-                            <constraint firstItem="BsM-YJ-RkM" firstAttribute="trailing" secondItem="mhF-hE-nKw" secondAttribute="trailing" id="jie-Jo-8tb"/>
-                            <constraint firstItem="zt6-dg-RBX" firstAttribute="top" secondItem="BsM-YJ-RkM" secondAttribute="bottom" constant="8" id="m0o-yR-hqf"/>
-                            <constraint firstItem="mhF-hE-nKw" firstAttribute="trailing" secondItem="C4q-Ow-a3Z" secondAttribute="trailing" id="nUd-bF-hAf"/>
-                            <constraint firstItem="LDz-A9-LF7" firstAttribute="leading" secondItem="pSL-RF-1Jf" secondAttribute="leading" id="tlr-zb-urq"/>
-                            <constraint firstItem="eLO-BP-SJg" firstAttribute="leading" secondItem="pSL-RF-1Jf" secondAttribute="leading" constant="16" id="u6A-to-9v8"/>
-                            <constraint firstItem="5ni-3e-GP4" firstAttribute="top" secondItem="LBA-eJ-vJB" secondAttribute="bottom" constant="4" id="xAV-IF-ShR"/>
-                            <constraint firstItem="eLO-BP-SJg" firstAttribute="leading" secondItem="LBA-eJ-vJB" secondAttribute="leading" id="yby-zj-c4f"/>
-                            <constraint firstItem="eLO-BP-SJg" firstAttribute="centerX" secondItem="pSL-RF-1Jf" secondAttribute="centerX" id="zlK-O9-4PI"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="clearButton" destination="5ni-3e-GP4" id="ojb-aI-7UF"/>
-                        <outlet property="continueButton" destination="LBA-eJ-vJB" id="3WI-tZ-23b"/>
-                        <outlet property="pagePosition" destination="G63-Ur-CJL" id="38F-gi-2Pe"/>
-                        <outlet property="textField" destination="C4q-Ow-a3Z" id="Lab-wm-EbL"/>
-                        <outlet property="topLabel" destination="eLO-BP-SJg" id="XN1-Pd-m4d"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="TA9-RA-VmQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1644.9275362318842" y="868.52678571428567"/>
         </scene>
         <!--ACME Heater-->
         <scene sceneID="Xpn-Dh-Sju">
@@ -1879,7 +1749,6 @@ New devices can be added from the overview page: To add a device, your client (t
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="5RW-eh-vA1"/>
-        <segue reference="zUV-pr-k1o"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
     <resources>
@@ -1891,7 +1760,6 @@ New devices can be added from the overview page: To add a device, your client (t
         <image name="refresh" width="20" height="20"/>
         <image name="settings" width="36" height="36"/>
         <image name="thermometer" catalog="system" width="81" height="128"/>
-        <image name="thermometer.sun" catalog="system" width="103" height="128"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

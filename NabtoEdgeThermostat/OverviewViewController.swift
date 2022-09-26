@@ -11,7 +11,7 @@ import NabtoEdgeIamUtil
 import NabtoEdgeClient
 import NotificationBannerSwift
 
-class OverviewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ProfileCreatedListener {
+class OverviewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var table: UITableView!
 
@@ -336,10 +336,6 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destination = segue.destination as? ProfileCreateViewController {
-            destination.profileCreatedDelegate = self
-        }
-
         guard let device = sender as? Bookmark else { return }
         if let destination = segue.destination as? PairingViewController {
             destination.device = device

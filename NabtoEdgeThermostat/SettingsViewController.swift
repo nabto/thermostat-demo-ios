@@ -79,13 +79,4 @@ class SettingsViewController: UIViewController {
         
     }
     
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destination = segue.destination as? ProfileCreateViewController {
-            destination.isReset = true
-        }
-    }
-    
-
 }
