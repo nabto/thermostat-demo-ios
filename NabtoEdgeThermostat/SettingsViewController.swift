@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import NabtoEdgeClient
 
 class SettingsViewController: UIViewController {
 
     @IBOutlet weak var keypairButton    : UIButton!
     @IBOutlet weak var clearButton      : UIButton!
+    @IBOutlet weak var versionLabel     : UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +30,7 @@ class SettingsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.versionLabel.text = "Nabto Edge Client SDK \(NabtoEdgeClient.Client.versionString())"
     }
     
     func resetKeypair() {
