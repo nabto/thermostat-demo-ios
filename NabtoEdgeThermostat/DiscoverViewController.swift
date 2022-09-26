@@ -17,7 +17,6 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
 
     var devices: [DeviceRowModel] = []
     var busy = true
-    var starting = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,7 +79,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
             // silently ignore
             NSLog("Nabto Edge device discovered that do not support IAM: \(bookmark.productId).\(bookmark.deviceId)")
         } catch {
-            DispatchQueue.global().async() {
+            DispatchQueue.global().async {
                 EdgeConnectionManager.shared.reset()
             }
             self.handleError(msg: "\(error)")
