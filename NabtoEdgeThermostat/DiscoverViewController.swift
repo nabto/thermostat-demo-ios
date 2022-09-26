@@ -63,43 +63,41 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
         if (result.action == .ADD) {
             let name: String? = result.txtItems["fn"]
             let bookmark = Bookmark(deviceId: result.deviceId, productId: result.productId, name: name)
-            if (!BookmarkManager.shared.exists(bookmark)) {
-                addToViewIfPairingPossible(bookmark: bookmark)
-            } else {
-                print("Not adding device \(bookmark) to discovered device list: Device already bookmarked")
-            }
+            addToView(bookmark: bookmark)
         }
     }
 
-    private func addToViewIfPairingPossible(bookmark: Bookmark) {
+    private func addToView(bookmark: Bookmark) {
         do {
             let connection = try EdgeConnectionManager.shared.getConnection(bookmark)
             let modes: [NabtoEdgeIamUtil.PairingMode] = try IamUtil.getAvailablePairingModes(connection: connection)
-            if (modes.count > 0 && !(modes.count == 1 && modes[0] != .PasswordInvite)) {
-                self.devices.append(DeviceRowModel(bookmark: bookmark))
-                DispatchQueue.main.async {
-                    self.table.reloadData()
-                }
-            } else {
-                print("Not adding device \(bookmark) to discovered device list: No supported pairing modes enabled")
+            // only show as open for pairing if an open or initial pairing is available (password invite not supported)
+            let device = DeviceRowModel(bookmark: bookmark)
+            if (BookmarkManager.shared.exists(bookmark)) {
+                device.error = "Device already paired with this client"
+            } else if (modes.count == 0 || (modes.count == 1 && modes[0] == .PasswordInvite )) {
+                device.error = "No supported pairing modes are available on device"
+            }
+            self.devices.append(device)
+            DispatchQueue.main.async {
+                self.table.reloadData()
             }
         } catch (NabtoEdgeIamUtil.IamError.IAM_NOT_SUPPORTED) {
             // silently ignore
             NSLog("Nabto Edge device discovered that do not support IAM: \(bookmark.productId).\(bookmark.deviceId)")
         } catch {
+            DispatchQueue.global().async() {
+                EdgeConnectionManager.shared.stop()
+            }
             self.handleError(msg: "\(error)")
         }
     }
 
     func handleError(msg: String) {
-        DispatchQueue.global().async() {
-            EdgeConnectionManager.shared.stop()
-        }
         DispatchQueue.main.async {
             NSLog("Discover error: \(msg)")
             let errorBanner = GrowingNotificationBanner(title: "Discover error", subtitle: msg, style: .danger)
             errorBanner.show()
-
         }
     }
 
@@ -144,7 +142,12 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section == 0 && devices.count > 0 else { return }
-        performSegue(withIdentifier: "toPairing", sender: self.devices[indexPath.row].bookmark)
+        let device = self.devices[indexPath.row]
+        if let error = device.error {
+            self.handleError(msg: error)
+        } else {
+            performSegue(withIdentifier: "toPairing", sender: self.devices[indexPath.row].bookmark)
+        }
         tableView.deselectRow(at: indexPath, animated: true)
     }
     

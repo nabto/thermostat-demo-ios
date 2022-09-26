@@ -293,6 +293,12 @@
                                     <action selector="clearBookmarks:" destination="Sgg-j7-M8A" eventType="touchUpInside" id="um8-JY-CLx"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G4H-UM-XIM">
+                                <rect key="frame" x="16" y="626" width="343" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
@@ -307,8 +313,11 @@
                             <constraint firstItem="a8n-7K-J4M" firstAttribute="centerX" secondItem="798-Qc-Qx5" secondAttribute="centerX" id="KOK-R4-dhg"/>
                             <constraint firstItem="a8n-7K-J4M" firstAttribute="top" secondItem="0TD-Qv-Ojd" secondAttribute="bottom" constant="20" id="LrI-SL-M31"/>
                             <constraint firstItem="a8n-7K-J4M" firstAttribute="leading" secondItem="798-Qc-Qx5" secondAttribute="leading" constant="16" id="QVR-Kt-gWy"/>
+                            <constraint firstItem="G4H-UM-XIM" firstAttribute="leading" secondItem="798-Qc-Qx5" secondAttribute="leadingMargin" id="XmV-Z6-fCZ"/>
                             <constraint firstItem="0TD-Qv-Ojd" firstAttribute="top" secondItem="GZ1-7I-Lra" secondAttribute="bottom" priority="700" constant="32" id="bi1-oo-5SN"/>
                             <constraint firstItem="0TD-Qv-Ojd" firstAttribute="leading" secondItem="798-Qc-Qx5" secondAttribute="leading" constant="16" id="njz-79-HBp"/>
+                            <constraint firstItem="EEL-gn-L3u" firstAttribute="top" secondItem="G4H-UM-XIM" secondAttribute="bottom" constant="20" id="rQq-DT-QMJ"/>
+                            <constraint firstItem="G4H-UM-XIM" firstAttribute="trailing" secondItem="798-Qc-Qx5" secondAttribute="trailingMargin" id="uCj-nk-qte"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="App settings" id="xSo-7f-rif">
@@ -321,17 +330,17 @@
                     <connections>
                         <outlet property="clearButton" destination="734-dP-NHJ" id="WeE-fI-U6Z"/>
                         <outlet property="keypairButton" destination="a8n-7K-J4M" id="mBe-6U-q3r"/>
+                        <outlet property="versionLabel" destination="G4H-UM-XIM" id="7kN-ay-cTw"/>
                         <segue destination="1Pe-es-iU5" kind="presentation" identifier="toProfile" id="6cz-9P-FD7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f39-Hg-n3T" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1681" y="-638"/>
+            <point key="canvasLocation" x="1680.8" y="-638.2308845577212"/>
         </scene>
         <!--Device Settings-->
         <scene sceneID="s8i-Nw-rEz">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="G24-UQ-N6L" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="DeviceSettingsViewController" title="Device Settings" id="3bu-dc-GHF" customClass="DeviceSettingsViewController" customModule="Nabto_Edge_Thermostat" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="F9H-Ru-xCg"/>
@@ -475,6 +484,7 @@
                         <outlet property="securityLabel" destination="Nxj-OM-dya" id="d65-T1-4Ak"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="G24-UQ-N6L" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2632" y="-640"/>
         </scene>
@@ -542,6 +552,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="deviceIcon" destination="3o2-Xq-0JF" id="EYQ-Zg-Wqo"/>
                                             <outlet property="deviceIdLabel" destination="Pr7-Uq-ukp" id="EXC-0j-YbC"/>
                                             <outlet property="nameLabel" destination="0RG-n7-UFH" id="4XD-1b-8au"/>
                                         </connections>
@@ -556,8 +567,8 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RFZ-79-RmP">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="72"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No new thermostat devices found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nB5-5E-kQZ">
-                                                            <rect key="frame" x="16" y="3" width="257" height="21"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No thermostat devices found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nB5-5E-kQZ">
+                                                            <rect key="frame" x="16" y="3" width="221" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -1572,9 +1583,9 @@
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hWF-BM-qgf">
                                         <rect key="frame" x="16" y="200" width="343" height="217.5"/>
-                                        <mutableString key="text">The overview page consists of a list of currently known target devices. A green icon indicates if it is online, a red icon and an error message if it is not available.
+                                        <string key="text">The overview page consists of a list of currently known target devices. A green icon indicates if it is online, a red icon and an error message if it is not available.
 
-New devices can be added from the overview page: To add a device, your client (this app) must be on the same local area network as the target device to enable discovery. Or you must enter a "pairing string" provided by the device owner to enable remote pairing. The pairing string contains info to locate the device and authenticate you towards the device.</mutableString>
+New devices can be added from the overview page: To add a device, your client (this app) must be on the same local area network as the target device to enable discovery. Or you must enter a "pairing string" provided by the device owner to enable remote pairing. The pairing string contains info to locate the device and authenticate you towards the device.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -1636,7 +1647,6 @@ New devices can be added from the overview page: To add a device, your client (t
         <!--Edit user-->
         <scene sceneID="S92-4U-Vf0">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="YMz-SB-dhB" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController title="Edit user" id="dfX-gc-DOG" customClass="EditUserViewController" customModule="Nabto_Edge_Thermostat" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ZzR-sO-9Ed"/>
@@ -1862,13 +1872,14 @@ New devices can be added from the overview page: To add a device, your client (t
                         <outlet property="topLabel" destination="ZZA-Wm-7g3" id="2IK-4Z-qax"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YMz-SB-dhB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3397.5999999999999" y="-1333.5832083958021"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="5RW-eh-vA1"/>
-        <segue reference="6cz-9P-FD7"/>
+        <segue reference="zUV-pr-k1o"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
     <resources>

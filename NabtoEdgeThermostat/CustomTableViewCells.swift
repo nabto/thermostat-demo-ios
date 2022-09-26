@@ -14,6 +14,7 @@ class DeviceRowModel {
     var bookmark: Bookmark
     var isPaired: Bool = false
     var isOnline: Bool? = nil
+    var error: String? = nil
     var id: String {
         get {
             return "\(self.bookmark.productId).\(self.bookmark.deviceId)"
@@ -53,7 +54,8 @@ class DeviceCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var deviceIdLabel: UILabel!
     @IBOutlet weak var statusIcon: UIImageView!
-
+    @IBOutlet weak var deviceIcon: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -65,6 +67,12 @@ class DeviceCell: UITableViewCell {
     func configure(device: DeviceRowModel) {
         nameLabel.text = device.bookmark.name ?? device.id
         deviceIdLabel.text = device.id
+        deviceIcon?.isHidden = false
+        if let error = device.error {
+            deviceIcon?.image = UIImage(systemName: "exclamationmark.triangle")?.withRenderingMode(.alwaysTemplate)
+        } else {
+            deviceIcon?.image = UIImage(systemName: "thermometer.sun")?.withRenderingMode(.alwaysTemplate)
+        }
     }
 }
 
