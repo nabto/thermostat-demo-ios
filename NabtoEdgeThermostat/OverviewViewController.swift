@@ -205,7 +205,7 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
     }
 
     @IBAction func refresh(_ sender: Any) {
-        EdgeConnectionManager.shared.stop()
+        EdgeConnectionManager.shared.reset()
         self.errorBanner?.dismiss()
         self.doRefresh()
     }

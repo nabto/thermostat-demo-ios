@@ -105,13 +105,9 @@ class EdgeConnectionManager {
         }
     }
 
-    func start() {
-        // nop
-    }
-    
-    func stop() {
+    func reset() {
         self.cacheQueue.sync {
-            for (key, value) in self.cache {
+            for (_, value) in self.cache {
                 value.stop()
             }
             self.cache = [:]

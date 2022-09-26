@@ -365,7 +365,7 @@ class EdgeThermostatViewController: DeviceDetailsViewController, UIPickerViewDel
     }
 
     @IBAction func refreshTap(_ sender: Any) {
-        EdgeConnectionManager.shared.stop()
+        EdgeConnectionManager.shared.reset()
         self.refreshView(userInitiated: true)
     }
 

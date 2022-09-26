@@ -66,7 +66,7 @@ class EdgeManagerTest: XCTestCase {
     }
 
     override func tearDown() {
-        self.sut.stop()
+        self.sut.reset()
     }
 
     func testSomething() {

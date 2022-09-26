@@ -81,7 +81,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
             NSLog("Nabto Edge device discovered that do not support IAM: \(bookmark.productId).\(bookmark.deviceId)")
         } catch {
             DispatchQueue.global().async() {
-                EdgeConnectionManager.shared.stop()
+                EdgeConnectionManager.shared.reset()
             }
             self.handleError(msg: "\(error)")
         }
