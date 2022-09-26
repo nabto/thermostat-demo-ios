@@ -22,17 +22,11 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         table.contentInset.top += 16
-
-        findDevices()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if !starting {
-            findDevices()
-        } else {
-            starting = false
-        }
+        self.findDevices()
     }
 
     override func didReceiveMemoryWarning() {
