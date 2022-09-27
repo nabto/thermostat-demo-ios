@@ -25,7 +25,7 @@ class PairingViewController: UIViewController, PairingConfirmedListener, UITextF
     var device : Bookmark?
     var pairingStringPassword: String?
 
-    let defaultPairingText = "You are about to pair with device '%@.%@'."
+    let defaultPairingText = "You are about to pair with the above device."
     let passwordText = "This device requires a password for pairing:"
     let errorText = "Error! Could not connect to device for pairing."
 

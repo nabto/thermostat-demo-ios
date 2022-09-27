@@ -71,7 +71,7 @@ class DeviceCell: UITableViewCell {
         if let error = device.error {
             deviceIcon?.image = UIImage(systemName: "exclamationmark.triangle")?.withRenderingMode(.alwaysTemplate)
         } else {
-            deviceIcon?.image = UIImage(systemName: "thermometer.sun")?.withRenderingMode(.alwaysTemplate)
+            deviceIcon?.image = UIImage(systemName: "thermometer")?.withRenderingMode(.alwaysTemplate)
         }
     }
 }
