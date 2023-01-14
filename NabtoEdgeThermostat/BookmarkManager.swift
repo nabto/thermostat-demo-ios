@@ -16,6 +16,7 @@ class Bookmark : Equatable, Hashable, CustomStringConvertible, Codable {
     var name : String = "Anonymous Thermostat"
     var modelName: String?
     var role: String?
+    var deviceFingerprint: String?
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(deviceId)

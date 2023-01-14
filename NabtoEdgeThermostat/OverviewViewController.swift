@@ -198,6 +198,9 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
             device.isOnline = false
         } catch IamError.USER_DOES_NOT_EXIST {
             device.isPaired = false
+        } catch ThermostatError.DEVICE_IDENTITY_CHANGED {
+            device.isOnline = false
+            device.error = "Device identity changed since pairing"
         } catch {
             print("Device \(device.bookmark.name) is not available due to error: \(error)")
             device.isOnline = false
@@ -242,7 +245,11 @@ class OverviewViewController: UIViewController, UITableViewDelegate, UITableView
                 if (device.isOnline ?? false) {
                     self.handleOnlineDevice(updatedDevice)
                 } else {
-                    self.handleError(msg: "Device '\(device.bookmark.name)' is offline")
+                    if let err = device.error {
+                        self.handleError(msg: "Cannot connect to '\(device.bookmark.name)': \(err)")
+                    } else {
+                        self.handleError(msg: "Device '\(device.bookmark.name)' is offline")
+                    }
                 }
             } catch {
                 self.handleError(msg: "\(error)")

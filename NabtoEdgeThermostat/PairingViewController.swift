@@ -242,13 +242,15 @@ class PairingViewController: UIViewController, PairingConfirmedListener, UITextF
     }
 
     private func updateBookmarkWithDeviceInfo(_ device: Bookmark) throws {
-        let user = try IamUtil.getCurrentUser(connection: EdgeConnectionManager.shared.getConnection(device))
+        let connection = try EdgeConnectionManager.shared.getConnection(device)
+        let user = try IamUtil.getCurrentUser(connection: connection)
         device.role = user.Role
         device.sct = user.Sct
-        let details = try IamUtil.getDeviceDetails(connection: EdgeConnectionManager.shared.getConnection(device))
+        let details = try IamUtil.getDeviceDetails(connection: connection)
         if let appname = details.AppName {
             device.name = appname
         }
+        device.deviceFingerprint = try connection.getDeviceFingerprintHex()
     }
 
     private func updateDisplayName(connection: Connection, username: String, displayName: String) {

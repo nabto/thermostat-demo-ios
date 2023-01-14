@@ -7,6 +7,11 @@ import UIKit
 import Network
 import NabtoEdgeClient
 
+public enum ThermostatError : Error {
+    // fingerprint changed on device since pairing
+    case DEVICE_IDENTITY_CHANGED
+}
+
 fileprivate class EdgeConnectionWrapper : ConnectionEventReceiver {
     var isClosed: Bool = false
     let target: Bookmark
@@ -149,6 +154,11 @@ class EdgeConnectionManager {
             try connection.setServerConnectToken(sct: sct)
         }
         try connection.connect()
+        if let fp = target.deviceFingerprint {
+            if (try connection.getDeviceFingerprintHex() != fp) {
+                throw ThermostatError.DEVICE_IDENTITY_CHANGED
+            }
+        }
         return connection
     }
 
