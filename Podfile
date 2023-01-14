@@ -1,3 +1,5 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
 platform :ios, '12.0'
 
   post_install do |installer|
@@ -10,7 +12,7 @@ platform :ios, '12.0'
 
 def common
   use_frameworks!
-  pod 'NabtoEdgeClientSwift'
+  pod 'NabtoEdgeClientSwift', '3.0.4'
   pod 'NabtoEdgeIamUtil'
   pod 'NotificationBannerSwift', '~> 3.0.0'
 end
