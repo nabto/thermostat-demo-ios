@@ -35,7 +35,7 @@ fileprivate class EdgeConnectionWrapper : ConnectionEventReceiver {
 
     func stop() {
         self.connection.removeConnectionEventsReceiver(cb: self)
-
+        self.connection.stop()
     }
 }
 
@@ -69,6 +69,8 @@ class EdgeConnectionManager {
 //                    self.client_.setLogCallBack(cb: EdgeConnectionManager.traceOnlyApiCalls)
                     self.client_.enableNsLogLogging()
                     try! self.client_.setLogLevel(level: self.logLevel)
+                    let client = NabtoEdgeClient.Client()
+                    print("Initialized Nabto Edge Client SDK version \(NabtoEdgeClient.Client.versionString())")
                 }
                 return self.client_
             }
