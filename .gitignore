@@ -17,8 +17,6 @@ build/
 .build/
 .swiftpm/
 Packages/
-# -clonedSourcePackagesDirPath used by CI
-.spm/
 
 # macOS
 .DS_Store
