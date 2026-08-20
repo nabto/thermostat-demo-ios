@@ -1,0 +1,77 @@
+name: NabtoEdgeThermostat
+
+options:
+  bundleIdPrefix: com.nabto.edge
+  deploymentTarget:
+    iOS: "17.0"
+  developmentLanguage: en
+  createIntermediateGroups: true
+  groupSortPosition: top
+
+packages:
+  NabtoEdgeClient:
+    url: https://github.com/nabto/edge-client-swift
+    from: 4.0.1
+  NabtoEdgeIamUtil:
+    url: https://github.com/nabto/edge-iamutil-swift
+    from: 2.0.0
+  CBORCoding:
+    url: https://github.com/SomeRandomiOSDev/CBORCoding.git
+    from: 1.3.2
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    SWIFT_EMIT_LOC_STRINGS: YES
+
+targets:
+  NabtoEdgeThermostat:
+    type: application
+    platform: iOS
+    sources:
+      - path: NabtoEdgeThermostat
+    dependencies:
+      - package: NabtoEdgeClient
+        product: NabtoEdgeClient
+      - package: NabtoEdgeIamUtil
+        product: NabtoEdgeIamUtil
+      - package: CBORCoding
+        product: CBORCoding
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.nabto.edge.thermostat
+        # The bundle keeps the name it has always shipped under; the Swift module does not inherit
+        # its spaces (which would make it Nabto_Edge_Thermostat).
+        PRODUCT_NAME: Nabto Edge Thermostat
+        PRODUCT_MODULE_NAME: NabtoEdgeThermostat
+        INFOPLIST_FILE: NabtoEdgeThermostat/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        MARKETING_VERSION: "1.0.2"
+        CURRENT_PROJECT_VERSION: "1"
+        TARGETED_DEVICE_FAMILY: "1"
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: E55K8RCV2E
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    scheme:
+      testTargets:
+        - NabtoEdgeThermostatTests
+      gatherCoverageData: false
+
+  NabtoEdgeThermostatTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: NabtoEdgeThermostatTests
+    dependencies:
+      - target: NabtoEdgeThermostat
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.nabto.edge.thermostat.tests
+        GENERATE_INFOPLIST_FILE: YES
+        # The app bundle is named after PRODUCT_NAME, not the target, so the host XcodeGen infers
+        # from the target name would not exist.
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Nabto Edge Thermostat.app/Nabto Edge Thermostat"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+

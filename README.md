@@ -2,15 +2,38 @@
 
 Full example application showing how to control a Nabto Edge enabled thermostat device using the Nabto Edge Client SDK for iOS.
 
+The app is written in SwiftUI and Swift 6 with all Nabto SDK access confined to a single actor, `NabtoClient`.
+
 Precompiled version is available for download from the App Store as described in the [guide on docs.nabto.com](https://docs.nabto.com/developer/guides/platforms/ios/thermostat.html).
 
 ## Building
 
-The app installs dependencies through Cocoapod, so to build and run, perform the following steps:
+Dependencies are resolved with Swift Package Manager and the Xcode project is generated with [XcodeGen](https://github.com/yonaskolb/XcodeGen) from `project.yml`, so `NabtoEdgeThermostat.xcodeproj` is not checked in.
 
-1. Install dependencies: `$ pod install` (see https://www.cocoapods.org for info on installation of the pod tool).
+1. Install XcodeGen: `$ brew install xcodegen`
 
-2. Open the generated workspace in XCode and work from there: `open NabtoEdgeThermostat.xcworkspace`
+2. Generate the project: `$ xcodegen generate`
+
+3. Open it and work from there: `$ open NabtoEdgeThermostat.xcodeproj`
+
+Xcode resolves the Swift packages on first open — this needs network access, as the Nabto Edge Client C SDK is downloaded as a binary XCFramework.
+
+To build and test from the command line:
+
+```
+xcodebuild -scheme NabtoEdgeThermostat -destination 'platform=iOS Simulator,name=iPhone 16' build
+xcodebuild -scheme NabtoEdgeThermostat -destination 'platform=iOS Simulator,name=iPhone 16' test
+```
+
+Requires iOS 17 or later.
+
+## Dependencies
+
+| Package | Purpose |
+|---|---|
+| [edge-client-swift](https://github.com/nabto/edge-client-swift) | Nabto Edge Client SDK |
+| [edge-iamutil-swift](https://github.com/nabto/edge-iamutil-swift) | Pairing and user management |
+| [CBORCoding](https://github.com/SomeRandomiOSDev/CBORCoding) | CBOR encoding of the thermostat CoAP payloads |
 
 ## Questions?
 
