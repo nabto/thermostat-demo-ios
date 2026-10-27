@@ -11,13 +11,13 @@ options:
 packages:
   NabtoEdgeClient:
     url: https://github.com/nabto/edge-client-swift
-    from: 4.0.1
+    from: 4.0.2
   NabtoEdgeIamUtil:
     url: https://github.com/nabto/edge-iamutil-swift
-    from: 2.0.0
+    from: 2.0.1
   CBORCoding:
     url: https://github.com/SomeRandomiOSDev/CBORCoding.git
-    from: 1.3.2
+    from: 1.4.0
 
 settings:
   base:
