@@ -6,11 +6,15 @@ Precompiled version is available for download from the App Store as described in
 
 ## Building
 
-The app installs dependencies through Cocoapod, so to build and run, perform the following steps:
+The app uses Swift Package Manager for all dependencies, following the [Nabto iOS SDK installation instructions](https://www.nabto.com/docs/developer/platforms/ios/intro.html). CocoaPods is not required.
 
-1. Install dependencies: `$ pod install` (see https://www.cocoapods.org for info on installation of the pod tool).
+1. Open `NabtoEdgeThermostat.xcodeproj` in Xcode.
 
-2. Open the generated workspace in XCode and work from there: `open NabtoEdgeThermostat.xcworkspace`
+2. Let Xcode resolve the Swift packages.
+
+3. Select the `Nabto Edge Thermostat` scheme, your signing team and a physical iOS device, then build and run.
+
+The project pins Nabto Edge Client Swift **4.0.2** (C SDK **5.15.5**) and Nabto Edge IAM Util **2.0.1**. CBORCoding (**1.3.2**), NotificationBannerSwift (**3.0.6**), SnapKit (**5.0.1**) and MarqueeLabel (**4.0.5**) retain their previous versions. Commit `NabtoEdgeThermostat.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved` when updating packages.
 
 ## Questions?
 

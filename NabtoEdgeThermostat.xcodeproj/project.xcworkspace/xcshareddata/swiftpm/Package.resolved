@@ -1,0 +1,69 @@
+{
+  "originHash" : "5ac5ac6546b8e3a6db28cffbfa5434f05a07eae3423334dc5152d3149021eb11",
+  "pins" : [
+    {
+      "identity" : "cborcoding",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SomeRandomiOSDev/CBORCoding.git",
+      "state" : {
+        "revision" : "48b1a2790eb2987bfcbe844f31b7c477e67f7db8",
+        "version" : "1.3.2"
+      }
+    },
+    {
+      "identity" : "edge-client-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nabto/edge-client-swift",
+      "state" : {
+        "revision" : "81adfd528eb6db60ebe6f43a479208e32d7741fe",
+        "version" : "4.0.2"
+      }
+    },
+    {
+      "identity" : "edge-iamutil-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nabto/edge-iamutil-swift",
+      "state" : {
+        "revision" : "dca93b34a434031ef0cb17facbf0454179cff94e",
+        "version" : "2.0.1"
+      }
+    },
+    {
+      "identity" : "half",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SomeRandomiOSDev/Half",
+      "state" : {
+        "revision" : "14b1ab35ffdf62c999ef1016ec0f8e745a6feed5",
+        "version" : "1.4.2"
+      }
+    },
+    {
+      "identity" : "marqueelabel",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/cbpowell/MarqueeLabel",
+      "state" : {
+        "revision" : "d92fe1583dbf43fa3b70229a49fa7da6b36750d4",
+        "version" : "4.0.5"
+      }
+    },
+    {
+      "identity" : "notificationbanner",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Daltron/NotificationBanner",
+      "state" : {
+        "revision" : "2ce5c49d8ee4865f01a3ce3bbe078664c78c7a3c",
+        "version" : "3.0.6"
+      }
+    },
+    {
+      "identity" : "snapkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SnapKit/SnapKit",
+      "state" : {
+        "revision" : "d458564516e5676af9c70b4f4b2a9178294f1bc6",
+        "version" : "5.0.1"
+      }
+    }
+  ],
+  "version" : 3
+}
